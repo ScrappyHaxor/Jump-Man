@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 using JumpMan.ECS.Systems;
 using JumpMan.Objects;
 using ScrapBox.Framework;
+using ScrapBox.Framework.Diagnostics;
 using ScrapBox.Framework.ECS.Systems;
 using ScrapBox.Framework.Level;
 using ScrapBox.Framework.Managers;
@@ -15,9 +17,7 @@ namespace JumpMan.Level
     {
         private Player player;
 
-        //use some way of loading levels from a txt at a later date. For now this will do.
-        private Platform platform1;
-        private Platform platform2;
+        private List<Platform> platforms;
 
         private ControllerSystem controllerSystem;
 
@@ -38,22 +38,40 @@ namespace JumpMan.Level
         public override void LoadAssets()
         {
             //Generating a simple texture for now using my AssetManager
+            AssetManager.LoadResourceFile("assets", Parent.Content);
             AssetManager.AddSimpleTexture("placeholder", 64, 64, Parent.Graphics.GraphicsDevice, Parent.Content);
+
+            RenderDiagnostics.Font = AssetManager.FetchFont("temporary");
+            PhysicsDiagnostics.Font = AssetManager.FetchFont("temporary");
             base.LoadAssets();
         }
 
         public override void Load(params object[] args)
         {
-            //PhysicsSystem.Gravity = ScrapVector.Zero;
-            MainCamera.Zoom = 0.8;
+            
+            MainCamera.Zoom = 0.5;
 
-            platform1 = new Platform(new ScrapVector(0, 64), new ScrapVector(300, 20));
-            platform1.Awake();
+            bool playerParsed = false;
+            foreach (string data in File.ReadAllLines("levels/level1.data"))
+            {
+                string[] chunks = data.Split(";");
 
-            platform2 = new Platform(new ScrapVector(250, -100), new ScrapVector(200, 20));
-            platform2.Awake();
+                if (!playerParsed)
+                {
+                    playerParsed = true;
+                    player = new Player(new ScrapVector(int.Parse(chunks[0]), int.Parse(chunks[1])));
+                    continue;
+                }
 
-            player = new Player(ScrapVector.Zero);
+                ScrapVector position = new ScrapVector(int.Parse(chunks[1]), int.Parse(chunks[2]));
+                ScrapVector dimensions = new ScrapVector(int.Parse(chunks[3]), int.Parse(chunks[4]));
+
+                Platform p = new Platform(position, dimensions);
+                p.Sprite.Texture = AssetManager.FetchTexture(chunks[0]);
+                p.Awake();
+            }
+
+            
             player.Awake();
 
             base.Load(args);
@@ -76,6 +94,8 @@ namespace JumpMan.Level
 
         public override void Draw()
         {
+            RenderDiagnostics.Draw(ScrapVector.Zero);
+            PhysicsDiagnostics.Draw(new ScrapVector(0, 100));
             base.Draw();
         }
     }

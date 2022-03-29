@@ -44,7 +44,7 @@ namespace JumpMan.Objects
             RigidBody = new RigidBody2D
             {
                 Mass = 6,
-                Restitution = 0f,
+                Restitution = 0.0f,
                 Drag = 0.2,
                 Friction = 4.0
             }; // Most of these properties are either broken or not working correctly
