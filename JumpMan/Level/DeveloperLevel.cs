@@ -4,6 +4,7 @@ using System.Text;
 using JumpMan.ECS.Systems;
 using JumpMan.Objects;
 using ScrapBox.Framework;
+using ScrapBox.Framework.ECS.Systems;
 using ScrapBox.Framework.Level;
 using ScrapBox.Framework.Managers;
 using ScrapBox.Framework.Math;
@@ -30,6 +31,7 @@ namespace JumpMan.Level
 
         public override void Initialize()
         {
+
             base.Initialize();
         }
 
@@ -42,6 +44,7 @@ namespace JumpMan.Level
 
         public override void Load(params object[] args)
         {
+            //PhysicsSystem.Gravity = ScrapVector.Zero;
             MainCamera.Zoom = 0.8;
 
             platform1 = new Platform(new ScrapVector(0, 64), new ScrapVector(300, 20));

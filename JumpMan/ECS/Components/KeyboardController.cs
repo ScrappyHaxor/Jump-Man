@@ -21,8 +21,8 @@ namespace JumpMan.ECS.Components
     {
         public override string Name => "Player Controller";
 
-        private bool jumpInitiated = false;
-        private double jumpStarted;
+        bool jumpInitiated;
+        double jumpStarted;
 
         CollisionSystem collisionSystem;
 
@@ -35,9 +35,6 @@ namespace JumpMan.ECS.Components
         {
             //Do input mapping here using InputManager
 
-            double feetY = rigidbody.Transform.Position.Y + rigidbody.Transform.Dimensions.Y / 2 + 1;
-            bool grounded = collisionSystem.Raycast(new PointRay(new ScrapVector(rigidbody.Transform.Position.X, feetY)));
-
             ScrapVector input = ScrapVector.Zero;
             if (InputManager.IsKeyHeld(Keys.D))
             {
@@ -49,13 +46,13 @@ namespace JumpMan.ECS.Components
                 input = new ScrapVector(-1, input.Y);
             }
 
-            if (InputManager.IsKeyDown(Keys.Space) && grounded)
+            if (InputManager.IsKeyDown(Keys.Space) && rigidbody.Grounded())
             {
                 jumpInitiated = true;
                 jumpStarted = DateTimeOffset.Now.ToUnixTimeMilliseconds() / 1000d;
             }
 
-            if (!InputManager.IsKeyAlreadyDown(Keys.Space) && jumpInitiated && grounded)
+            if (!InputManager.IsKeyAlreadyDown(Keys.Space) && jumpInitiated && rigidbody.Grounded())
             {
                 jumpInitiated = false;
                 double jumpMultiplier = (DateTimeOffset.Now.ToUnixTimeMilliseconds() / 1000d) - jumpStarted;
@@ -65,7 +62,7 @@ namespace JumpMan.ECS.Components
                 if (input != ScrapVector.Zero)
                 {
                     //Cant get this to work
-                    jumpForce = ScrapMath.RotatePoint(jumpForce, ScrapMath.ToRadians(JUMP_DIRECTIONAL_DEGREE));
+                    jumpForce = ScrapMath.RotatePoint(jumpForce, ScrapMath.ToRadians(input.X * JUMP_DIRECTIONAL_DEGREE));
                     rigidbody.AddForce(jumpForce);
                 }
                 else
@@ -73,11 +70,11 @@ namespace JumpMan.ECS.Components
                     rigidbody.AddForce(jumpForce);
                 }
 
-                
+
                 LogService.Out($"Jump multiplier: {jumpMultiplier}");
             }
 
-            if (!jumpInitiated && grounded)
+            if (rigidbody.Grounded() && !jumpInitiated)
             {
                 rigidbody.AddForce(input * MOVE_FORCE);
             }

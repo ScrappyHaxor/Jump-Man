@@ -5,6 +5,7 @@ using ScrapBox.Framework.ECS.Components;
 using ScrapBox.Framework.Level;
 using ScrapBox.Framework.Managers;
 using ScrapBox.Framework.Math;
+using ScrapBox.Framework.Services;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -42,10 +43,10 @@ namespace JumpMan.Objects
 
             RigidBody = new RigidBody2D
             {
-                Mass = 1,
+                Mass = 6,
                 Restitution = 0f,
-                Drag = 0.9,
-                Friction = 0.9
+                Drag = 0.2,
+                Friction = 4.0
             }; // Most of these properties are either broken or not working correctly
             //Not all things in the framework work perfectly
 
