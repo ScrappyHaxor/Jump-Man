@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Text;
 using JumpMan.ECS.Systems;
@@ -52,7 +53,18 @@ namespace JumpMan.Level
             MainCamera.Zoom = 0.5;
 
             bool playerParsed = false;
-            foreach (string data in File.ReadAllLines("levels/level1.data"))
+            string levelPath = string.Empty;
+            if (Debugger.IsAttached)
+            {
+                levelPath = "../../../levels/level1.data";
+            }
+            else
+            {
+                levelPath = "levels/level1.data";
+            }
+
+
+            foreach (string data in File.ReadAllLines(levelPath))
             {
                 string[] chunks = data.Split(";");
 
