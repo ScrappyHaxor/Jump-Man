@@ -23,6 +23,7 @@ namespace JumpMan.ECS.Components
 
         bool jumpInitiated;
         double jumpStarted;
+        ScrapVector jumpForce;
 
         CollisionSystem collisionSystem;
 
@@ -58,7 +59,7 @@ namespace JumpMan.ECS.Components
                 double jumpMultiplier = (DateTimeOffset.Now.ToUnixTimeMilliseconds() / 1000d) - jumpStarted;
                 jumpMultiplier = ScrapMath.Clamp(jumpMultiplier, MIN_JUMP_MULTIPLIER, MAX_JUMP_MULTIPLIER);
 
-                ScrapVector jumpForce = new ScrapVector(0, -JUMP_FORCE * jumpMultiplier);
+                jumpForce = new ScrapVector(0, -JUMP_FORCE * jumpMultiplier);
                 if (input != ScrapVector.Zero)
                 {
                     //Cant get this to work
@@ -78,7 +79,12 @@ namespace JumpMan.ECS.Components
             {
                 rigidbody.AddForce(input * MOVE_FORCE);
             }
-            
+
+            if(rigidbody.Bounce() == true)
+            {
+                rigidbody.AddForce(new ScrapVector(-jumpForce.X * 0.3d, jumpForce.Y * 0.1d));
+            }
+
         }
     }
 }
