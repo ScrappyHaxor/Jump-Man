@@ -23,7 +23,7 @@ namespace LevelEditor.Core
 
         protected override void Initialize()
         {
-            WorldManager.SwapScene("editor");
+            WorldManager.SwapScene("editor", LaunchArguments);
             base.Initialize();
         }
 

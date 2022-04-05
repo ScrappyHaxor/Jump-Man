@@ -64,10 +64,19 @@ namespace LevelEditor.Level
         {
             collisionSystem = WorldManager.GetSystem<CollisionSystem>();
 
+            data = new LevelData();
+
+            if (args.Length != 0 && args[0].GetType() == typeof(string))
+            {
+                data = JumpMan.Services.LevelService.DeserializeLevel(args[0].ToString());
+                foreach (Platform p in data.platforms)
+                {
+                    p.Awake();
+                }
+            }
+
             marker = new Marker(ScrapVector.Zero, new ScrapVector(PLATFORM_SNAP_WIDTH, PLATFORM_SNAP_HEIGHT));
             marker.Awake();
-
-            data = new LevelData();
 
             ghost = new Platform(ScrapVector.Zero, new ScrapVector(platformWidth, platformHeight));
 

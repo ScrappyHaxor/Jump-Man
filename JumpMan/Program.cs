@@ -7,6 +7,6 @@ namespace JumpMan
     public static class Program
     {
         [STAThread]
-        static void Main() => new App().Run();
+        static void Main(string[] args) => new App().Run(args);
     }
 }
