@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Text;
+using JumpMan.Container;
 using JumpMan.ECS.Systems;
 using JumpMan.Objects;
+using JumpMan.Services;
 using ScrapBox.Framework;
 using ScrapBox.Framework.Diagnostics;
 using ScrapBox.Framework.ECS.Systems;
@@ -16,9 +18,7 @@ namespace JumpMan.Level
 {
     public class DeveloperLevel : Scene
     {
-        private Player player;
-
-        private List<Platform> platforms;
+        private LevelData levelData;
 
         private ControllerSystem controllerSystem;
 
@@ -49,10 +49,8 @@ namespace JumpMan.Level
 
         public override void Load(params object[] args)
         {
-            
             MainCamera.Zoom = 0.5;
 
-            bool playerParsed = false;
             string levelPath = string.Empty;
             if (Debugger.IsAttached)
             {
@@ -63,28 +61,14 @@ namespace JumpMan.Level
                 levelPath = "levels/level1.data";
             }
 
+            levelData = LevelService.DeserializeLevel(levelPath);
 
-            foreach (string data in File.ReadAllLines(levelPath))
+            foreach (Platform p in levelData.platforms)
             {
-                string[] chunks = data.Split(";");
-
-                if (!playerParsed)
-                {
-                    playerParsed = true;
-                    player = new Player(new ScrapVector(int.Parse(chunks[0]), int.Parse(chunks[1])));
-                    continue;
-                }
-
-                ScrapVector position = new ScrapVector(int.Parse(chunks[1]), int.Parse(chunks[2]));
-                ScrapVector dimensions = new ScrapVector(int.Parse(chunks[3]), int.Parse(chunks[4]));
-
-                Platform p = new Platform(position, dimensions);
-                p.Sprite.Texture = AssetManager.FetchTexture(chunks[0]);
                 p.Awake();
             }
-
             
-            player.Awake();
+            levelData.player.Awake();
 
             base.Load(args);
         }

@@ -1,7 +1,10 @@
-﻿using JumpMan.Objects;
+﻿using JumpMan.Container;
+using JumpMan.Objects;
 using LevelEditor.Objects;
+using LevelEditor.Services;
 using Microsoft.Xna.Framework;
 using ScrapBox.Framework;
+using ScrapBox.Framework.ECS.Systems;
 using ScrapBox.Framework.Input;
 using ScrapBox.Framework.Level;
 using ScrapBox.Framework.Managers;
@@ -27,7 +30,7 @@ namespace LevelEditor.Level
         public const double PLATFORM_SNAP_WIDTH = 5;
         public const double PLATFORM_SNAP_HEIGHT = 5;
 
-        private List<Platform> platforms;
+        private LevelData data;
 
         private double platformX;
         private double platformY;
@@ -38,6 +41,8 @@ namespace LevelEditor.Level
         private Platform ghost;
 
         private Marker marker;
+
+        private CollisionSystem collisionSystem;
 
         public Editor(ScrapApp app) : base(app)
         {
@@ -57,10 +62,13 @@ namespace LevelEditor.Level
 
         public override void Load(params object[] args)
         {
+            collisionSystem = WorldManager.GetSystem<CollisionSystem>();
+
             marker = new Marker(ScrapVector.Zero, new ScrapVector(PLATFORM_SNAP_WIDTH, PLATFORM_SNAP_HEIGHT));
             marker.Awake();
 
-            platforms = new List<Platform>();
+            data = new LevelData();
+
             ghost = new Platform(ScrapVector.Zero, new ScrapVector(platformWidth, platformHeight));
 
             platformWidth = DEFAULT_PLATFORM_WIDTH;
@@ -97,6 +105,11 @@ namespace LevelEditor.Level
             platformHeight = ScrapMath.Clamp(platformHeight, PLATFORM_HEIGHT_MIN, PLATFORM_HEIGHT_MAX);
             ghost.Transform.Dimensions = new ScrapVector(platformWidth, platformHeight);
 
+            if (InputManager.IsKeyHeld(Keys.LeftControl) && InputManager.IsKeyDown(Keys.S))
+            {
+                LevelService.SerializeLevel("newLevel.txt", data);
+            }
+
             if (InputManager.IsKeyHeld(Keys.Up))
             {
                 platformHeight += PLATFORM_SIZE_INCREMENT;
@@ -122,7 +135,18 @@ namespace LevelEditor.Level
                 Platform newPlatform = new Platform(ghost.Transform.Position, ghost.Transform.Dimensions);
                 newPlatform.Awake();
 
-                platforms.Add(newPlatform);
+                data.platforms.Add(newPlatform);
+            }
+
+            if (InputManager.IsButtonDown(Button.RIGHT_MOUSE_BUTTON))
+            {
+                RayResult result = collisionSystem.Raycast(new PointRay(InputManager.GetMouseWorldPosition(MainCamera)));
+                if (result.hit && result.other.GetType() == typeof(Platform))
+                {
+                    Platform p = (Platform)result.other;
+                    p.Sleep();
+                    data.platforms.Remove(p);
+                }
             }
 
             base.Update(dt);
