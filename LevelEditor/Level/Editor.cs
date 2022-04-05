@@ -30,6 +30,8 @@ namespace LevelEditor.Level
         public const double PLATFORM_SNAP_WIDTH = 5;
         public const double PLATFORM_SNAP_HEIGHT = 5;
 
+        public const double CAMERA_POSITION_INCREMENT = 10;
+
         private LevelData data;
 
         private double platformX;
@@ -137,6 +139,26 @@ namespace LevelEditor.Level
             if (InputManager.IsKeyHeld(Keys.Left))
             {
                 platformWidth -= PLATFORM_SIZE_INCREMENT;
+            }
+
+            if (InputManager.IsKeyHeld(Keys.W))
+            {
+                MainCamera.Transform.Position += new ScrapVector(0, -CAMERA_POSITION_INCREMENT);
+            }
+
+            if (InputManager.IsKeyHeld(Keys.S))
+            {
+                MainCamera.Transform.Position += new ScrapVector(0, CAMERA_POSITION_INCREMENT);
+            }
+
+            if (InputManager.IsKeyHeld(Keys.D))
+            {
+                MainCamera.Transform.Position += new ScrapVector(CAMERA_POSITION_INCREMENT, 0);
+            }
+
+            if (InputManager.IsKeyHeld(Keys.A))
+            {
+                MainCamera.Transform.Position += new ScrapVector(-CAMERA_POSITION_INCREMENT, 0);
             }
 
             if (InputManager.IsButtonDown(Button.LEFT_MOUSE_BUTTON))
