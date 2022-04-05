@@ -107,7 +107,7 @@ namespace LevelEditor.Level
 
             if (InputManager.IsKeyHeld(Keys.LeftControl) && InputManager.IsKeyDown(Keys.S))
             {
-                LevelService.SerializeLevel("newLevel.txt", data);
+                LevelService.SerializeLevel("newLevel.data", data);
             }
 
             if (InputManager.IsKeyHeld(Keys.Up))
