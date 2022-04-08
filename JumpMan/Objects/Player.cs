@@ -62,8 +62,8 @@ namespace JumpMan.Objects
 
             Sprite = new Sprite2D
             {
-                Texture = AssetManager.FetchTexture("placeholder"),
-                TintColor = Color.Red
+                Texture = AssetManager.FetchTexture("player"),
+                TintColor = Color.White
             };
 
             RegisterComponent(Sprite);

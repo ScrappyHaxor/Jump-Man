@@ -11,6 +11,11 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
+    <Compile Remove="levels\**" />
+    <EmbeddedResource Remove="levels\**" />
+    <None Remove="levels\**" />
+  </ItemGroup>
+  <ItemGroup>
     <None Remove="Icon.ico" />
     <None Remove="Icon.bmp" />
   </ItemGroup>

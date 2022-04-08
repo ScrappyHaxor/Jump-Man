@@ -14,14 +14,14 @@ namespace JumpMan.Objects
 {
     public class Platform : Entity
     {
-        public override string Name => "Platform";
+        public override string Name => "Tileable Platform";
 
         public Transform Transform;
-        public RigidBody2D RigidBody;
-        public BoxCollider2D Collider; // Maybe use a CircleCollider2D instead in the future.
         public Sprite2D Sprite;
+        public RigidBody2D Rigidbody;
+        public BoxCollider2D Collider;
 
-        public Platform(ScrapVector position, ScrapVector dimensions)
+        public Platform(string texture, ScrapVector position, ScrapVector dimensions)
         {
             Transform = new Transform
             {
@@ -31,30 +31,25 @@ namespace JumpMan.Objects
 
             RegisterComponent(Transform);
 
-            RigidBody = new RigidBody2D
+            Rigidbody = new RigidBody2D
             {
-                Mass = 1,
-                Restitution = 0f,
-                Drag = 0.9,
-                Friction = 0.9,
                 IsStatic = true
-            }; // Most of these properties are either broken or not working correctly
-            //Not all things in the framework work perfectly
+            };
 
-            RegisterComponent(RigidBody);
+            RegisterComponent(Rigidbody);
 
             Collider = new BoxCollider2D
             {
-                Dimensions = Transform.Dimensions,
-                Algorithm = CollisionAlgorithm.SAT
+                Algorithm = CollisionAlgorithm.SAT,
+                Dimensions = dimensions
             };
 
             RegisterComponent(Collider);
 
             Sprite = new Sprite2D
             {
-                Texture = AssetManager.FetchTexture("placeholder"),
-                TintColor = Color.Blue
+                Texture = AssetManager.FetchTexture(texture),
+                Mode = SpriteMode.TILE
             };
 
             RegisterComponent(Sprite);

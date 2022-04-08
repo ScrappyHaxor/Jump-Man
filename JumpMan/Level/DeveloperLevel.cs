@@ -38,9 +38,7 @@ namespace JumpMan.Level
 
         public override void LoadAssets()
         {
-            //Generating a simple texture for now using my AssetManager
             AssetManager.LoadResourceFile("assets", Parent.Content);
-            AssetManager.AddSimpleTexture("placeholder", 64, 64, Parent.Graphics.GraphicsDevice, Parent.Content);
 
             RenderDiagnostics.Font = AssetManager.FetchFont("temporary");
             PhysicsDiagnostics.Font = AssetManager.FetchFont("temporary");
@@ -62,7 +60,6 @@ namespace JumpMan.Level
             }
 
             levelData = LevelService.DeserializeLevel(levelPath);
-
             foreach (Platform p in levelData.platforms)
             {
                 p.Awake();
