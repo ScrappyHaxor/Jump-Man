@@ -25,9 +25,7 @@ namespace JumpMan.Level
         public DeveloperLevel(ScrapApp app)
             : base(app)
         {
-            //Register custom system in the world manager
-            controllerSystem = new ControllerSystem();
-            WorldManager.RegisterSystem(controllerSystem);
+
         }
 
         public override void Initialize()

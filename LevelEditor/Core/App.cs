@@ -7,11 +7,14 @@ using ScrapBox.Framework.Managers;
 
 using JumpMan.Level;
 using LevelEditor.Level;
+using JumpMan.ECS.Systems;
 
 namespace LevelEditor.Core
 {
     public class App : ScrapApp
     {
+        public override string AssemblyName { get { return "Jump Man Level Editor"; } }
+
         private Editor editor;
 
         public App()
@@ -19,6 +22,10 @@ namespace LevelEditor.Core
             editor = new Editor(this);
 
             WorldManager.RegisterScene("editor", editor);
+
+            //Register custom system in the world manager
+            ControllerSystem controllerSystem = new ControllerSystem();
+            WorldManager.RegisterSystem(controllerSystem);
         }
 
         protected override void Initialize()

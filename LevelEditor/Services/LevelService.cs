@@ -1,11 +1,8 @@
 ﻿using JumpMan.Container;
 using JumpMan.Objects;
-using ScrapBox.Framework.ECS.Components;
+using JumpMan.Services;
 using ScrapBox.Framework.Math;
-using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Text;
 
 namespace LevelEditor.Services
 {
@@ -14,12 +11,12 @@ namespace LevelEditor.Services
         public static void SerializeLevel(string name, LevelData data)
         {
             StreamWriter writer = new StreamWriter(name, false);
-            writer.WriteLine($"{data.player.Transform.Position.X};{data.player.Transform.Position.Y}");
+            writer.WriteLine($"{(int)DataType.PLAYER};{data.player.Transform.Position.X};{data.player.Transform.Position.Y}");
             foreach (Platform p in data.platforms)
             {
                 ScrapVector pos = p.Transform.Position;
                 ScrapVector size = p.Transform.Dimensions;
-                writer.WriteLine($"placeholder;{pos.X};{pos.Y};{size.X};{size.Y}");
+                writer.WriteLine($"{(int)DataType.PLATFORM};{p.Sprite.Texture.Name};{pos.X};{pos.Y};{size.X};{size.Y}");
             }
 
             writer.Flush();

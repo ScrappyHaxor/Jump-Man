@@ -1,26 +1,25 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using ScrapBox.Framework.ECS;
 using ScrapBox.Framework.ECS.Components;
 using ScrapBox.Framework.Level;
 using ScrapBox.Framework.Managers;
 using ScrapBox.Framework.Math;
-using ScrapBox.Framework.Services;
 using ScrapBox.Framework.Shapes;
+using System;
+using System.Collections.Generic;
+using System.Text;
 
-namespace JumpMan.UI
+namespace LevelEditor.UI
 {
-    public class MainMenuButton : Entity
+    public class EditorButton : Entity
     {
-        public override string Name => "Main Menu Button";
+        public override string Name => "Editor Button";
 
-        private Transform Transform;
-        private Label Label;
+        public Transform Transform;
+        public Label Label;
         public Button Button;
 
-        public MainMenuButton(ScrapVector position, ScrapVector dimensions, string text)
+        public EditorButton(ScrapVector position, ScrapVector dimensions, string text)
         {
             Transform = new Transform
             {
@@ -32,8 +31,9 @@ namespace JumpMan.UI
 
             Label = new Label
             {
-                Font = AssetManager.FetchFont("temporary"),
-                Text = text
+                Font = AssetManager.FetchFont("editorButton"),
+                Text = text,
+                TextColor = Color.White
             };
 
             RegisterComponent(Label);
@@ -43,19 +43,17 @@ namespace JumpMan.UI
                 BorderColor = Color.White,
                 HoverColor = Color.Gray,
                 Shape = ScrapRect.CreateFromCenter(Transform.Position, Transform.Dimensions),
+                OutlineThickness = 2
             };
 
             RegisterComponent(Button);
         }
 
-        //When awake is called, the entity is registered to the WorldManager and is added to the game loop
         public override void Awake()
         {
             base.Awake();
         }
 
-        
-        //When sleep is called, the entity is de-registered from the world manager and is removed from the game loop
         public override void Sleep()
         {
             base.Sleep();
@@ -68,7 +66,6 @@ namespace JumpMan.UI
 
         public override void Draw(Camera mainCamera)
         {
-            //Like ive said before, most stuff is automatically drawn for you so this is only here for advanced rendering
             base.Draw(mainCamera);
         }
     }

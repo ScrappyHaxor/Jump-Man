@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework;
 using ScrapBox.Framework.ECS;
 using ScrapBox.Framework.ECS.Components;
+using ScrapBox.Framework.ECS.Systems;
 using ScrapBox.Framework.Level;
 using ScrapBox.Framework.Managers;
 using ScrapBox.Framework.Math;
@@ -31,8 +32,12 @@ namespace JumpMan.Objects
         public Sprite2D Sprite;
         public KeyboardController Controller; // Make this a generic controller once other controllers are implemented.
 
+        private CollisionSystem collisionSystem;
+
         public Player(ScrapVector position)
         {
+            collisionSystem = WorldManager.GetSystem<CollisionSystem>();
+
             Transform = new Transform
             {
                 Position = position,

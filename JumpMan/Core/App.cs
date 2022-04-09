@@ -6,6 +6,7 @@ using ScrapBox.Framework;
 using ScrapBox.Framework.Managers;
 
 using JumpMan.Level;
+using JumpMan.ECS.Systems;
 
 namespace JumpMan.Core
 {
@@ -24,6 +25,10 @@ namespace JumpMan.Core
             //The world manager is the master of everything. It handles entities, components, levels, systems. Everything you could think of.
             WorldManager.RegisterScene("Main Menu", mainMenu);
             WorldManager.RegisterScene("Developer Level", devLevel);
+
+            //Register custom system in the world manager
+            ControllerSystem controllerSystem = new ControllerSystem();
+            WorldManager.RegisterSystem(controllerSystem);
         }
 
         protected override void Initialize()
