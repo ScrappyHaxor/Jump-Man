@@ -6,6 +6,7 @@ using ScrapBox.Framework.Math;
 using ScrapBox.Framework.Services;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Text;
 
@@ -19,12 +20,12 @@ namespace JumpMan.Services
 
     public static partial class LevelService
     {
-        public static LevelData DeserializeLevel(string levelPath)
+        public static LevelData DeserializeLevelFromData(string[] content)
         {
             Player player = null;
             List<Platform> platforms = new List<Platform>();
 
-            foreach (string rawData in File.ReadAllLines(levelPath))
+            foreach (string rawData in content)
             {
                 string[] chunks = rawData.Split(";");
                 //Each row is structured differently with an identifier at the start corresponding to the enum DATA_TYPE (referred to as objectID)
@@ -49,15 +50,34 @@ namespace JumpMan.Services
                     ScrapVector dimensions = new ScrapVector(int.Parse(chunks[4]), int.Parse(chunks[5]));
                     platforms.Add(new Platform(chunks[1], position, dimensions));
                 }
+            }
 
-                if (player == null)
-                {
-                    //Log error here
-                    return default;
-                }
+            if (player == null)
+            {
+                //Log error here
+                return default;
             }
 
             return new LevelData(player, platforms);
+        }
+
+        public static LevelData DeserializeLevelFromFile(string levelFileName)
+        {
+            if (!levelFileName.Contains('\\') && !levelFileName.Contains('/'))
+            {
+                if (Debugger.IsAttached)
+                {
+                    levelFileName = $"../../../levels/{levelFileName}";
+                }
+                else
+                {
+                    levelFileName = $"levels/{levelFileName}";
+                }
+            }
+
+
+            string[] content = File.ReadAllLines(levelFileName);
+            return DeserializeLevelFromData(content);
         }
     }
 }
