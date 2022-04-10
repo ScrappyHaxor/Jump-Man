@@ -106,17 +106,33 @@ namespace LevelEditor.Level
 
             data = new LevelData();
 
-            if (args.Length != 0 && args[0].GetType() == typeof(string))
+            if (args.Length == 1)
             {
-                data = JumpMan.Services.LevelService.DeserializeLevel(args[0].ToString());
-                fakePlayer.Transform.Position = data.player.Transform.Position;
-                fakePlayer.Awake();
-
-                foreach (Platform p in data.platforms)
+                if (args[0].GetType() == typeof(string))
                 {
-                    p.Awake();
+                    data = JumpMan.Services.LevelService.DeserializeLevelFromFile(args[0].ToString());
+                    fakePlayer.Transform.Position = data.player.Transform.Position;
+                    fakePlayer.Awake();
+
+                    foreach (Platform p in data.platforms)
+                    {
+                        p.Awake();
+                    }
+                }
+                else if (args[0].GetType() == typeof(string[]))
+                {
+                    string[] package = (string[])args[0];
+                    data = JumpMan.Services.LevelService.DeserializeLevelFromData(package);
+                    fakePlayer.Transform.Position = data.player.Transform.Position;
+                    fakePlayer.Awake();
+
+                    foreach (Platform p in data.platforms)
+                    {
+                        p.Awake();
+                    }
                 }
             }
+
 
             marker = new Marker(ScrapVector.Zero, new ScrapVector(PLATFORM_SNAP_WIDTH, PLATFORM_SNAP_HEIGHT));
             marker.Awake();
@@ -156,6 +172,13 @@ namespace LevelEditor.Level
                 platformWidth = ScrapMath.Clamp(platformWidth, ghost.Sprite.Texture.Width, ghost.Sprite.Texture.Width * PLATFORM_SIZE_UPPER_LIMIT);
                 platformHeight = ScrapMath.Clamp(platformHeight, ghost.Sprite.Texture.Height, ghost.Sprite.Texture.Width * PLATFORM_SIZE_UPPER_LIMIT);
                 ghost.Transform.Dimensions = new ScrapVector(platformWidth, platformHeight);
+            }
+
+            if (InputManager.IsKeyDown(Keys.F5))
+            {
+                string[] package = LevelService.PackageData(data);
+                object[] container = { package };
+                WorldManager.SwapScene("test level", container);
             }
 
             if (InputManager.IsKeyHeld(Keys.LeftControl) && InputManager.IsKeyDown(Keys.S))
@@ -238,6 +261,7 @@ namespace LevelEditor.Level
                         fakePlayer.Sleep();
                     }
 
+                    data.player.Transform.Position = ghost.Transform.Position;
                     fakePlayer.Transform.Position = ghost.Transform.Position;
                     fakePlayer.Awake();
                 }
@@ -322,6 +346,7 @@ namespace LevelEditor.Level
                 return;
 
             Renderer.RenderLine(ScrapVector.Zero, new ScrapVector(platformX, platformY), Color.White, MainCamera, null, 2);
+
             Renderer.RenderText(editorFontBig, "Level Editor States", new ScrapVector(10, 10), Color.White);
             Renderer.RenderText(editorFontSmall, $"Placing: {placingWhat}", new ScrapVector(10, 35), Color.White);
             Renderer.RenderText(editorFontSmall, $"Placement Position: {platformX} {platformY}", new ScrapVector(10, 55), Color.White);
@@ -333,6 +358,16 @@ namespace LevelEditor.Level
                 Renderer.RenderText(editorFontSmall, $"Platform Size: {platformWidth} {platformHeight}", new ScrapVector(10, 95), Color.White);
                 Renderer.RenderText(editorFontSmall, $"Platform Texture: {platformTextures[platformTextureIndex]}", new ScrapVector(10, 115), Color.White);
             }
+
+            Renderer.RenderText(editorFontBig, "Controls", new ScrapVector(10, 145), Color.White);
+            Renderer.RenderText(editorFontSmall, $"WASD - Move camera", new ScrapVector(10, 165), Color.White);
+            Renderer.RenderText(editorFontSmall, $"Left, Right arrow - Decrease, increase width", new ScrapVector(10, 185), Color.White);
+            Renderer.RenderText(editorFontSmall, $"Dowm, Up arrow - Decrease, increase height", new ScrapVector(10, 205), Color.White);
+            Renderer.RenderText(editorFontSmall, $"Q - Change what you are placing", new ScrapVector(10, 225), Color.White);
+            Renderer.RenderText(editorFontSmall, $"Minus, Plus - Cycle between platform textures", new ScrapVector(10, 245), Color.White);
+            Renderer.RenderText(editorFontSmall, $"Left click, Right click - Place platform, remove platform", new ScrapVector(10, 265), Color.White);
+            Renderer.RenderText(editorFontSmall, $"F5 - Test level", new ScrapVector(10, 285), Color.White);
+            Renderer.RenderText(editorFontSmall, $"Control + S - Save level", new ScrapVector(10, 305), Color.White);
 
             //savePopup.Draw(MainCamera);
 

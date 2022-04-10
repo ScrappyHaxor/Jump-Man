@@ -16,11 +16,14 @@ namespace LevelEditor.Core
         public override string AssemblyName { get { return "Jump Man Level Editor"; } }
 
         private Editor editor;
+        private DeveloperLevel devLevel;
 
         public App()
         {
             editor = new Editor(this);
+            devLevel = new DeveloperLevel(this);
 
+            WorldManager.RegisterScene("test level", devLevel);
             WorldManager.RegisterScene("editor", editor);
 
             //Register custom system in the world manager

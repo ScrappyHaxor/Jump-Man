@@ -55,7 +55,7 @@ namespace JumpMan.Level
             singleplayer = new MainMenuButton(new ScrapVector(0, OffsetY), buttonDimensions, "Singleplayer");
             singleplayer.Button.Pressed += delegate(object sender, EventArgs e)
             {
-                WorldManager.SwapScene("Developer Level");
+                WorldManager.SwapScene("Developer Level", "level1.data");
             };
 
             singleplayer.Awake();

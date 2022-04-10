@@ -7,20 +7,25 @@ using JumpMan.Container;
 using JumpMan.ECS.Systems;
 using JumpMan.Objects;
 using JumpMan.Services;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using ScrapBox.Framework;
 using ScrapBox.Framework.Diagnostics;
 using ScrapBox.Framework.ECS.Systems;
+using ScrapBox.Framework.Input;
 using ScrapBox.Framework.Level;
 using ScrapBox.Framework.Managers;
 using ScrapBox.Framework.Math;
+using ScrapBox.Framework.Services;
 
 namespace JumpMan.Level
 {
     public class DeveloperLevel : Scene
     {
         private LevelData levelData;
-
-        private ControllerSystem controllerSystem;
+        private bool developerFlag;
+        private string[] developerMeta;
+        private SpriteFont devFont;
 
         public DeveloperLevel(ScrapApp app)
             : base(app)
@@ -43,6 +48,7 @@ namespace JumpMan.Level
 
             //AssetManager.LoadResourceFile("assets", Parent.Content);
 
+            devFont = AssetManager.FetchFont("temporary");
             RenderDiagnostics.Font = AssetManager.FetchFont("temporary");
             PhysicsDiagnostics.Font = AssetManager.FetchFont("temporary");
             base.LoadAssets();
@@ -52,17 +58,23 @@ namespace JumpMan.Level
         {
             MainCamera.Zoom = 0.5;
 
-            string levelPath = string.Empty;
-            if (Debugger.IsAttached)
+            if (args.Length == 1)
             {
-                levelPath = "../../../levels/level1.data";
-            }
-            else
-            {
-                levelPath = "levels/level1.data";
+                Console.WriteLine(args[0].GetType());
+                if (args[0].GetType() == typeof(string))
+                {
+                    string levelName = args[0].ToString();
+                    levelData = LevelService.DeserializeLevelFromFile(levelName);
+                }
+                else if (args[0].GetType() == typeof(string[]))
+                {
+                    string[] package = (string[])args[0];
+                    levelData = LevelService.DeserializeLevelFromData(package);
+                    developerFlag = true;
+                    developerMeta = package;
+                }
             }
 
-            levelData = LevelService.DeserializeLevel(levelPath);
             foreach (Platform p in levelData.platforms)
             {
                 p.Awake();
@@ -85,13 +97,24 @@ namespace JumpMan.Level
 
         public override void Update(double dt)
         {
+            if (developerFlag && InputManager.IsKeyDown(Keys.F5))
+            {
+                object[] container = new object[] { developerMeta };
+                WorldManager.SwapScene("editor", container);
+            }
+
             base.Update(dt);
         }
 
         public override void Draw()
         {
-            RenderDiagnostics.Draw(ScrapVector.Zero);
-            PhysicsDiagnostics.Draw(new ScrapVector(0, 100));
+            if (developerFlag)
+            {
+                Vector2 textDims = devFont.MeasureString("DEVELOPER MODE - F5 TO RETURN");
+                Rectangle viewport = Parent.Window.ClientBounds;
+                Renderer.RenderText(devFont, "DEVELOPER MODE - F5 TO RETURN", new ScrapVector(viewport.Width / 2 - textDims.X / 2, 0), Color.White);
+            }
+
             base.Draw();
         }
     }
