@@ -79,7 +79,12 @@ namespace LevelEditor.Level
 
         public override void LoadAssets()
         {
-            AssetManager.LoadResourceFile("assets", Parent.Content);
+            //AssetManager.LoadResourceFile("assets", Parent.Content);
+            AssetManager.LoadFont("editorBig", Parent.Content);
+            AssetManager.LoadFont("editorSmall", Parent.Content);
+            AssetManager.LoadFont("editorButton", Parent.Content);
+            AssetManager.LoadTexture("player", Parent.Content);
+            AssetManager.LoadTexture("placeholder", Parent.Content);
             base.LoadAssets();
         }
 

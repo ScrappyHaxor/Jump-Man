@@ -36,7 +36,12 @@ namespace JumpMan.Level
 
         public override void LoadAssets()
         {
-            AssetManager.LoadResourceFile("assets", Parent.Content);
+            //Manual loading, remove in the future
+            AssetManager.LoadFont("temporary", Parent.Content);
+            AssetManager.LoadTexture("player", Parent.Content);
+            AssetManager.LoadTexture("placeholder", Parent.Content);
+
+            //AssetManager.LoadResourceFile("assets", Parent.Content);
 
             RenderDiagnostics.Font = AssetManager.FetchFont("temporary");
             PhysicsDiagnostics.Font = AssetManager.FetchFont("temporary");

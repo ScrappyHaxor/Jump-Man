@@ -38,7 +38,9 @@ namespace JumpMan.Level
         public override void LoadAssets()
         {
             //Load assets using AssetManager
-            AssetManager.LoadResourceFile("assets", Parent.Content);
+
+            AssetManager.LoadFont("temporary", Parent.Content);
+            //AssetManager.LoadResourceFile("assets", Parent.Content);
             base.LoadAssets();
         }
 
