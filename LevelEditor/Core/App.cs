@@ -23,17 +23,13 @@ namespace LevelEditor.Core
             editor = new Editor(this);
             devLevel = new DeveloperLevel(this);
 
-            WorldManager.RegisterScene("test level", devLevel);
-            WorldManager.RegisterScene("editor", editor);
-
-            //Register custom system in the world manager
-            ControllerSystem controllerSystem = new ControllerSystem();
-            WorldManager.RegisterSystem(controllerSystem);
+            SceneManager.RegisterScene("test level", devLevel);
+            SceneManager.RegisterScene("editor", editor);
         }
 
         protected override void Initialize()
         {
-            WorldManager.SwapScene("editor", LaunchArguments);
+            SceneManager.SwapScene("editor", LaunchArguments);
             base.Initialize();
         }
 

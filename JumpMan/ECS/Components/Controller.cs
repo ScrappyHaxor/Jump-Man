@@ -31,8 +31,11 @@ namespace JumpMan.ECS.Components
             if (!success)
                 return;
 
+            if (Layer == null)
+                Layer = Owner.Layer;
+
             //The component registers itself to the ControllerSystem
-            WorldManager.GetSystem<ControllerSystem>().RegisterController(this);
+            Layer.GetSystem<ControllerSystem>().RegisterController(this);
 
             IsAwake = true;
         }
@@ -42,7 +45,7 @@ namespace JumpMan.ECS.Components
             if (!IsAwake)
                 return;
 
-            WorldManager.GetSystem<ControllerSystem>().PurgeController(this);
+            Layer.GetSystem<ControllerSystem>().PurgeController(this);
 
             IsAwake = false;
         }

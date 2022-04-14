@@ -24,11 +24,9 @@ namespace JumpMan.ECS.Components
         bool jumpInitiated;
         double jumpStarted;
 
-        CollisionSystem collisionSystem;
-
         public KeyboardController()
         {
-            collisionSystem = WorldManager.GetSystem<CollisionSystem>();
+
         }
 
         public override void TakeInput()

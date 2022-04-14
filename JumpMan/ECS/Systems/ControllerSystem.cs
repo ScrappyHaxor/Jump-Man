@@ -31,7 +31,7 @@ namespace JumpMan.ECS.Systems
             Controllers.Clear();
         }
 
-        public override void Update(double dt)
+        public override void Tick(double dt)
         {
             for (int i = 0; i < Controllers.Count; i++)
             {
@@ -39,7 +39,7 @@ namespace JumpMan.ECS.Systems
             }
         }
 
-        public override void Draw(Camera mainCamera)
+        public override void Render(Camera mainCamera)
         {
             //Controllers shouldnt be rendered.
             return;

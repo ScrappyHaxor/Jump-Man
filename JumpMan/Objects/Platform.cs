@@ -21,7 +21,7 @@ namespace JumpMan.Objects
         public RigidBody2D Rigidbody;
         public BoxCollider2D Collider;
 
-        public Platform(string texture, ScrapVector position, ScrapVector dimensions)
+        public Platform(string texture, ScrapVector position, ScrapVector dimensions) : base(SceneManager.CurrentScene.Stack.Fetch(DefaultLayers.FOREGROUND))
         {
             Transform = new Transform
             {
@@ -65,15 +65,24 @@ namespace JumpMan.Objects
             base.Sleep();
         }
 
-        public override void Update(double dt)
+        public override void PreLayerTick(double dt)
         {
-            base.Update(dt);
+            base.PreLayerTick(dt);
         }
 
-        public override void Draw(Camera mainCamera)
+        public override void PostLayerTick(double dt)
         {
-            //Remember, drawing the platforms is automatically handled by the framework.
-            base.Draw(mainCamera);
+            base.PostLayerTick(dt);
+        }
+
+        public override void PreLayerRender(Camera camera)
+        {
+            base.PreLayerRender(camera);
+        }
+
+        public override void PostLayerRender(Camera camera)
+        {
+            base.PostLayerRender(camera);
         }
     }
 }
