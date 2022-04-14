@@ -37,4 +37,7 @@
   <ItemGroup>
     <ProjectReference Include="..\ScrapBox-Reborn\ScrapBox-Reborn\ScrapBox.csproj" />
   </ItemGroup>
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="xcopy  &quot;$(ProjectDir)levels\&quot; &quot;$(TargetDir)levels\&quot;  /E /Y" />
+  </Target>
 </Project>

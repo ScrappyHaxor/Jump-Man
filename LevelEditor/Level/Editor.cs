@@ -362,7 +362,8 @@ namespace LevelEditor.Level
             //if (saving)
             //    return;
 
-            Renderer.RenderLine(ScrapVector.Zero, new ScrapVector(platformX, platformY), Color.White, MainCamera, null, 2);
+            if (!saving)
+                Renderer.RenderLine(ScrapVector.Zero, new ScrapVector(platformX, platformY), Color.White, MainCamera, null, 2);
 
             Renderer.RenderText(editorFontBig, "Level Editor States", new ScrapVector(10, 10), Color.White);
             Renderer.RenderText(editorFontSmall, $"Placing: {placingWhat}", new ScrapVector(10, 35), Color.White);
