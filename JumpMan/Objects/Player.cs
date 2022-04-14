@@ -34,9 +34,9 @@ namespace JumpMan.Objects
 
         private CollisionSystem collisionSystem;
 
-        public Player(ScrapVector position)
+        public Player(ScrapVector position) : base(SceneManager.CurrentScene.Stack.Fetch(DefaultLayers.FOREGROUND))
         {
-            collisionSystem = WorldManager.GetSystem<CollisionSystem>();
+            collisionSystem = Layer.GetSystem<CollisionSystem>();
 
             Transform = new Transform
             {
@@ -88,15 +88,24 @@ namespace JumpMan.Objects
             base.Sleep();
         }
 
-        public override void Update(double dt)
+        public override void PreLayerTick(double dt)
         {
-            base.Update(dt);
+            base.PreLayerTick(dt);
         }
 
-        public override void Draw(Camera mainCamera)
+        public override void PostLayerTick(double dt)
         {
-            //Remember, drawing the player is automatically handled by the framework. Only use this for health bars or a hud.
-            base.Draw(mainCamera);
+            base.PostLayerTick(dt);
+        }
+
+        public override void PreLayerRender(Camera camera)
+        {
+            base.PreLayerRender(camera);
+        }
+
+        public override void PostLayerRender(Camera camera)
+        {
+            base.PostLayerRender(camera);
         }
     }
 }

@@ -23,17 +23,13 @@ namespace JumpMan.Core
             devLevel = new DeveloperLevel(this);
 
             //The world manager is the master of everything. It handles entities, components, levels, systems. Everything you could think of.
-            WorldManager.RegisterScene("Main Menu", mainMenu);
-            WorldManager.RegisterScene("Developer Level", devLevel);
-
-            //Register custom system in the world manager
-            ControllerSystem controllerSystem = new ControllerSystem();
-            WorldManager.RegisterSystem(controllerSystem);
+            SceneManager.RegisterScene("Main Menu", mainMenu);
+            SceneManager.RegisterScene("Developer Level", devLevel);
         }
 
         protected override void Initialize()
         {
-            WorldManager.SwapScene("Main Menu");
+            SceneManager.SwapScene("Developer Level", "level1.data");
             base.Initialize();
         }
 

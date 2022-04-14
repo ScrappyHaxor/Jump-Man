@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using ScrapBox.Framework.ECS;
 using ScrapBox.Framework.ECS.Components;
+using ScrapBox.Framework.Level;
 using ScrapBox.Framework.Managers;
 using ScrapBox.Framework.Math;
 using System;
@@ -16,7 +17,7 @@ namespace LevelEditor.Objects
         public Transform Transform;
         public Sprite2D Sprite;
 
-        public Marker(ScrapVector position, ScrapVector dimensions)
+        public Marker(ScrapVector position, ScrapVector dimensions) : base(SceneManager.CurrentScene.Stack.Fetch(DefaultLayers.UI))
         {
             Transform = new Transform
             {

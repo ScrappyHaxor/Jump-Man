@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using ScrapBox.Framework.ECS;
 using ScrapBox.Framework.Level;
+using ScrapBox.Framework.Managers;
 using ScrapBox.Framework.Math;
 using ScrapBox.Framework.Services;
 using System;
@@ -28,7 +29,7 @@ namespace LevelEditor.UI
         public ScrapVector Position;
         public ScrapVector Dimensions;
 
-        public SavePopup(ScrapVector position, ScrapVector dimensions)
+        public SavePopup(ScrapVector position, ScrapVector dimensions) : base(SceneManager.CurrentScene.Stack.Fetch(DefaultLayers.UI))
         {
             Position = position;
             Dimensions = dimensions;
@@ -55,16 +56,26 @@ namespace LevelEditor.UI
             base.Sleep();
         }
 
-        public override void Update(double dt)
+        public override void PreLayerTick(double dt)
         {
-            base.Update(dt);
+            base.PreLayerTick(dt);
         }
 
-        public override void Draw(Camera mainCamera)
+        public override void PostLayerTick(double dt)
+        {
+            base.PostLayerTick(dt);
+        }
+
+        public override void PreLayerRender(Camera mainCamera)
         {
             Renderer.RenderBox(Position, Dimensions, 0, new Color(46, 46, 46), mainCamera);
             Renderer.RenderOutlineBox(Position, Dimensions, 0, Color.White, mainCamera, null, 2);
-            base.Draw(mainCamera);
+            base.PreLayerRender(mainCamera);
+        }
+
+        public override void PostLayerRender(Camera mainCamera)
+        {
+            base.PostLayerRender(mainCamera);
         }
     }
 }

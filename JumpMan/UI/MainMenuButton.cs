@@ -20,7 +20,7 @@ namespace JumpMan.UI
         private Label Label;
         public Button Button;
 
-        public MainMenuButton(ScrapVector position, ScrapVector dimensions, string text)
+        public MainMenuButton(ScrapVector position, ScrapVector dimensions, string text) : base(SceneManager.CurrentScene.Stack.Fetch(DefaultLayers.UI))
         {
             Transform = new Transform
             {
@@ -61,15 +61,24 @@ namespace JumpMan.UI
             base.Sleep();
         }
 
-        public override void Update(double dt)
+        public override void PreLayerTick(double dt)
         {
-            base.Update(dt);
+            base.PreLayerTick(dt);
         }
 
-        public override void Draw(Camera mainCamera)
+        public override void PostLayerTick(double dt)
         {
-            //Like ive said before, most stuff is automatically drawn for you so this is only here for advanced rendering
-            base.Draw(mainCamera);
+            base.PostLayerTick(dt);
+        }
+
+        public override void PreLayerRender(Camera camera)
+        {
+            base.PreLayerRender(camera);
+        }
+
+        public override void PostLayerRender(Camera camera)
+        {
+            base.PostLayerRender(camera);
         }
     }
 }

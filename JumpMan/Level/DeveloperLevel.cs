@@ -35,8 +35,11 @@ namespace JumpMan.Level
 
         public override void Initialize()
         {
-
             base.Initialize();
+
+            //Register custom system
+            ControllerSystem controllerSystem = new ControllerSystem();
+            Stack.Fetch(DefaultLayers.FOREGROUND).RegisterSystem(controllerSystem);
         }
 
         public override void LoadAssets()
@@ -95,18 +98,23 @@ namespace JumpMan.Level
             base.UnloadAssets();
         }
 
-        public override void Update(double dt)
+        public override void PreStackTick(double dt)
         {
             if (developerFlag && InputManager.IsKeyDown(Keys.F5))
             {
                 object[] container = new object[] { developerMeta };
-                WorldManager.SwapScene("editor", container);
+                SceneManager.SwapScene("editor", container);
             }
 
-            base.Update(dt);
+            base.PreStackTick(dt);
         }
 
-        public override void Draw()
+        public override void PostStackTick(double dt)
+        {
+            base.PostStackTick(dt);
+        }
+
+        public override void PreStackRender()
         {
             if (developerFlag)
             {
@@ -115,7 +123,12 @@ namespace JumpMan.Level
                 Renderer.RenderText(devFont, "DEVELOPER MODE - F5 TO RETURN", new ScrapVector(viewport.Width / 2 - textDims.X / 2, 0), Color.White);
             }
 
-            base.Draw();
+            base.PreStackRender();
+        }
+
+        public override void PostStackRender()
+        {
+            base.PostStackRender();
         }
     }
 }

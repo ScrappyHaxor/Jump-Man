@@ -55,7 +55,7 @@ namespace JumpMan.Level
             singleplayer = new MainMenuButton(new ScrapVector(0, OffsetY), buttonDimensions, "Singleplayer");
             singleplayer.Button.Pressed += delegate(object sender, EventArgs e)
             {
-                WorldManager.SwapScene("Developer Level", "level1.data");
+                SceneManager.SwapScene("Developer Level", "level1.data");
             };
 
             singleplayer.Awake();
@@ -63,7 +63,7 @@ namespace JumpMan.Level
             multiplayer = new MainMenuButton(new ScrapVector(0, OffsetY + ButtonYOffset * 1), buttonDimensions, "Multiplayer");
             multiplayer.Button.Pressed += delegate (object sender, EventArgs e)
             {
-                WorldManager.SwapScene("Developer Level");
+                SceneManager.SwapScene("Developer Level");
             };
 
             multiplayer.Awake();
@@ -71,7 +71,7 @@ namespace JumpMan.Level
             cosmetics = new MainMenuButton(new ScrapVector(0, OffsetY + ButtonYOffset * 2), buttonDimensions, "Cosmetics");
             cosmetics.Button.Pressed += delegate (object sender, EventArgs e)
             {
-                WorldManager.SwapScene("Developer Level");
+                SceneManager.SwapScene("Developer Level");
             };
 
             cosmetics.Awake();
@@ -101,16 +101,26 @@ namespace JumpMan.Level
             base.UnloadAssets();
         }
 
-        public override void Update(double dt)
+        public override void PreStackTick(double dt)
         {
             //Works like the standard monogame update, is called before any components
-            base.Update(dt);
+            base.PreStackTick(dt);
         }
 
-        public override void Draw()
+        public override void PostStackTick(double dt)
+        {
+            base.PostStackTick(dt);
+        }
+
+        public override void PreStackRender()
         {
             //My framework will automatically draw sprites and other components. This method is mainly just for HUD.
-            base.Draw();
+            base.PreStackRender();
+        }
+
+        public override void PostStackRender()
+        {
+            base.PostStackRender();
         }
     }
 }

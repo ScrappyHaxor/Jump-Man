@@ -18,7 +18,7 @@ namespace LevelEditor.UI
         public Transform Transform;
         public Textbox TextBox;
 
-        public EditorTextbox(ScrapVector position, ScrapVector dimensions, string placeholder)
+        public EditorTextbox(ScrapVector position, ScrapVector dimensions, string placeholder) : base(SceneManager.CurrentScene.Stack.Fetch(DefaultLayers.UI))
         {
             Transform = new Transform()
             {
@@ -52,14 +52,24 @@ namespace LevelEditor.UI
             base.Sleep();
         }
 
-        public override void Update(double dt)
+        public override void PreLayerTick(double dt)
         {
-            base.Update(dt);
+            base.PreLayerTick(dt);
         }
 
-        public override void Draw(Camera mainCamera)
+        public override void PostLayerTick(double dt)
         {
-            base.Draw(mainCamera);
+            base.PostLayerTick(dt);
+        }
+
+        public override void PreLayerRender(Camera camera)
+        {
+            base.PreLayerRender(camera);
+        }
+
+        public override void PostLayerRender(Camera camera)
+        {
+            base.PostLayerRender(camera);
         }
     }
 }

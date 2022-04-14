@@ -97,7 +97,7 @@ namespace LevelEditor.Level
 
             MainCamera.Zoom = 0.5;
 
-            collisionSystem = WorldManager.GetSystem<CollisionSystem>();
+            collisionSystem = Stack.Fetch(DefaultLayers.FOREGROUND).GetSystem<CollisionSystem>();
 
             platformWidth = DEFAULT_PLATFORM_WIDTH;
             platformHeight = DEFAULT_PLATFORM_HEIGHT;
@@ -160,8 +160,10 @@ namespace LevelEditor.Level
             base.Unload();
         }
 
-        public override void Update(double dt)
+        public override void PreStackTick(double dt)
         {
+            base.PreStackTick(dt);
+
             ScrapVector mousePos = InputManager.GetMouseWorldPosition(MainCamera);
             platformX = ScrapMath.Round(mousePos.X / PLATFORM_SNAP_WIDTH) * PLATFORM_SNAP_WIDTH;
             platformY = ScrapMath.Round(mousePos.Y / PLATFORM_SNAP_HEIGHT) * PLATFORM_SNAP_HEIGHT;
@@ -178,7 +180,7 @@ namespace LevelEditor.Level
             {
                 string[] package = LevelService.PackageData(data);
                 object[] container = { package };
-                WorldManager.SwapScene("test level", container);
+                SceneManager.SwapScene("test level", container);
             }
 
             if (InputManager.IsKeyHeld(Keys.LeftControl) && InputManager.IsKeyDown(Keys.S))
@@ -227,22 +229,22 @@ namespace LevelEditor.Level
 
             if (InputManager.IsKeyHeld(Keys.W))
             {
-                MainCamera.Transform.Position += new ScrapVector(0, -CAMERA_POSITION_INCREMENT);
+                MainCamera.Position += new ScrapVector(0, -CAMERA_POSITION_INCREMENT);
             }
 
             if (InputManager.IsKeyHeld(Keys.S))
             {
-                MainCamera.Transform.Position += new ScrapVector(0, CAMERA_POSITION_INCREMENT);
+                MainCamera.Position += new ScrapVector(0, CAMERA_POSITION_INCREMENT);
             }
 
             if (InputManager.IsKeyHeld(Keys.D))
             {
-                MainCamera.Transform.Position += new ScrapVector(CAMERA_POSITION_INCREMENT, 0);
+                MainCamera.Position += new ScrapVector(CAMERA_POSITION_INCREMENT, 0);
             }
 
             if (InputManager.IsKeyHeld(Keys.A))
             {
-                MainCamera.Transform.Position += new ScrapVector(-CAMERA_POSITION_INCREMENT, 0);
+                MainCamera.Position += new ScrapVector(-CAMERA_POSITION_INCREMENT, 0);
             }
 
             if (InputManager.IsButtonDown(Button.LEFT_MOUSE_BUTTON))
@@ -337,21 +339,37 @@ namespace LevelEditor.Level
 
             //savePopup.Update(dt);
 
-            base.Update(dt);
+            
         }
 
-        public override void Draw()
+        public override void PostStackTick(double dt)
         {
-            if (saving)
-                return;
+            base.PostStackTick(dt);
+        }
 
-            Renderer.RenderLine(ScrapVector.Zero, new ScrapVector(platformX, platformY), Color.White, MainCamera, null, 2);
+        public override void PreStackRender()
+        {
+            base.PreStackRender();
+        }
+
+        public override void PostStackRender()
+        {
+            //savePopup.Draw(MainCamera);
+
+            //Renderer.RenderGrid(new ScrapVector(-100, -100), new ScrapVector(100, 100), new ScrapVector(PLATFORM_SNAP_WIDTH, PLATFORM_SNAP_HEIGHT), Color.White, MainCamera);
+            base.PostStackRender();
+
+            //if (saving)
+            //    return;
+
+            if (!saving)
+                Renderer.RenderLine(ScrapVector.Zero, new ScrapVector(platformX, platformY), Color.White, MainCamera, null, 2);
 
             Renderer.RenderText(editorFontBig, "Level Editor States", new ScrapVector(10, 10), Color.White);
             Renderer.RenderText(editorFontSmall, $"Placing: {placingWhat}", new ScrapVector(10, 35), Color.White);
             Renderer.RenderText(editorFontSmall, $"Placement Position: {platformX} {platformY}", new ScrapVector(10, 55), Color.White);
-            Renderer.RenderText(editorFontSmall, $"Camera Position: {MainCamera.Transform.Position.X} {MainCamera.Transform.Position.Y}", new ScrapVector(10, 75), Color.White);
-            
+            Renderer.RenderText(editorFontSmall, $"Camera Position: {MainCamera.Position.X} {MainCamera.Position.Y}", new ScrapVector(10, 75), Color.White);
+
 
             if (placingWhat == Placing.PLATFORMS)
             {
@@ -368,11 +386,6 @@ namespace LevelEditor.Level
             Renderer.RenderText(editorFontSmall, $"Left click, Right click - Place platform, remove platform", new ScrapVector(10, 265), Color.White);
             Renderer.RenderText(editorFontSmall, $"F5 - Test level", new ScrapVector(10, 285), Color.White);
             Renderer.RenderText(editorFontSmall, $"Control + S - Save level", new ScrapVector(10, 305), Color.White);
-
-            //savePopup.Draw(MainCamera);
-
-            //Renderer.RenderGrid(new ScrapVector(-100, -100), new ScrapVector(100, 100), new ScrapVector(PLATFORM_SNAP_WIDTH, PLATFORM_SNAP_HEIGHT), Color.White, MainCamera);
-            base.Draw();
         }
     }
 }
