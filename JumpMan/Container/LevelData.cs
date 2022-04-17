@@ -8,19 +8,22 @@ namespace JumpMan.Container
 {
     public class LevelData
     {
-        public readonly Player player;
-        public readonly List<Platform> platforms;
+        public Player Player;
+        public readonly List<Platform> Platforms;
+        public readonly List<Background> Backgrounds;
 
         public LevelData()
         {
-            player = new Player(ScrapVector.Zero);
-            platforms = new List<Platform>();
+            Player = new Player(ScrapVector.Zero);
+            Platforms = new List<Platform>();
+            Backgrounds = new List<Background>();
         }
 
-        public LevelData(Player player, List<Platform> platforms)
+        public LevelData(Player player, List<Platform> platforms, List<Background> backgrounds)
         {
-            this.player = player;
-            this.platforms = platforms;
+            Player = player;
+            Platforms = platforms;
+            Backgrounds = backgrounds;
         }
     }
 }

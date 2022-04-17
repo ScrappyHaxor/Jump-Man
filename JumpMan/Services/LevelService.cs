@@ -15,7 +15,8 @@ namespace JumpMan.Services
     public enum DataType
     {
         PLAYER,
-        PLATFORM
+        PLATFORM,
+        BACKGROUND
     }
 
     public static partial class LevelService
@@ -24,6 +25,7 @@ namespace JumpMan.Services
         {
             Player player = null;
             List<Platform> platforms = new List<Platform>();
+            List<Background> backgrounds = new List<Background>();
 
             foreach (string rawData in content)
             {
@@ -50,6 +52,12 @@ namespace JumpMan.Services
                     ScrapVector dimensions = new ScrapVector(int.Parse(chunks[4]), int.Parse(chunks[5]));
                     platforms.Add(new Platform(chunks[1], position, dimensions));
                 }
+                else if (objectID == DataType.BACKGROUND)
+                {
+                    ScrapVector position = new ScrapVector(int.Parse(chunks[2]), int.Parse(chunks[3]));
+                    ScrapVector dimensions = new ScrapVector(int.Parse(chunks[4]), int.Parse(chunks[5]));
+                    backgrounds.Add(new Background(chunks[1], position, dimensions));
+                }
             }
 
             if (player == null)
@@ -58,7 +66,7 @@ namespace JumpMan.Services
                 return default;
             }
 
-            return new LevelData(player, platforms);
+            return new LevelData(player, platforms, backgrounds);
         }
 
         public static LevelData DeserializeLevelFromFile(string levelFileName)

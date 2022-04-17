@@ -48,6 +48,7 @@ namespace JumpMan.Level
             AssetManager.LoadFont("temporary", Parent.Content);
             AssetManager.LoadTexture("player", Parent.Content);
             AssetManager.LoadTexture("placeholder", Parent.Content);
+            AssetManager.LoadTexture("placeholder2", Parent.Content);
 
             //AssetManager.LoadResourceFile("assets", Parent.Content);
 
@@ -63,7 +64,6 @@ namespace JumpMan.Level
 
             if (args.Length == 1)
             {
-                Console.WriteLine(args[0].GetType());
                 if (args[0].GetType() == typeof(string))
                 {
                     string levelName = args[0].ToString();
@@ -78,12 +78,17 @@ namespace JumpMan.Level
                 }
             }
 
-            foreach (Platform p in levelData.platforms)
+            foreach (Platform p in levelData.Platforms)
             {
                 p.Awake();
             }
+
+            foreach (Background b in levelData.Backgrounds)
+            {
+                b.Awake();
+            }
             
-            levelData.player.Awake();
+            levelData.Player.Awake();
 
             base.Load(args);
         }

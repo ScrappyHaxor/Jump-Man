@@ -1,0 +1,212 @@
+﻿using JumpMan.Container;
+using JumpMan.Objects;
+using LevelEditor.Core;
+using LevelEditor.ECS.Components;
+using ScrapBox.Framework.ECS;
+using ScrapBox.Framework.ECS.Components;
+using ScrapBox.Framework.Level;
+using ScrapBox.Framework.Managers;
+using ScrapBox.Framework.Math;
+using ScrapBox.Framework.Services;
+using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace LevelEditor.Objects
+{
+    public class EditorGhost : Entity
+    {
+        public const string PLAYER_TEXTURE_NAME = "player";
+
+        public List<string> PlatformTextures = new List<string>()
+        {
+            "placeholder"
+        };
+
+        public List<string> BackgroundTextures = new List<string>()
+        {
+            "placeholder2"
+        };
+
+        public int PlatformTextureIndex;
+        public int BackgroundTextureIndex;
+
+        public override string Name => "Editor Ghost";
+
+        public Transform Transform;
+        public Sprite2D Sprite;
+        public RigidBody2D Rigidbody;
+        public BoxCollider2D Collider;
+
+        public LevelData Data;
+
+
+        public EditorGhost() : base(SceneManager.CurrentScene.Stack.Fetch(DefaultLayers.FOREGROUND))
+        {
+            Transform = new Transform();
+            RegisterComponent(Transform);
+
+            Sprite = new Sprite2D()
+            {
+                Mode = SpriteMode.TILE
+            };
+
+            RegisterComponent(Sprite);
+
+            Rigidbody = new RigidBody2D()
+            {
+                IsStatic = true
+            };
+
+            RegisterComponent(Rigidbody);
+
+            Collider = new BoxCollider2D()
+            {
+                Algorithm = ScrapBox.Framework.ECS.Collider.CollisionAlgorithm.SAT
+            };
+
+            RegisterComponent(Collider);
+        }
+
+        public void Place(Placing placingState)
+        {
+            if (placingState == Placing.PLATFORMS)
+            {
+                Platform platform = new Platform(Sprite.Texture.Name, Transform.Position, Transform.Dimensions);
+                platform.Awake();
+
+                Data.Platforms.Add(platform);
+            }
+            else if (placingState == Placing.BACKGROUNDS)
+            {
+                Background background = new Background(Sprite.Texture.Name, Transform.Position, Transform.Dimensions);
+                background.Awake();
+
+                Data.Backgrounds.Add(background);
+            }
+            else if (placingState == Placing.PLAYER)
+            {
+                if (Data.Player != null)
+                {
+                    Data.Player.Sleep();
+                    Data.Player = null;
+                }
+
+                Data.Player = new Player(Transform.Position);
+                Data.Player.RigidBody.IsStatic = true;
+                Data.Player.Awake();
+            }
+        }
+
+        public void IncreaseTextureIndex(Placing placingState)
+        {
+            if (placingState == Placing.PLATFORMS)
+            {
+                PlatformTextureIndex++;
+                if (PlatformTextureIndex > PlatformTextures.Count - 1)
+                {
+                    PlatformTextureIndex = 0;
+                }
+
+                Sprite.Texture = AssetManager.FetchTexture(PlatformTextures[PlatformTextureIndex]);
+            }
+            else if (placingState == Placing.BACKGROUNDS)
+            {
+                BackgroundTextureIndex++;
+                if (BackgroundTextureIndex > BackgroundTextures.Count - 1)
+                {
+                    BackgroundTextureIndex = 0;
+                }
+
+                Sprite.Texture = AssetManager.FetchTexture(BackgroundTextures[BackgroundTextureIndex]);
+            }
+        }
+
+        public void DecreaseTextureIndex(Placing placingState)
+        {
+            if (placingState == Placing.PLATFORMS)
+            {
+                PlatformTextureIndex--;
+                if (PlatformTextureIndex < 0)
+                {
+                    PlatformTextureIndex = PlatformTextures.Count - 1;
+                }
+
+                Sprite.Texture = AssetManager.FetchTexture(PlatformTextures[PlatformTextureIndex]);
+            }
+            else if (placingState == Placing.BACKGROUNDS)
+            {
+                BackgroundTextureIndex--;
+                if (BackgroundTextureIndex < 0)
+                {
+                    BackgroundTextureIndex = BackgroundTextures.Count - 1;
+                }
+
+                Sprite.Texture = AssetManager.FetchTexture(BackgroundTextures[BackgroundTextureIndex]);
+            }
+        }
+
+        public void ChangeToState(Placing placingState)
+        {
+            if (placingState == Placing.PLATFORMS)
+            {
+                Sprite.Texture = AssetManager.FetchTexture(PlatformTextures[PlatformTextureIndex]);
+                Transform.Dimensions = new ScrapVector(Sprite.Texture.Width, Sprite.Texture.Height);
+            }
+            else if (placingState == Placing.BACKGROUNDS)
+            {
+                Sprite.Texture = AssetManager.FetchTexture(BackgroundTextures[BackgroundTextureIndex]);
+                Transform.Dimensions = new ScrapVector(Sprite.Texture.Width, Sprite.Texture.Height);
+            }
+            else if (placingState == Placing.PLAYER)
+            {
+                Sprite.Texture = AssetManager.FetchTexture(PLAYER_TEXTURE_NAME);
+                Transform.Dimensions = new ScrapVector(Sprite.Texture.Width, Sprite.Texture.Height);
+            }
+        }
+
+        public override void Awake()
+        {
+            if (Data == null)
+            {
+                LogService.Log(App.AssemblyName, "EditorGhost", "Awake", "Level data is null", Severity.ERROR);
+                return;
+            }
+
+            if (Sprite.Texture == null)
+            {
+                Sprite.Texture = AssetManager.FetchTexture(PlatformTextures[PlatformTextureIndex]);
+                Transform.Dimensions = new ScrapVector(Sprite.Texture.Width, Sprite.Texture.Height);
+                Collider.Dimensions = Transform.Dimensions;
+            }
+
+            base.Awake();
+        }
+
+        public override void Sleep()
+        {
+            base.Sleep();
+        }
+
+        public override void PreLayerTick(double dt)
+        {
+            base.PreLayerTick(dt);
+        }
+
+        public override void PostLayerTick(double dt)
+        {
+            Collider.Dimensions = Transform.Dimensions;
+            base.PostLayerTick(dt);
+        }
+
+        public override void PreLayerRender(Camera camera)
+        {
+            base.PreLayerRender(camera);
+        }
+
+        public override void PostLayerRender(Camera camera)
+        {
+            base.PostLayerRender(camera);
+        }
+    }
+}

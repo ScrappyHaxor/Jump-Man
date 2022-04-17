@@ -13,7 +13,7 @@ namespace LevelEditor.Core
 {
     public class App : ScrapApp
     {
-        public override string AssemblyName { get { return "Jump Man Level Editor"; } }
+        public const string AssemblyName = "Level Editor";
 
         private Editor editor;
         private DeveloperLevel devLevel;

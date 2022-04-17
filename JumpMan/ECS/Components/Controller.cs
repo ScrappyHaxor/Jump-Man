@@ -27,9 +27,7 @@ namespace JumpMan.ECS.Components
             //My library makes it easy for components to require other components to function
             //The player controller needs a Rigidbody2D so it can just require it.
             //If the rigidbody isnt attached to the player or isnt awake it will cause a console error and put itself back to sleep.
-            bool success = Dependency(out rigidbody);
-            if (!success)
-                return;
+            bool success = Dependency(out rigidbody, true);
 
             if (Layer == null)
                 Layer = Owner.Layer;

@@ -13,12 +13,19 @@ namespace LevelEditor.Services
         public static string[] PackageData(LevelData data)
         {
             List<string> temp = new List<string>();
-            temp.Add($"{(int)DataType.PLAYER};{data.player.Transform.Position.X};{data.player.Transform.Position.Y}");
-            foreach (Platform p in data.platforms)
+            temp.Add($"{(int)DataType.PLAYER};{data.Player.Transform.Position.X};{data.Player.Transform.Position.Y}");
+            foreach (Platform p in data.Platforms)
             {
                 ScrapVector pos = p.Transform.Position;
                 ScrapVector size = p.Transform.Dimensions;
                 temp.Add($"{(int)DataType.PLATFORM};{p.Sprite.Texture.Name};{pos.X};{pos.Y};{size.X};{size.Y}");
+            }
+
+            foreach (Background b in data.Backgrounds)
+            {
+                ScrapVector pos = b.Transform.Position;
+                ScrapVector size = b.Transform.Dimensions;
+                temp.Add($"{(int)DataType.BACKGROUND};{b.Sprite.Texture.Name};{pos.X};{pos.Y};{size.X};{size.Y}");
             }
 
             return temp.ToArray();
@@ -27,12 +34,19 @@ namespace LevelEditor.Services
         public static void SerializeLevel(string name, LevelData data)
         {
             StreamWriter writer = new StreamWriter(name, false);
-            writer.WriteLine($"{(int)DataType.PLAYER};{data.player.Transform.Position.X};{data.player.Transform.Position.Y}");
-            foreach (Platform p in data.platforms)
+            writer.WriteLine($"{(int)DataType.PLAYER};{data.Player.Transform.Position.X};{data.Player.Transform.Position.Y}");
+            foreach (Platform p in data.Platforms)
             {
                 ScrapVector pos = p.Transform.Position;
                 ScrapVector size = p.Transform.Dimensions;
                 writer.WriteLine($"{(int)DataType.PLATFORM};{p.Sprite.Texture.Name};{pos.X};{pos.Y};{size.X};{size.Y}");
+            }
+
+            foreach (Background b in data.Backgrounds)
+            {
+                ScrapVector pos = b.Transform.Position;
+                ScrapVector size = b.Transform.Dimensions;
+                writer.WriteLine($"{(int)DataType.BACKGROUND};{b.Sprite.Texture.Name};{pos.X};{pos.Y};{size.X};{size.Y}");
             }
 
             writer.Flush();

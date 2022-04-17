@@ -32,4 +32,7 @@
     <ProjectReference Include="..\JumpMan\JumpMan.csproj" />
     <ProjectReference Include="..\ScrapBox-Reborn\ScrapBox-Reborn\ScrapBox.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="ECS\Systems\" />
+  </ItemGroup>
 </Project>
