@@ -12,7 +12,7 @@ namespace JumpMan.Core
 {
     public class App : ScrapApp
     {
-        public override string AssemblyName { get { return "Jump Man"; } }
+        public const string AssemblyName = "Jump Man";
 
         private MainMenu mainMenu;
         private DeveloperLevel devLevel;
