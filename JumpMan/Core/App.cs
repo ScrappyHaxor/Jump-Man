@@ -15,15 +15,18 @@ namespace JumpMan.Core
         public const string AssemblyName = "Jump Man";
 
         private MainMenu mainMenu;
+        private LevelSelect levelSelect;
         private DeveloperLevel devLevel;
 
         public App()
         {
             mainMenu = new MainMenu(this);
+            levelSelect = new LevelSelect(this);
             devLevel = new DeveloperLevel(this);
 
             //The world manager is the master of everything. It handles entities, components, levels, systems. Everything you could think of.
             SceneManager.RegisterScene("Main Menu", mainMenu);
+            SceneManager.RegisterScene("Level Select", levelSelect);
             SceneManager.RegisterScene("Developer Level", devLevel);
         }
 

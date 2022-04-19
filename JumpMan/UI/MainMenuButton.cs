@@ -16,8 +16,8 @@ namespace JumpMan.UI
     {
         public override string Name => "Main Menu Button";
 
-        private Transform Transform;
-        private Label Label;
+        public Transform Transform;
+        public Label Label;
         public Button Button;
 
         public MainMenuButton(ScrapVector position, ScrapVector dimensions, string text) : base(SceneManager.CurrentScene.Stack.Fetch(DefaultLayers.UI))

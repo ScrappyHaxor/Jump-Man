@@ -17,6 +17,8 @@ namespace JumpMan.Level
 {
     public partial class DeveloperLevel : Scene
     {
+        public const double CameraOffset = -800;
+
         private LevelData levelData;
 
         private bool developerFlag;
@@ -110,6 +112,8 @@ namespace JumpMan.Level
                 object[] container = new object[] { developerMeta };
                 SceneManager.SwapScene("editor", container);
             }
+
+            MainCamera.Position = new ScrapVector(MainCamera.Position.X, levelData.Player.Transform.Position.Y + CameraOffset);
 
             base.PreStackTick(dt);
         }
