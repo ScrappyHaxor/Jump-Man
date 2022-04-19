@@ -69,6 +69,14 @@ namespace JumpMan.Level
                     developerMeta = package;
                 }
             }
+            else if (args.Length == 2)
+            {
+                if (args[0].GetType() == typeof(string) && args[1].GetType() == typeof(ScrapVector))
+                {
+                    levelData = LevelService.DeserializeLevelFromFile(args[0].ToString());
+                    levelData.Player.Transform.Position = (ScrapVector)args[1];
+                }
+            }
 
             foreach (Platform p in levelData.Platforms)
             {
