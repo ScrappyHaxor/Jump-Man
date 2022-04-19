@@ -1,39 +1,45 @@
-﻿using Microsoft.Xna.Framework;
-using ScrapBox.Framework.ECS;
+﻿using ScrapBox.Framework.ECS;
 using ScrapBox.Framework.ECS.Components;
 using ScrapBox.Framework.Level;
 using ScrapBox.Framework.Managers;
 using ScrapBox.Framework.Math;
 using System;
 using System.Collections.Generic;
+using Microsoft.Xna.Framework;
 using System.Text;
+using ScrapBox.Framework.Shapes;
 
 namespace LevelEditor.UI
 {
-    public class EditorLabel : Entity
+    public class EditorTextbox : Entity
     {
-        public override string Name => "Editor Label";
+        public override string Name => "Editor Textbox";
 
         public Transform Transform;
-        public Label Label;
+        public Textbox TextBox;
 
-        public EditorLabel(ScrapVector position, string text) : base(SceneManager.CurrentScene.Stack.Fetch(DefaultLayers.UI))
+        public EditorTextbox(ScrapVector position, ScrapVector dimensions, string placeholder) : base(SceneManager.CurrentScene.Stack.Fetch(DefaultLayers.UI))
         {
-            Transform = new Transform
+            Transform = new Transform()
             {
-                Position = position
+                Position = position,
+                Dimensions = dimensions
             };
 
             RegisterComponent(Transform);
 
-            Label = new Label
+            TextBox = new Textbox
             {
-                Text = text,
-                TextColor = Color.White,
-                Font = AssetManager.FetchFont("editorButton")
+                Placeholder = placeholder,
+                Font = AssetManager.FetchFont("editorButtonText"),
+                BorderColor = Color.White,
+                FocusColor = Color.Gray,
+                PlaceholderColor = Color.Gray,
+                Shape = ScrapRect.CreateFromCenter(Transform.Position, Transform.Dimensions),
+                OutlineThickness = 2
             };
 
-            RegisterComponent(Label);
+            RegisterComponent(TextBox);
         }
 
         public override void Awake()

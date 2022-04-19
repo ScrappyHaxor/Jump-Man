@@ -4,49 +4,36 @@ using ScrapBox.Framework.ECS.Components;
 using ScrapBox.Framework.Level;
 using ScrapBox.Framework.Managers;
 using ScrapBox.Framework.Math;
-using ScrapBox.Framework.Shapes;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace LevelEditor.UI
 {
-    public class EditorButton : Entity
+    public class EditorLabel : Entity
     {
-        public override string Name => "Editor Button";
+        public override string Name => "Editor Label";
 
         public Transform Transform;
         public Label Label;
-        public Button Button;
 
-        public EditorButton(ScrapVector position, ScrapVector dimensions, string text) : base(SceneManager.CurrentScene.Stack.Fetch(DefaultLayers.UI))
+        public EditorLabel(ScrapVector position, string text) : base(SceneManager.CurrentScene.Stack.Fetch(DefaultLayers.UI))
         {
             Transform = new Transform
             {
-                Position = position,
-                Dimensions = dimensions
+                Position = position
             };
 
             RegisterComponent(Transform);
 
             Label = new Label
             {
-                Font = AssetManager.FetchFont("editorButton"),
                 Text = text,
-                TextColor = Color.White
+                TextColor = Color.White,
+                Font = AssetManager.FetchFont("editorButtonText")
             };
 
             RegisterComponent(Label);
-
-            Button = new Button
-            {
-                BorderColor = Color.White,
-                HoverColor = Color.Gray,
-                Shape = ScrapRect.CreateFromCenter(Transform.Position, Transform.Dimensions),
-                OutlineThickness = 2
-            };
-
-            RegisterComponent(Button);
         }
 
         public override void Awake()

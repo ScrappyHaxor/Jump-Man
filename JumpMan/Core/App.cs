@@ -29,7 +29,7 @@ namespace JumpMan.Core
 
         protected override void Initialize()
         {
-            SceneManager.SwapScene("Developer Level", "level1.data");
+            SceneManager.SwapScene("Main Menu");
             base.Initialize();
         }
 

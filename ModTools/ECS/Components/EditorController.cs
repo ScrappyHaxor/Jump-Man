@@ -22,7 +22,8 @@ namespace LevelEditor.ECS.Components
     {
         PLATFORMS,
         BACKGROUNDS,
-        PLAYER
+        PLAYER,
+        TEST_POSITION
     }
 
     public class EditorController : Controller
@@ -154,7 +155,7 @@ namespace LevelEditor.ECS.Components
                 }
                 else if (PlacingState == Placing.BACKGROUNDS)
                 {
-                    RayResult result = foregroundCollision.Raycast(new PointRay(EditorGhost.Transform.Position));
+                    RayResult result = backgroundCollision.Raycast(new PointRay(EditorGhost.Transform.Position));
                     if (result.hit && result.other.GetType() == typeof(Background))
                     {
                         Background background = (Background)result.other;
@@ -167,6 +168,11 @@ namespace LevelEditor.ECS.Components
                 {
                     Data.Player.Sleep();
                     Data.Player = null;
+                }
+                else if (PlacingState == Placing.TEST_POSITION)
+                {
+                    if (Data.TestPositions.Contains(EditorGhost.Transform.Position))
+                        Data.TestPositions.Remove(EditorGhost.Transform.Position);
                 }
             }
 

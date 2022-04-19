@@ -28,6 +28,11 @@ namespace LevelEditor.Services
                 temp.Add($"{(int)DataType.BACKGROUND};{b.Sprite.Texture.Name};{pos.X};{pos.Y};{size.X};{size.Y}");
             }
 
+            foreach (ScrapVector position in data.TestPositions)
+            {
+                temp.Add($"{(int)DataType.TEST_POSITION};{position.X};{position.Y}");
+            }
+
             return temp.ToArray();
         }
 
@@ -47,6 +52,11 @@ namespace LevelEditor.Services
                 ScrapVector pos = b.Transform.Position;
                 ScrapVector size = b.Transform.Dimensions;
                 writer.WriteLine($"{(int)DataType.BACKGROUND};{b.Sprite.Texture.Name};{pos.X};{pos.Y};{size.X};{size.Y}");
+            }
+
+            foreach (ScrapVector position in data.TestPositions)
+            {
+                writer.WriteLine($"{(int)DataType.TEST_POSITION};{position.X};{position.Y}");
             }
 
             writer.Flush();
