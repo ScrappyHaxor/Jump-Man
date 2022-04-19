@@ -55,7 +55,7 @@ namespace JumpMan.Level
             singleplayer = new MainMenuButton(new ScrapVector(0, OffsetY), buttonDimensions, "Singleplayer");
             singleplayer.Button.Pressed += delegate(object sender, EventArgs e)
             {
-                SceneManager.SwapScene("Developer Level", "level1.data");
+                SceneManager.SwapScene("Level Select");
             };
 
             singleplayer.Awake();
@@ -63,7 +63,7 @@ namespace JumpMan.Level
             multiplayer = new MainMenuButton(new ScrapVector(0, OffsetY + ButtonYOffset * 1), buttonDimensions, "Multiplayer");
             multiplayer.Button.Pressed += delegate (object sender, EventArgs e)
             {
-                SceneManager.SwapScene("Developer Level");
+                SceneManager.SwapScene("Level Select");
             };
 
             multiplayer.Awake();
@@ -71,7 +71,7 @@ namespace JumpMan.Level
             cosmetics = new MainMenuButton(new ScrapVector(0, OffsetY + ButtonYOffset * 2), buttonDimensions, "Cosmetics");
             cosmetics.Button.Pressed += delegate (object sender, EventArgs e)
             {
-                SceneManager.SwapScene("Developer Level");
+                SceneManager.SwapScene("Level Select");
             };
 
             cosmetics.Awake();
