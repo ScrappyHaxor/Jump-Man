@@ -1,14 +1,14 @@
 ﻿using JumpMan.Container;
 using JumpMan.ECS.Systems;
 using JumpMan.Objects;
-using LevelEditor.Objects;
-using LevelEditor.UI;
+using ModTools.Objects;
+using ModTools.UI;
 using ScrapBox.Framework;
 using ScrapBox.Framework.Level;
 using ScrapBox.Framework.Managers;
 using ScrapBox.Framework.Math;
 
-namespace LevelEditor.Level
+namespace ModTools.Level
 {
 
 

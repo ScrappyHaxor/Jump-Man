@@ -1,8 +1,8 @@
 ﻿using JumpMan.Container;
 using JumpMan.ECS.Components;
-using LevelEditor.Services;
-using LevelEditor.Core;
-using LevelEditor.Objects;
+using ModTools.Services;
+using ModTools.Core;
+using ModTools.Objects;
 using ScrapBox.Framework.Input;
 using ScrapBox.Framework.Level;
 using ScrapBox.Framework.Managers;
@@ -11,12 +11,12 @@ using ScrapBox.Framework.Services;
 using System;
 using System.Collections.Generic;
 using System.Text;
-using LevelEditor.UI;
+using ModTools.UI;
 using ScrapBox.Framework.ECS.Systems;
 using JumpMan.Objects;
 using ScrapBox.Framework.ECS.Components;
 
-namespace LevelEditor.ECS.Components
+namespace ModTools.ECS.Components
 {
     public enum Placing
     {
@@ -101,6 +101,11 @@ namespace LevelEditor.ECS.Components
                 };
 
                 return;
+            }
+
+            if (InputManager.IsKeyDown(Keys.M))
+            {
+                SceneManager.SwapScene("tool menu");
             }
 
             if (InputManager.IsKeyDown(Keys.F5))

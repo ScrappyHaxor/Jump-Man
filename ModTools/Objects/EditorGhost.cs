@@ -1,7 +1,7 @@
 ﻿using JumpMan.Container;
 using JumpMan.Objects;
-using LevelEditor.Core;
-using LevelEditor.ECS.Components;
+using ModTools.Core;
+using ModTools.ECS.Components;
 using ScrapBox.Framework.ECS;
 using ScrapBox.Framework.ECS.Components;
 using ScrapBox.Framework.Level;
@@ -12,7 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace LevelEditor.Objects
+namespace ModTools.Objects
 {
     public class EditorGhost : Entity
     {

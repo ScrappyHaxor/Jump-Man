@@ -11,6 +11,11 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
+    <Compile Remove="Resource-Files\**" />
+    <EmbeddedResource Remove="Resource-Files\**" />
+    <None Remove="Resource-Files\**" />
+  </ItemGroup>
+  <ItemGroup>
     <None Remove="Icon.ico" />
     <None Remove="Icon.bmp" />
   </ItemGroup>

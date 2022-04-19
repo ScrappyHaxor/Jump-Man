@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
-namespace LevelEditor.Services
+namespace ModTools.Services
 {
     public static partial class LevelService
     {

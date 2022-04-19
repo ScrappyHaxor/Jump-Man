@@ -1,4 +1,4 @@
-﻿using LevelEditor.ECS.Components;
+﻿using ModTools.ECS.Components;
 using ScrapBox.Framework.ECS;
 using ScrapBox.Framework.Level;
 using ScrapBox.Framework.Managers;
@@ -6,7 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace LevelEditor.Objects
+namespace ModTools.Objects
 {
     public class EditorPlayer : Entity
     {
