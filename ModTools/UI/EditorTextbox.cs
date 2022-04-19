@@ -9,7 +9,7 @@ using Microsoft.Xna.Framework;
 using System.Text;
 using ScrapBox.Framework.Shapes;
 
-namespace LevelEditor.UI
+namespace ModTools.UI
 {
     public class EditorTextbox : Entity
     {

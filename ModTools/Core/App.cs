@@ -6,11 +6,11 @@ using ScrapBox.Framework;
 using ScrapBox.Framework.Managers;
 
 using JumpMan.Level;
-using LevelEditor.Level;
+using ModTools.Level;
 using JumpMan.ECS.Systems;
 using ModTools.Level;
 
-namespace LevelEditor.Core
+namespace ModTools.Core
 {
     public class App : ScrapApp
     {
@@ -18,16 +18,19 @@ namespace LevelEditor.Core
 
         private Menu toolMenu;
         private Editor editor;
+        private Test testPlay;
         private DeveloperLevel devLevel;
 
         public App()
         {
             toolMenu = new Menu(this);
             editor = new Editor(this);
+            testPlay = new Test(this);
             devLevel = new DeveloperLevel(this);
 
             SceneManager.RegisterScene("tool menu", toolMenu);
             SceneManager.RegisterScene("editor", editor);
+            SceneManager.RegisterScene("test", testPlay);
             SceneManager.RegisterScene("test level", devLevel);
         }
 

@@ -1,5 +1,5 @@
-﻿using LevelEditor.Core;
-using LevelEditor.ECS.Components;
+﻿using ModTools.Core;
+using ModTools.ECS.Components;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ScrapBox.Framework.ECS;
@@ -11,7 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace LevelEditor.Objects
+namespace ModTools.Objects
 {
     public class EditorUI : Entity
     {
@@ -114,6 +114,7 @@ namespace LevelEditor.Objects
                 Renderer.RenderText(editorFontSmall, $"F5 - Test level", new ScrapVector(10, 325), Color.White);
                 Renderer.RenderText(editorFontSmall, $"Control + S - Save level", new ScrapVector(10, 345), Color.White);
                 Renderer.RenderText(editorFontSmall, $"E - Change sprite mode", new ScrapVector(10, 365), Color.White);
+                Renderer.RenderText(editorFontSmall, $"M - Back to menu", new ScrapVector(10, 385), Color.White);
             }
             else
             {

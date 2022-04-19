@@ -1,4 +1,4 @@
-﻿using LevelEditor.Core;
+﻿using ModTools.Core;
 using System;
 
 namespace LevelEditor
