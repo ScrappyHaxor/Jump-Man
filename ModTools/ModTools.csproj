@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp3.1</TargetFramework>
@@ -30,9 +30,14 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\JumpMan\JumpMan.csproj" />
-    <ProjectReference Include="..\ScrapBox-Reborn\ScrapBox-Reborn\ScrapBox.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="ECS\Systems\" />
   </ItemGroup>
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="xcopy  &quot;$(ProjectDir)Level-Files\&quot; &quot;$(TargetDir)Levels\&quot;  /E /Y" />
+  </Target>
+  <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
+    <Exec Command="xcopy  &quot;$(ProjectDir)Resource-Files\&quot; &quot;$(TargetDir)&quot;  /E /Y" />
+  </Target>
 </Project>

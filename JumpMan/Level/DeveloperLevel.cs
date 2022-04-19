@@ -1,28 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
-using System.Text;
-using JumpMan.Container;
+﻿using JumpMan.Container;
 using JumpMan.ECS.Systems;
 using JumpMan.Objects;
 using JumpMan.Services;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using ScrapBox.Framework;
-using ScrapBox.Framework.Diagnostics;
-using ScrapBox.Framework.ECS.Systems;
-using ScrapBox.Framework.Input;
 using ScrapBox.Framework.Level;
 using ScrapBox.Framework.Managers;
+
+using ScrapBox.Framework.Diagnostics;
+using ScrapBox.Framework.Input;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using ScrapBox.Framework.Math;
 using ScrapBox.Framework.Services;
 
 namespace JumpMan.Level
 {
-    public class DeveloperLevel : Scene
+    public partial class DeveloperLevel : Scene
     {
         private LevelData levelData;
+
         private bool developerFlag;
         private string[] developerMeta;
         private SpriteFont devFont;
@@ -44,17 +40,12 @@ namespace JumpMan.Level
 
         public override void LoadAssets()
         {
-            //Manual loading, remove in the future
-            AssetManager.LoadFont("temporary", Parent.Content);
-            AssetManager.LoadTexture("player", Parent.Content);
-            AssetManager.LoadTexture("placeholder", Parent.Content);
-            AssetManager.LoadTexture("placeholder2", Parent.Content);
-
-            //AssetManager.LoadResourceFile("assets", Parent.Content);
+            AssetManager.LoadResourceFile("game", Parent.Content);
 
             devFont = AssetManager.FetchFont("temporary");
             RenderDiagnostics.Font = AssetManager.FetchFont("temporary");
             PhysicsDiagnostics.Font = AssetManager.FetchFont("temporary");
+
             base.LoadAssets();
         }
 
@@ -73,6 +64,7 @@ namespace JumpMan.Level
                 {
                     string[] package = (string[])args[0];
                     levelData = LevelService.DeserializeLevelFromData(package);
+
                     developerFlag = true;
                     developerMeta = package;
                 }

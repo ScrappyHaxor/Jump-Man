@@ -39,7 +39,7 @@ namespace JumpMan.Level
         {
             //Load assets using AssetManager
 
-            AssetManager.LoadFont("temporary", Parent.Content);
+            AssetManager.LoadResourceFile("menu", Parent.Content);
             //AssetManager.LoadResourceFile("assets", Parent.Content);
             base.LoadAssets();
         }

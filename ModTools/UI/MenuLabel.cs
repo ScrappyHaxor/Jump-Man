@@ -1,45 +1,39 @@
-﻿using ScrapBox.Framework.ECS;
+﻿using Microsoft.Xna.Framework;
+using ScrapBox.Framework.ECS;
 using ScrapBox.Framework.ECS.Components;
 using ScrapBox.Framework.Level;
 using ScrapBox.Framework.Managers;
 using ScrapBox.Framework.Math;
 using System;
 using System.Collections.Generic;
-using Microsoft.Xna.Framework;
 using System.Text;
-using ScrapBox.Framework.Shapes;
 
-namespace LevelEditor.UI
+namespace ModTools.UI
 {
-    public class EditorTextbox : Entity
+    public class MenuLabel : Entity
     {
-        public override string Name => "Editor Textbox";
+        public override string Name => "Menu Label";
 
         public Transform Transform;
-        public Textbox TextBox;
+        public Label Label;
 
-        public EditorTextbox(ScrapVector position, ScrapVector dimensions, string placeholder) : base(SceneManager.CurrentScene.Stack.Fetch(DefaultLayers.UI))
+        public MenuLabel(ScrapVector position, string text) : base(SceneManager.CurrentScene.Stack.Fetch(DefaultLayers.UI))
         {
             Transform = new Transform()
             {
-                Position = position,
-                Dimensions = dimensions
+                Position = position
             };
 
             RegisterComponent(Transform);
 
-            TextBox = new Textbox
+            Label = new Label()
             {
-                Placeholder = placeholder,
-                Font = AssetManager.FetchFont("editorButton"),
-                BorderColor = Color.White,
-                FocusColor = Color.Gray,
-                PlaceholderColor = Color.Gray,
-                Shape = ScrapRect.CreateFromCenter(Transform.Position, Transform.Dimensions),
-                OutlineThickness = 2
+                TextColor = Color.White,
+                Font = AssetManager.FetchFont("menu"),
+                Text = text,
             };
 
-            RegisterComponent(TextBox);
+            RegisterComponent(Label);
         }
 
         public override void Awake()

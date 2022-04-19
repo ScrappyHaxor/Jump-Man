@@ -35,13 +35,7 @@ namespace LevelEditor.Level
 
         public override void LoadAssets()
         {
-            //AssetManager.LoadResourceFile("assets", Parent.Content);
-            AssetManager.LoadFont("editorBig", Parent.Content);
-            AssetManager.LoadFont("editorSmall", Parent.Content);
-            AssetManager.LoadFont("editorButton", Parent.Content);
-            AssetManager.LoadTexture("player", Parent.Content);
-            AssetManager.LoadTexture("placeholder", Parent.Content);
-            AssetManager.LoadTexture("placeholder2", Parent.Content);
+            AssetManager.LoadResourceFile("editor", Parent.Content);
             base.LoadAssets();
         }
 
@@ -108,8 +102,12 @@ namespace LevelEditor.Level
 
         public override void PreStackTick(double dt)
         {
-            editorUI.SaveFlag = editorPlayer.Controller.SaveFlag;
-            editorUI.InstructionFlag = editorPlayer.Controller.InstructionFlag;
+            if (editorUI != null && editorPlayer != null)
+            {
+                editorUI.SaveFlag = editorPlayer.Controller.SaveFlag;
+                editorUI.InstructionFlag = editorPlayer.Controller.InstructionFlag;
+            }
+
             base.PreStackTick(dt);
         }
 

@@ -1,22 +1,25 @@
-﻿using ScrapBox.Framework.ECS;
+﻿using Microsoft.Xna.Framework;
+using ScrapBox.Framework.ECS;
 using ScrapBox.Framework.ECS.Components;
 using ScrapBox.Framework.Level;
 using ScrapBox.Framework.Managers;
 using ScrapBox.Framework.Math;
-using static ScrapBox.Framework.ECS.Collider;
+using ScrapBox.Framework.Shapes;
+using System;
+using System.Collections.Generic;
+using System.Text;
 
-namespace JumpMan.Objects
+namespace LevelEditor.UI
 {
-    public class Background : Entity
+    public class EditorButton : Entity
     {
-        public override string Name => "Tileable Background";
+        public override string Name => "UI Button";
 
         public Transform Transform;
-        public Sprite2D Sprite;
-        public RigidBody2D RigidBody;
-        public BoxCollider2D Collider;
+        public Label Label;
+        public Button Button;
 
-        public Background(string texture, ScrapVector position, ScrapVector dimensions) : base(SceneManager.CurrentScene.Stack.Fetch(DefaultLayers.BACKGROUND))
+        public EditorButton(ScrapVector position, ScrapVector dimensions, string text) : base(SceneManager.CurrentScene.Stack.Fetch(DefaultLayers.UI))
         {
             Transform = new Transform
             {
@@ -26,27 +29,24 @@ namespace JumpMan.Objects
 
             RegisterComponent(Transform);
 
-            Sprite = new Sprite2D
+            Label = new Label
             {
-                Texture = AssetManager.FetchTexture(texture),
-                Mode = SpriteMode.TILE
+                Font = AssetManager.FetchFont("editorButtonText"),
+                Text = text,
+                TextColor = Color.White
             };
 
-            RegisterComponent(Sprite);
+            RegisterComponent(Label);
 
-            RigidBody = new RigidBody2D
+            Button = new Button
             {
-                IsStatic = true
+                BorderColor = Color.White,
+                HoverColor = Color.Gray,
+                Shape = ScrapRect.CreateFromCenter(Transform.Position, Transform.Dimensions),
+                OutlineThickness = 2
             };
 
-            RegisterComponent(RigidBody);
-
-            Collider = new BoxCollider2D
-            {
-                Dimensions = Transform.Dimensions
-            };
-
-            RegisterComponent(Collider);
+            RegisterComponent(Button);
         }
 
         public override void Awake()

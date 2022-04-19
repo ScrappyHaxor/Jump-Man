@@ -17,6 +17,7 @@ namespace LevelEditor.Objects
     public class EditorGhost : Entity
     {
         public const string PLAYER_TEXTURE_NAME = "player";
+        public const string TEST_TEXTURE_NAME = "placeholder3";
 
         public List<string> PlatformTextures = new List<string>()
         {
@@ -35,8 +36,6 @@ namespace LevelEditor.Objects
 
         public Transform Transform;
         public Sprite2D Sprite;
-        public RigidBody2D Rigidbody;
-        public BoxCollider2D Collider;
 
         public LevelData Data;
 
@@ -52,20 +51,6 @@ namespace LevelEditor.Objects
             };
 
             RegisterComponent(Sprite);
-
-            Rigidbody = new RigidBody2D()
-            {
-                IsStatic = true
-            };
-
-            RegisterComponent(Rigidbody);
-
-            Collider = new BoxCollider2D()
-            {
-                Algorithm = ScrapBox.Framework.ECS.Collider.CollisionAlgorithm.SAT
-            };
-
-            RegisterComponent(Collider);
         }
 
         public void Place(Placing placingState)
@@ -95,6 +80,10 @@ namespace LevelEditor.Objects
                 Data.Player = new Player(Transform.Position);
                 Data.Player.RigidBody.IsStatic = true;
                 Data.Player.Awake();
+            }
+            else if (placingState == Placing.TEST_POSITION)
+            {
+                Data.TestPositions.Add(Transform.Position);
             }
         }
 
@@ -163,6 +152,11 @@ namespace LevelEditor.Objects
                 Sprite.Texture = AssetManager.FetchTexture(PLAYER_TEXTURE_NAME);
                 Transform.Dimensions = new ScrapVector(Sprite.Texture.Width, Sprite.Texture.Height);
             }
+            else if (placingState == Placing.TEST_POSITION)
+            {
+                Sprite.Texture = AssetManager.FetchTexture(TEST_TEXTURE_NAME);
+                Transform.Dimensions = new ScrapVector(Sprite.Texture.Width, Sprite.Texture.Height);
+            }
         }
 
         public override void Awake()
@@ -177,7 +171,6 @@ namespace LevelEditor.Objects
             {
                 Sprite.Texture = AssetManager.FetchTexture(PlatformTextures[PlatformTextureIndex]);
                 Transform.Dimensions = new ScrapVector(Sprite.Texture.Width, Sprite.Texture.Height);
-                Collider.Dimensions = Transform.Dimensions;
             }
 
             base.Awake();
@@ -195,7 +188,6 @@ namespace LevelEditor.Objects
 
         public override void PostLayerTick(double dt)
         {
-            Collider.Dimensions = Transform.Dimensions;
             base.PostLayerTick(dt);
         }
 
@@ -206,6 +198,11 @@ namespace LevelEditor.Objects
 
         public override void PostLayerRender(Camera camera)
         {
+            foreach (ScrapVector position in Data.TestPositions)
+            {
+                Renderer.RenderSprite(AssetManager.FetchTexture(TEST_TEXTURE_NAME), position, camera);
+            }
+
             base.PostLayerRender(camera);
         }
     }
