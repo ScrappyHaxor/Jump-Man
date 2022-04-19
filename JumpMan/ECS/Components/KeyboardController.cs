@@ -24,6 +24,7 @@ namespace JumpMan.ECS.Components
         bool jumpInitiated;
         double jumpStarted;
         ScrapVector jumpForce;
+        private bool hasBounced;
 
         CollisionSystem collisionSystem;
 
@@ -75,14 +76,17 @@ namespace JumpMan.ECS.Components
                 LogService.Out($"Jump multiplier: {jumpMultiplier}");
             }
 
-            if (rigidbody.Grounded() && !jumpInitiated)
+            if (rigidbody.Grounded())
             {
-                rigidbody.AddForce(input * MOVE_FORCE);
+                hasBounced = false;
+                if (!jumpInitiated)
+                    rigidbody.AddForce(input * MOVE_FORCE);
             }
 
-            if(rigidbody.Bounce() == true)
+            if(!rigidbody.Grounded() && rigidbody.Bounce() && !hasBounced)
             {
                 rigidbody.AddForce(new ScrapVector(-jumpForce.X * 0.3d, jumpForce.Y * 0.1d));
+                hasBounced = true;
             }
 
         }
