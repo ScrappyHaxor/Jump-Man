@@ -1,4 +1,5 @@
 player:Texture2D
 placeholder:Texture2D
 placeholder2:Texture2D
+placeholder4:Texture2D
 temporary:Font

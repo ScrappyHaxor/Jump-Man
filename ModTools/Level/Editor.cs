@@ -16,7 +16,7 @@ namespace ModTools.Level
 {
     public class Editor : Scene
     {
-        public const double AutoInterval = 10000;
+        public const double AutoInterval = 120000;
 
         private LevelData data;
 

@@ -2,6 +2,7 @@
 using JumpMan.Core;
 using JumpMan.Objects;
 using ScrapBox.Framework.ECS;
+using ScrapBox.Framework.ECS.Components;
 using ScrapBox.Framework.Managers;
 using ScrapBox.Framework.Math;
 using ScrapBox.Framework.Services;
@@ -66,24 +67,32 @@ namespace JumpMan.Services
                 else if (objectID == DataType.PLATFORM)
                 {
                     if (!int.TryParse(chunks[2], out int x) || !int.TryParse(chunks[3], out int y) || 
-                        !int.TryParse(chunks[4], out int width) || !int.TryParse(chunks[5], out int height))
+                        !int.TryParse(chunks[4], out int width) || !int.TryParse(chunks[5], out int height) ||
+                        !int.TryParse(chunks[6], out int mode) || !Enum.IsDefined(typeof(SpriteMode), mode))
                     {
                         LogService.Log(App.AssemblyName, "LevelService", "DeserializeLevelFromData", $"Platform data at row: {row} in level file is invalid. Skipping...", Severity.WARNING);
                         continue;
                     }
 
-                    data.Platforms.Add(new Platform(chunks[1], new ScrapVector(x, y), new ScrapVector(width, height)));
+                    Platform p = new Platform(chunks[1], new ScrapVector(x, y), new ScrapVector(width, height));
+                    p.Sprite.Mode = (SpriteMode)mode;
+
+                    data.Platforms.Add(p);
                 }
                 else if (objectID == DataType.BACKGROUND)
                 {
                     if (!int.TryParse(chunks[2], out int x) || !int.TryParse(chunks[3], out int y) ||
-                        !int.TryParse(chunks[4], out int width) || !int.TryParse(chunks[5], out int height))
+                        !int.TryParse(chunks[4], out int width) || !int.TryParse(chunks[5], out int height) ||
+                        !int.TryParse(chunks[6], out int mode) || !Enum.IsDefined(typeof(SpriteMode), mode))
                     {
                         LogService.Log(App.AssemblyName, "LevelService", "DeserializeLevelFromData", $"Background data at row: {row} in level file is invalid. Skipping...", Severity.WARNING);
                         continue;
                     }
 
-                    data.Backgrounds.Add(new Background(chunks[1], new ScrapVector(x, y), new ScrapVector(width, height)));
+                    Background b = new Background(chunks[1], new ScrapVector(x, y), new ScrapVector(width, height));
+                    b.Sprite.Mode = (SpriteMode)mode;
+
+                    data.Backgrounds.Add(b);
                 }
                 else if (objectID == DataType.TEST_POSITION)
                 {

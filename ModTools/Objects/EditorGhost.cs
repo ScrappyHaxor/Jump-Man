@@ -21,7 +21,8 @@ namespace ModTools.Objects
 
         public List<string> PlatformTextures = new List<string>()
         {
-            "placeholder"
+            "placeholder",
+            "placeholder4"
         };
 
         public List<string> BackgroundTextures = new List<string>()
@@ -59,6 +60,7 @@ namespace ModTools.Objects
             {
                 Platform platform = new Platform(Sprite.Texture.Name, Transform.Position, Transform.Dimensions);
                 platform.Awake();
+                platform.Sprite.Mode = Sprite.Mode;
 
                 Data.Platforms.Add(platform);
             }
@@ -66,6 +68,7 @@ namespace ModTools.Objects
             {
                 Background background = new Background(Sprite.Texture.Name, Transform.Position, Transform.Dimensions);
                 background.Awake();
+                background.Sprite.Mode = Sprite.Mode;
 
                 Data.Backgrounds.Add(background);
             }

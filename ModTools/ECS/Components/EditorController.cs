@@ -139,6 +139,16 @@ namespace ModTools.ECS.Components
                 InstructionFlag = !InstructionFlag;
             }
 
+            if (InputManager.IsKeyDown(Keys.OemPlus))
+            {
+                EditorGhost.IncreaseTextureIndex(PlacingState);
+            }
+
+            if (InputManager.IsKeyDown(Keys.OemMinus))
+            {
+                EditorGhost.DecreaseTextureIndex(PlacingState);
+            }
+
             if (InputManager.IsButtonDown(ScrapBox.Framework.Input.Button.LEFT_MOUSE_BUTTON))
             {
                 EditorGhost.Place(PlacingState);

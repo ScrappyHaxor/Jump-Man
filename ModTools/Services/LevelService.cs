@@ -18,14 +18,14 @@ namespace ModTools.Services
             {
                 ScrapVector pos = p.Transform.Position;
                 ScrapVector size = p.Transform.Dimensions;
-                temp.Add($"{(int)DataType.PLATFORM};{p.Sprite.Texture.Name};{pos.X};{pos.Y};{size.X};{size.Y}");
+                temp.Add($"{(int)DataType.PLATFORM};{p.Sprite.Texture.Name};{pos.X};{pos.Y};{size.X};{size.Y};{(int)p.Sprite.Mode}");
             }
 
             foreach (Background b in data.Backgrounds)
             {
                 ScrapVector pos = b.Transform.Position;
                 ScrapVector size = b.Transform.Dimensions;
-                temp.Add($"{(int)DataType.BACKGROUND};{b.Sprite.Texture.Name};{pos.X};{pos.Y};{size.X};{size.Y}");
+                temp.Add($"{(int)DataType.BACKGROUND};{b.Sprite.Texture.Name};{pos.X};{pos.Y};{size.X};{size.Y};{(int)b.Sprite.Mode}");
             }
 
             foreach (ScrapVector position in data.TestPositions)
@@ -44,14 +44,14 @@ namespace ModTools.Services
             {
                 ScrapVector pos = p.Transform.Position;
                 ScrapVector size = p.Transform.Dimensions;
-                writer.WriteLine($"{(int)DataType.PLATFORM};{p.Sprite.Texture.Name};{pos.X};{pos.Y};{size.X};{size.Y}");
+                writer.WriteLine($"{(int)DataType.PLATFORM};{p.Sprite.Texture.Name};{pos.X};{pos.Y};{size.X};{size.Y};{(int)p.Sprite.Mode}");
             }
 
             foreach (Background b in data.Backgrounds)
             {
                 ScrapVector pos = b.Transform.Position;
                 ScrapVector size = b.Transform.Dimensions;
-                writer.WriteLine($"{(int)DataType.BACKGROUND};{b.Sprite.Texture.Name};{pos.X};{pos.Y};{size.X};{size.Y}");
+                writer.WriteLine($"{(int)DataType.BACKGROUND};{b.Sprite.Texture.Name};{pos.X};{pos.Y};{size.X};{size.Y};{(int)b.Sprite.Mode}");
             }
 
             foreach (ScrapVector position in data.TestPositions)

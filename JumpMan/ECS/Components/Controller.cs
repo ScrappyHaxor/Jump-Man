@@ -15,7 +15,7 @@ namespace JumpMan.ECS.Components
         public const double JUMP_FORCE = 3000;
         public const double MIN_JUMP_MULTIPLIER = 1;
         public const double MAX_JUMP_MULTIPLIER = 3;
-        public const double JUMP_DIRECTIONAL_DEGREE = 45;
+        public const double JUMP_DIRECTIONAL_DEGREE = 30;
 
         protected RigidBody2D rigidbody;
 

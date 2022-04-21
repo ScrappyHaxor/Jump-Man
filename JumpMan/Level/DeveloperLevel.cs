@@ -154,6 +154,11 @@ namespace JumpMan.Level
 
         public override void PreStackRender()
         {
+            base.PreStackRender();
+        }
+
+        public override void PostStackRender()
+        {
             if (editorFlag)
             {
                 Vector2 textDims = devFont.MeasureString("DEVELOPER MODE - F5 TO RETURN");
@@ -168,11 +173,6 @@ namespace JumpMan.Level
                 Renderer.RenderText(devFont, "TEST MODE - M TO RETURN", new ScrapVector(viewport.Width / 2 - textDims.X / 2, 0), Color.White);
             }
 
-            base.PreStackRender();
-        }
-
-        public override void PostStackRender()
-        {
             base.PostStackRender();
         }
     }
