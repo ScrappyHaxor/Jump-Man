@@ -2,23 +2,29 @@
 using JumpMan.ECS.Systems;
 using JumpMan.Objects;
 using ModTools.Objects;
+using ModTools.Services;
 using ModTools.UI;
 using ScrapBox.Framework;
 using ScrapBox.Framework.Level;
 using ScrapBox.Framework.Managers;
 using ScrapBox.Framework.Math;
+using System;
+using System.IO;
+using System.Threading;
 
 namespace ModTools.Level
 {
-
-
     public class Editor : Scene
     {
+        public const double AutoInterval = 10000;
+
         private LevelData data;
 
         private EditorPlayer editorPlayer;
         private EditorGhost editorGhost;
         private EditorUI editorUI;
+
+        private double lastAuto;
 
         public Editor(ScrapApp app) : base(app)
         {
@@ -71,6 +77,8 @@ namespace ModTools.Level
                 b.Awake();
             }
 
+            lastAuto = DateTimeOffset.Now.ToUnixTimeMilliseconds();
+
             editorGhost = new EditorGhost();
             editorGhost.Data = data;
             editorGhost.Awake();
@@ -113,6 +121,19 @@ namespace ModTools.Level
 
         public override void PostStackTick(double dt)
         {
+            if (DateTimeOffset.Now.ToUnixTimeMilliseconds() - lastAuto >= AutoInterval)
+            {
+                if (!Directory.Exists("autosaves"))
+                {
+                    Directory.CreateDirectory("autosaves");
+                }
+
+                Console.WriteLine("Autosave created");
+                DateTime now = DateTime.Now;
+                LevelService.SerializeLevel($"autosaves/date_{DateTime.Now.ToString("dd-MM-yy")}_time_{DateTime.Now.ToString("HH-mm-ss")}.data", data);
+                lastAuto = DateTimeOffset.Now.ToUnixTimeMilliseconds();
+            }
+
             base.PostStackTick(dt);
         }
 

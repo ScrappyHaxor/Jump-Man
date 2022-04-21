@@ -21,9 +21,11 @@ namespace JumpMan.Level
 
         private LevelData levelData;
 
-        private bool developerFlag;
-        private string[] developerMeta;
+        private bool editorFlag;
+        private string[] editorMeta;
         private SpriteFont devFont;
+
+        private bool testFlag;
 
         public DeveloperLevel(ScrapApp app)
             : base(app)
@@ -67,8 +69,8 @@ namespace JumpMan.Level
                     string[] package = (string[])args[0];
                     levelData = LevelService.DeserializeLevelFromData(package);
 
-                    developerFlag = true;
-                    developerMeta = package;
+                    editorFlag = true;
+                    editorMeta = package;
                 }
             }
             else if (args.Length == 2)
@@ -77,6 +79,8 @@ namespace JumpMan.Level
                 {
                     levelData = LevelService.DeserializeLevelFromFile(args[0].ToString());
                     levelData.Player.Transform.Position = (ScrapVector)args[1];
+
+                    testFlag = true;
                 }
             }
 
@@ -107,10 +111,15 @@ namespace JumpMan.Level
 
         public override void PreStackTick(double dt)
         {
-            if (developerFlag && InputManager.IsKeyDown(Keys.F5))
+            if (editorFlag && InputManager.IsKeyDown(Keys.F5))
             {
-                object[] container = new object[] { developerMeta };
+                object[] container = new object[] { editorMeta };
                 SceneManager.SwapScene("editor", container);
+            }
+
+            if (testFlag && InputManager.IsKeyDown(Keys.M))
+            {
+                SceneManager.SwapScene("test");
             }
 
             MainCamera.Position = new ScrapVector(MainCamera.Position.X, levelData.Player.Transform.Position.Y + CameraOffset);
@@ -125,11 +134,18 @@ namespace JumpMan.Level
 
         public override void PreStackRender()
         {
-            if (developerFlag)
+            if (editorFlag)
             {
                 Vector2 textDims = devFont.MeasureString("DEVELOPER MODE - F5 TO RETURN");
                 Rectangle viewport = Parent.Window.ClientBounds;
                 Renderer.RenderText(devFont, "DEVELOPER MODE - F5 TO RETURN", new ScrapVector(viewport.Width / 2 - textDims.X / 2, 0), Color.White);
+            }
+
+            if (testFlag)
+            {
+                Vector2 textDims = devFont.MeasureString("TEST MODE - M TO RETURN");
+                Rectangle viewport = Parent.Window.ClientBounds;
+                Renderer.RenderText(devFont, "TEST MODE - M TO RETURN", new ScrapVector(viewport.Width / 2 - textDims.X / 2, 0), Color.White);
             }
 
             base.PreStackRender();
