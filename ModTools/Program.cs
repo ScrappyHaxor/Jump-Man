@@ -1,7 +1,7 @@
 ﻿using ModTools.Core;
 using System;
 
-namespace LevelEditor
+namespace ModTools
 {
     public static class Program
     {

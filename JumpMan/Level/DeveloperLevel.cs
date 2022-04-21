@@ -12,6 +12,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ScrapBox.Framework.Math;
 using ScrapBox.Framework.Services;
+using ScrapBox.Framework.ECS.Systems;
 
 namespace JumpMan.Level
 {
@@ -26,6 +27,9 @@ namespace JumpMan.Level
         private SpriteFont devFont;
 
         private bool testFlag;
+
+        private double topOfScreen;
+        private double bottomOfScreen;
 
         public DeveloperLevel(ScrapApp app)
             : base(app)
@@ -55,6 +59,7 @@ namespace JumpMan.Level
 
         public override void Load(params object[] args)
         {
+            PhysicsSystem.Gravity = new ScrapVector(0, 14);
             MainCamera.Zoom = 0.5;
 
             if (args.Length == 1)
@@ -96,6 +101,9 @@ namespace JumpMan.Level
             
             levelData.Player.Awake();
 
+            topOfScreen =  MainCamera.Position.Y + -MainCamera.Bounds.Height;
+            bottomOfScreen = MainCamera.Position.Y + MainCamera.Bounds.Height;
+
             base.Load(args);
         }
 
@@ -122,7 +130,19 @@ namespace JumpMan.Level
                 SceneManager.SwapScene("test");
             }
 
-            MainCamera.Position = new ScrapVector(MainCamera.Position.X, levelData.Player.Transform.Position.Y + CameraOffset);
+            if (levelData.Player.Transform.Position.Y < topOfScreen)
+            {
+                MainCamera.Position += new ScrapVector(0, topOfScreen * 2);
+                bottomOfScreen = topOfScreen;
+                topOfScreen = MainCamera.Position.Y + -MainCamera.Bounds.Height;
+            }
+
+            if (levelData.Player.Transform.Position.Y > bottomOfScreen)
+            {
+                MainCamera.Position -= new ScrapVector(0, bottomOfScreen * 2);
+                topOfScreen = bottomOfScreen;
+                bottomOfScreen = MainCamera.Position.Y + MainCamera.Bounds.Height;
+            }
 
             base.PreStackTick(dt);
         }
