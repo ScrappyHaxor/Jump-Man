@@ -32,12 +32,8 @@ namespace JumpMan.Objects
         public Sprite2D Sprite;
         public KeyboardController Controller; // Make this a generic controller once other controllers are implemented.
 
-        private CollisionSystem collisionSystem;
-
         public Player(ScrapVector position) : base(SceneManager.CurrentScene.Stack.Fetch(DefaultLayers.FOREGROUND))
         {
-            collisionSystem = Layer.GetSystem<CollisionSystem>();
-
             Transform = new Transform
             {
                 Position = position,

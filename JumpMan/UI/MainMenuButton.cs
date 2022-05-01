@@ -7,8 +7,7 @@ using ScrapBox.Framework.ECS.Components;
 using ScrapBox.Framework.Level;
 using ScrapBox.Framework.Managers;
 using ScrapBox.Framework.Math;
-using ScrapBox.Framework.Services;
-using ScrapBox.Framework.Shapes;
+using Rectangle = ScrapBox.Framework.Shapes.Rectangle;
 
 namespace JumpMan.UI
 {
@@ -42,7 +41,7 @@ namespace JumpMan.UI
             {
                 BorderColor = Color.White,
                 HoverColor = Color.Gray,
-                Shape = ScrapRect.CreateFromCenter(Transform.Position, Transform.Dimensions),
+                Shape = new Rectangle(Transform.Position, Transform.Dimensions),
             };
 
             RegisterComponent(Button);
@@ -63,6 +62,8 @@ namespace JumpMan.UI
 
         public override void PreLayerTick(double dt)
         {
+            Button.Transform.Position = Transform.Position;
+            Button.Transform.Dimensions = Transform.Dimensions;
             base.PreLayerTick(dt);
         }
 

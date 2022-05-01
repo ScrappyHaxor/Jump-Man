@@ -68,6 +68,7 @@ namespace ModTools.Level
                     MenuButton button = new MenuButton(position, ScrapVector.Zero, $"Test position {i} - x: {testPosition.X} y: {testPosition.Y}");
                     Vector2 textSize = button.Label.Font.MeasureString($"Test position {i} - x: {testPosition.X} y: {testPosition.Y}");
                     button.Transform.Dimensions = new ScrapVector(ButtonWidthPadding + textSize.X, ButtonHeight);
+                    button.Button.Shape = new ScrapBox.Framework.Shapes.Rectangle(button.Transform.Position, button.Transform.Dimensions);
 
                     button.Button.Pressed += delegate (object o, EventArgs e)
                     {
@@ -92,6 +93,7 @@ namespace ModTools.Level
                 backButton = new MenuButton(backPosition, ScrapVector.Zero, "Back");
                 Vector2 size = backButton.Label.Font.MeasureString($"Back");
                 backButton.Transform.Dimensions = new ScrapVector(ButtonWidthPadding + size.X, ButtonHeight);
+                backButton.Button.Shape = new ScrapBox.Framework.Shapes.Rectangle(backButton.Transform.Position, backButton.Transform.Dimensions);
 
                 backButton.Button.Pressed += delegate (object o, EventArgs e)
                 {
@@ -113,6 +115,7 @@ namespace ModTools.Level
                     MenuButton button = new MenuButton(position, ScrapVector.Zero, Path.GetFileNameWithoutExtension(file));
                     Vector2 textSize = button.Label.Font.MeasureString(Path.GetFileNameWithoutExtension(file));
                     button.Transform.Dimensions = new ScrapVector(ButtonWidthPadding + textSize.X, ButtonHeight);
+                    button.Button.Shape = new ScrapBox.Framework.Shapes.Rectangle(button.Transform.Position, button.Transform.Dimensions);
 
                     button.Button.Pressed += delegate (object o, EventArgs e)
                     {
@@ -127,6 +130,7 @@ namespace ModTools.Level
                 backButton = new MenuButton(backPosition, ScrapVector.Zero, "Back");
                 Vector2 size = backButton.Label.Font.MeasureString($"Back");
                 backButton.Transform.Dimensions = new ScrapVector(ButtonWidthPadding + size.X, ButtonHeight);
+                backButton.Button.Shape = new ScrapBox.Framework.Shapes.Rectangle(backButton.Transform.Position, backButton.Transform.Dimensions);
 
                 backButton.Button.Pressed += delegate (object o, EventArgs e)
                 {

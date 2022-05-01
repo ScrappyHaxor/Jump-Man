@@ -58,6 +58,7 @@ namespace JumpMan.Level
                 MainMenuButton button = new MainMenuButton(position, ScrapVector.Zero, Path.GetFileNameWithoutExtension(file));
                 Vector2 textSize = button.Label.Font.MeasureString(Path.GetFileNameWithoutExtension(file));
                 button.Transform.Dimensions = new ScrapVector(ButtonWidthPadding + textSize.X, ButtonHeight);
+                button.Button.Shape = new ScrapBox.Framework.Shapes.Rectangle(button.Transform.Position, button.Transform.Dimensions);
 
                 button.Button.Pressed += delegate (object o, EventArgs e)
                 {
