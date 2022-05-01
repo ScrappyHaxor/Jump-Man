@@ -4,10 +4,7 @@ using ScrapBox.Framework.ECS.Components;
 using ScrapBox.Framework.Level;
 using ScrapBox.Framework.Managers;
 using ScrapBox.Framework.Math;
-using ScrapBox.Framework.Shapes;
-using System;
-using System.Collections.Generic;
-using System.Text;
+using Rectangle = ScrapBox.Framework.Shapes.Rectangle;
 
 namespace ModTools.UI
 {
@@ -42,7 +39,7 @@ namespace ModTools.UI
             {
                 BorderColor = Color.White,
                 HoverColor = Color.Gray,
-                Shape = ScrapRect.CreateFromCenter(Transform.Position, Transform.Dimensions),
+                Shape = new Rectangle(Transform.Position, Transform.Dimensions),
                 OutlineThickness = 2
             };
 
