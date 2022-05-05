@@ -26,24 +26,25 @@ namespace ModTools.UI
 
             RegisterComponent(Transform);
 
-            Label = new Label
-            {
-                Font = AssetManager.FetchFont("editorButtonText"),
-                Text = text,
-                TextColor = Color.White
-            };
-
-            RegisterComponent(Label);
-
             Button = new Button
             {
                 BorderColor = Color.White,
                 HoverColor = Color.Gray,
+                FillColor = Color.White,
                 Shape = new Rectangle(Transform.Position, Transform.Dimensions),
                 OutlineThickness = 2
             };
 
             RegisterComponent(Button);
+
+            Label = new Label
+            {
+                Font = AssetManager.FetchFont("editorButtonText"),
+                Text = text,
+                TextColor = Color.Black
+            };
+
+            RegisterComponent(Label);
         }
 
         public override void Awake()

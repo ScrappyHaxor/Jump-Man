@@ -24,13 +24,6 @@ namespace JumpMan.Level
         private MainMenuButton cosmetics;
         private MainMenuButton quit;
 
-        private Ellipse ellipse;
-        private ScrapBox.Framework.Shapes.Rectangle rect;
-
-        private Triangle triangle;
-
-        private Polygon complex;
-
         public MainMenu(ScrapApp app)
             : base(app)
         {
@@ -55,15 +48,6 @@ namespace JumpMan.Level
         public override void Load(params object[] args)
         {
             //Instance level things
-
-            ellipse = new Ellipse(new ScrapVector(300, 300), new ScrapVector(100, 50), 30);
-            //ellipse.Rotate(30);
-
-            rect = new ScrapBox.Framework.Shapes.Rectangle(new ScrapVector(300, 300), new ScrapVector(200, 50));
-            //rect.Rotate(45);
-
-            triangle = new Triangle(new ScrapVector(300, 300), new ScrapVector(50, 50));
-
             Renderer.ClearColor = new Color(10, 10, 10);
 
             ScrapVector buttonDimensions = new ScrapVector(120, ButtonYSize);
@@ -136,15 +120,6 @@ namespace JumpMan.Level
 
         public override void PostStackRender()
         {
-            //Renderer.RenderPolygonOutline(ellipse.Verticies, Color.Purple, MainCamera);
-            //Renderer.RenderPolygonOutline(rect.Verticies, Color.Orange, MainCamera);
-            //Renderer.RenderPolygonOutline(triangle.Verticies, Color.Blue, MainCamera);
-            //Renderer.RenderOutlineBox(new ScrapVector(300, 300), new ScrapVector(50, 50), 0, Color.White, MainCamera);
-
-            //TriangulationService.Triangulate(rect.Verticies, TriangulationMethod.EAR_CLIPPING, out int[] indicies);
-            //Renderer.RenderPolygon(rect.Verticies, indicies, Color.Purple, Color.Green, MainCamera);
-            //Renderer.RenderPolygonWireframe(rect.Verticies, indicies, Color.Purple, MainCamera);
-
             base.PostStackRender();
         }
     }
