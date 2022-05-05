@@ -29,22 +29,24 @@ namespace JumpMan.UI
 
             RegisterComponent(Transform);
 
-            Label = new Label
-            {
-                Font = AssetManager.FetchFont("temporary"),
-                Text = text
-            };
-
-            RegisterComponent(Label);
-
             Button = new Button
             {
                 BorderColor = Color.White,
                 HoverColor = Color.Gray,
+                FillColor = Color.White,
                 Shape = new Rectangle(Transform.Position, Transform.Dimensions),
             };
 
             RegisterComponent(Button);
+
+            Label = new Label
+            {
+                Font = AssetManager.FetchFont("temporary"),
+                Text = text,
+                TextColor = Color.Black
+            };
+
+            RegisterComponent(Label);
         }
 
         //When awake is called, the entity is registered to the WorldManager and is added to the game loop
