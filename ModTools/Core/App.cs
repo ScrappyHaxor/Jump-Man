@@ -1,13 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 using ScrapBox.Framework;
 using ScrapBox.Framework.Managers;
 
 using JumpMan.Level;
-using ModTools.Level;
-using JumpMan.ECS.Systems;
 using ModTools.Level;
 
 namespace ModTools.Core
