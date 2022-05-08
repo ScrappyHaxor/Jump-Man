@@ -31,6 +31,8 @@ namespace JumpMan.Level
         private double topOfScreen;
         private double bottomOfScreen;
 
+        
+
         public DeveloperLevel(ScrapApp app)
             : base(app)
         {
@@ -60,6 +62,7 @@ namespace JumpMan.Level
         public override void Load(params object[] args)
         {
             PhysicsSystem.Gravity = new ScrapVector(0, 14);
+          
             MainCamera.Zoom = 0.5;
 
             if (args.Length == 1)
@@ -100,6 +103,8 @@ namespace JumpMan.Level
             }
             
             levelData.Player.Awake();
+            Glue glue = new Glue("placeholder", ScrapVector.Zero, new ScrapVector(100, 40));
+            glue.Awake();
 
             topOfScreen =  MainCamera.Position.Y + -MainCamera.Bounds.Height;
             bottomOfScreen = MainCamera.Position.Y + MainCamera.Bounds.Height;
