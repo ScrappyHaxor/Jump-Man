@@ -62,6 +62,9 @@ namespace JumpMan.Level
             PhysicsSystem.Gravity = new ScrapVector(0, 14);
             MainCamera.Zoom = 0.5;
 
+            Platform newPlatform = new Platform("placeholder", ScrapVector.Zero, new ScrapVector(100, 40));
+            newPlatform.Awake();
+
             if (args.Length == 1)
             {
                 if (args[0].GetType() == typeof(string))
@@ -100,6 +103,9 @@ namespace JumpMan.Level
             }
             
             levelData.Player.Awake();
+
+            SomeObject testObject = new SomeObject();
+            testObject.Awake();
 
             topOfScreen =  MainCamera.Position.Y + -MainCamera.Bounds.Height;
             bottomOfScreen = MainCamera.Position.Y + MainCamera.Bounds.Height;

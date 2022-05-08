@@ -40,8 +40,6 @@ namespace JumpMan.Objects
                 Dimensions = new ScrapVector(SIZE_X, SIZE_Y)
             };
 
-            Controller.MoveForce = 40;
-
             RegisterComponent(Transform);
 
             RigidBody = new RigidBody2D
@@ -93,6 +91,7 @@ namespace JumpMan.Objects
 
         public override void PostLayerTick(double dt)
         {
+            RigidBody.AddForce(new ScrapVector(10, 0));
             base.PostLayerTick(dt);
         }
 
