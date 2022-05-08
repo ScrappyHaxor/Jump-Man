@@ -11,11 +11,17 @@ namespace JumpMan.ECS.Components
     //We abstract controller because a keyboard controller class wont have the same keybindings as an xbox controller class
     public abstract class Controller : Component
     {
-        public const double MOVE_FORCE = 100;
-        public const double JUMP_FORCE = 3000;
-        public const double MIN_JUMP_MULTIPLIER = 1;
-        public const double MAX_JUMP_MULTIPLIER = 3;
-        public const double JUMP_DIRECTIONAL_DEGREE = 30;
+        public const double DEFAULT_MOVE_FORCE = 100;
+        public const double DEFAULT_JUMP_FORCE = 3000;
+        public const double DEFAULT_MIN_JUMP_MULTIPLIER = 1;
+        public const double DEFAULT_MAX_JUMP_MULTIPLIER = 3;
+        public const double DEFAULT_JUMP_DIRECTIONAL_DEGREE = 30;
+
+        public double MoveForce = DEFAULT_MOVE_FORCE;
+        public double JumpForce = DEFAULT_JUMP_FORCE;
+        public double MinJumpMultiplier = DEFAULT_MIN_JUMP_MULTIPLIER;
+        public double MaxJumpMultiplier = DEFAULT_MAX_JUMP_MULTIPLIER;
+        public double JumpDirectionalDegree = DEFAULT_JUMP_DIRECTIONAL_DEGREE;
 
         protected RigidBody2D rigidbody;
 
