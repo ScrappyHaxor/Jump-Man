@@ -23,7 +23,7 @@ namespace JumpMan.ECS.Components
 
         bool jumpInitiated;
         double jumpStarted;
-        ScrapVector jumpForce;
+        public ScrapVector jumpForce;
         private bool hasBounced;
 
         public KeyboardController()
@@ -56,13 +56,13 @@ namespace JumpMan.ECS.Components
             {
                 jumpInitiated = false;
                 double jumpMultiplier = (DateTimeOffset.Now.ToUnixTimeMilliseconds() / 1000d) - jumpStarted;
-                jumpMultiplier = ScrapMath.Clamp(jumpMultiplier, MIN_JUMP_MULTIPLIER, MAX_JUMP_MULTIPLIER);
+                jumpMultiplier = ScrapMath.Clamp(jumpMultiplier, MinJumpMultiplier, MaxJumpMultiplier);
 
-                jumpForce = new ScrapVector(0, -JUMP_FORCE * jumpMultiplier);
+                jumpForce = new ScrapVector(0, -JumpForce * jumpMultiplier);
                 if (input != ScrapVector.Zero)
                 {
                     //Cant get this to work
-                    jumpForce = ScrapMath.RotatePoint(jumpForce, ScrapMath.ToRadians(input.X * JUMP_DIRECTIONAL_DEGREE));
+                    jumpForce = ScrapMath.RotatePoint(jumpForce, ScrapMath.ToRadians(input.X * DEFAULT_JUMP_DIRECTIONAL_DEGREE));
                     rigidbody.AddForce(jumpForce);
                 }
                 else
@@ -78,7 +78,7 @@ namespace JumpMan.ECS.Components
             {
                 hasBounced = false;
                 if (!jumpInitiated)
-                    rigidbody.AddForce(input * MOVE_FORCE);
+                    rigidbody.AddForce(input * MoveForce);
             }
 
             if(!rigidbody.Grounded() && rigidbody.Bounce() && !hasBounced)
@@ -86,7 +86,6 @@ namespace JumpMan.ECS.Components
                 rigidbody.AddForce(new ScrapVector(-jumpForce.X * 0.3d, jumpForce.Y * 0.1d));
                 hasBounced = true;
             }
-
         }
     }
 }
