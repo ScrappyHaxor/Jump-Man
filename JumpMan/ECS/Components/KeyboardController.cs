@@ -1,4 +1,5 @@
-﻿using ScrapBox.Framework.ECS;
+﻿using Microsoft.Xna.Framework.Audio;
+using ScrapBox.Framework.ECS;
 using ScrapBox.Framework.ECS.Components;
 using ScrapBox.Framework.ECS.Systems;
 using ScrapBox.Framework.Input;
@@ -58,6 +59,10 @@ namespace JumpMan.ECS.Components
                 double jumpMultiplier = (DateTimeOffset.Now.ToUnixTimeMilliseconds() / 1000d) - jumpStarted;
                 jumpMultiplier = ScrapMath.Clamp(jumpMultiplier, MinJumpMultiplier, MaxJumpMultiplier);
 
+                if (SoundManager.Jump.State == SoundState.Playing)
+                    SoundManager.Jump.Stop();
+                SoundManager.Jump.Play();
+
                 jumpForce = new ScrapVector(0, -JumpForce * jumpMultiplier);
                 if (input != ScrapVector.Zero)
                 {
@@ -85,6 +90,9 @@ namespace JumpMan.ECS.Components
             {
                 rigidbody.AddForce(new ScrapVector(-jumpForce.X * 0.3d, jumpForce.Y * 0.1d));
                 hasBounced = true;
+
+                if (SoundManager.Collision.State != SoundState.Playing)
+                    SoundManager.Collision.Play();
             }
         }
     }
