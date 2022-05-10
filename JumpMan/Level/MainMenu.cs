@@ -85,8 +85,8 @@ namespace JumpMan.Level
 
             quit.Awake();
 
-            MenuSlider slider = new MenuSlider(ScrapVector.Zero, new ScrapVector(100, 20));
-            slider.Awake();
+            //MenuSlider slider = new MenuSlider(ScrapVector.Zero, new ScrapVector(100, 20));
+            //slider.Awake();
 
             base.Load(args);
         }
