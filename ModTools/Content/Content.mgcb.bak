@@ -13,11 +13,17 @@
 
 #---------------------------------- Content ---------------------------------#
 
-#begin collision.mp3
-/importer:Mp3Importer
-/processor:SoundEffectProcessor
-/processorParam:Quality=Best
-/build:collision.mp3
+#begin Content.mgcb
+/importer:
+/processor:
+/build:Content.mgcb
+
+#begin editorBig.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:editorBig.spritefont
 
 #begin editorBig.spritefont
 /importer:FontDescriptionImporter
@@ -33,6 +39,13 @@
 /processorParam:TextureFormat=Compressed
 /build:editorButtonText.spritefont
 
+#begin editorButtonText.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:editorButtonText.spritefont
+
 #begin editorSmall.spritefont
 /importer:FontDescriptionImporter
 /processor:FontDescriptionProcessor
@@ -40,11 +53,12 @@
 /processorParam:TextureFormat=Compressed
 /build:editorSmall.spritefont
 
-#begin jumping.mp3
-/importer:Mp3Importer
-/processor:SoundEffectProcessor
-/processorParam:Quality=Best
-/build:jumping.mp3
+#begin editorSmall.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:editorSmall.spritefont
 
 #begin menu.spritefont
 /importer:FontDescriptionImporter
