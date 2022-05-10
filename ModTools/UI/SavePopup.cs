@@ -33,6 +33,8 @@ namespace ModTools.UI
 
         public Rectangle BackRect;
 
+        private Vector2 instructionTextSize;
+
         public SavePopup(ScrapVector position, ScrapVector dimensions) : base(SceneManager.CurrentScene.Stack.Fetch(DefaultLayers.UI))
         {
             Position = position;
@@ -44,8 +46,8 @@ namespace ModTools.UI
             Register.Add(SaveButton);
 
             Instruction = new EditorLabel(ScrapVector.Zero, "Enter level name");
-            Vector2 textSize = Instruction.Label.Font.MeasureString(Instruction.Label.Text);
-            Instruction.Transform.Position = new ScrapVector(position.X, position.Y - dimensions.Y / 2 + textSize.Y / 2 + OFFSET);
+            instructionTextSize = Instruction.Label.Font.MeasureString(Instruction.Label.Text);
+            Instruction.Transform.Position = new ScrapVector(position.X, position.Y - dimensions.Y / 2 + instructionTextSize.Y / 2 + OFFSET);
             Register.Add(Instruction);
 
             SaveName = new EditorTextbox(new ScrapVector(position.X, Instruction.Transform.Position.Y + TEXTBOX_HEIGHT / 2 + OFFSET * 2), new ScrapVector(dimensions.X - TEXTBOX_WIDTH_OFFSET, TEXTBOX_HEIGHT), "Level Name");
@@ -66,6 +68,11 @@ namespace ModTools.UI
         {
             BackRect.Position = Position;
             BackRect.Dimensions = Dimensions;
+
+            SaveButton.Transform.Position = new ScrapVector(Position.X, Position.Y + Dimensions.Y / 2 - BUTTON_HEIGHT / 2 - OFFSET);
+            Instruction.Transform.Position = new ScrapVector(Position.X, Position.Y - Dimensions.Y / 2 + instructionTextSize.Y / 2 + OFFSET);
+            SaveName.Transform.Position = new ScrapVector(Position.X, Instruction.Transform.Position.Y + TEXTBOX_HEIGHT / 2 + OFFSET * 2);
+
             base.PreLayerTick(dt);
         }
 

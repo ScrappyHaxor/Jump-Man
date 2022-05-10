@@ -91,7 +91,6 @@ namespace JumpMan.Objects
 
         public override void PostLayerTick(double dt)
         {
-            RigidBody.AddForce(new ScrapVector(10, 0));
             base.PostLayerTick(dt);
         }
 

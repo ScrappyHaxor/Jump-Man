@@ -90,6 +90,7 @@ namespace ModTools.ECS.Components
             {
                 SaveFlag = true;
                 EditorGhost.Sleep();
+                SavePopup.Position = SceneManager.CurrentScene.MainCamera.Position;
                 SavePopup.Awake();
 
                 SavePopup.SaveButton.Button.Pressed += delegate (object o, EventArgs e)

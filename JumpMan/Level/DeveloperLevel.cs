@@ -104,9 +104,6 @@ namespace JumpMan.Level
             
             levelData.Player.Awake();
 
-            SomeObject testObject = new SomeObject();
-            testObject.Awake();
-
             topOfScreen =  MainCamera.Position.Y + -MainCamera.Bounds.Height;
             bottomOfScreen = MainCamera.Position.Y + MainCamera.Bounds.Height;
 
@@ -138,15 +135,15 @@ namespace JumpMan.Level
 
             if (levelData.Player.Transform.Position.Y < topOfScreen)
             {
-                MainCamera.Position += new ScrapVector(0, topOfScreen * 2);
-                bottomOfScreen = topOfScreen;
+                MainCamera.Position += new ScrapVector(0, -MainCamera.Bounds.Height * 2);
                 topOfScreen = MainCamera.Position.Y + -MainCamera.Bounds.Height;
+                bottomOfScreen = MainCamera.Position.Y + MainCamera.Bounds.Height;
             }
 
             if (levelData.Player.Transform.Position.Y > bottomOfScreen)
             {
-                MainCamera.Position -= new ScrapVector(0, bottomOfScreen * 2);
-                topOfScreen = bottomOfScreen;
+                MainCamera.Position -= new ScrapVector(0, MainCamera.Bounds.Height * 2);
+                topOfScreen = MainCamera.Position.Y + -MainCamera.Bounds.Height;
                 bottomOfScreen = MainCamera.Position.Y + MainCamera.Bounds.Height;
             }
 
