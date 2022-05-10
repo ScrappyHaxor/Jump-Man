@@ -65,6 +65,9 @@ namespace JumpMan.Level
           
             MainCamera.Zoom = 0.5;
 
+            Platform newPlatform = new Platform("placeholder", ScrapVector.Zero, new ScrapVector(100, 40));
+            newPlatform.Awake();
+
             if (args.Length == 1)
             {
                 if (args[0].GetType() == typeof(string))
@@ -137,15 +140,15 @@ namespace JumpMan.Level
 
             if (levelData.Player.Transform.Position.Y < topOfScreen)
             {
-                MainCamera.Position += new ScrapVector(0, topOfScreen * 2);
-                bottomOfScreen = topOfScreen;
+                MainCamera.Position += new ScrapVector(0, -MainCamera.Bounds.Height * 2);
                 topOfScreen = MainCamera.Position.Y + -MainCamera.Bounds.Height;
+                bottomOfScreen = MainCamera.Position.Y + MainCamera.Bounds.Height;
             }
 
             if (levelData.Player.Transform.Position.Y > bottomOfScreen)
             {
-                MainCamera.Position -= new ScrapVector(0, bottomOfScreen * 2);
-                topOfScreen = bottomOfScreen;
+                MainCamera.Position -= new ScrapVector(0, MainCamera.Bounds.Height * 2);
+                topOfScreen = MainCamera.Position.Y + -MainCamera.Bounds.Height;
                 bottomOfScreen = MainCamera.Position.Y + MainCamera.Bounds.Height;
             }
 

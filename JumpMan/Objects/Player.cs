@@ -40,8 +40,6 @@ namespace JumpMan.Objects
                 Dimensions = new ScrapVector(SIZE_X, SIZE_Y)
             };
 
-            Controller.MoveForce = 40;
-
             RegisterComponent(Transform);
 
             RigidBody = new RigidBody2D
