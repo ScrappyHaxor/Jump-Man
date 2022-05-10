@@ -6,6 +6,7 @@ using ModTools.Objects;
 using ModTools.Services;
 using ModTools.UI;
 using ScrapBox.Framework;
+using ScrapBox.Framework.ECS;
 using ScrapBox.Framework.Level;
 using ScrapBox.Framework.Managers;
 using ScrapBox.Framework.Math;
@@ -98,6 +99,18 @@ namespace ModTools.Level
             editorUI.EditorGhost = editorGhost;
             editorUI.EditorPlayer = editorPlayer;
             editorUI.Awake();
+
+            if (!data.Player.IsAwake)
+            {
+                data.Player = new Player(ScrapVector.Zero);
+                data.Player.RigidBody.IsStatic = true;
+                data.Player.Awake();
+            }
+
+            foreach (Entity t in data.Traps)
+            {
+                t.Awake();
+            }
 
             base.Load(args);
         }

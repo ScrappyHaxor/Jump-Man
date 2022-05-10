@@ -11,7 +11,7 @@ using static ScrapBox.Framework.ECS.Collider;
 
 namespace JumpMan.Objects
 {
-    class FeetBouncePlatform : Entity
+    public class FeetBouncePlatform : Entity
     {
         public override string Name => "Tileable Platform";
 

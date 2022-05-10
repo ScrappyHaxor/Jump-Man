@@ -23,7 +23,12 @@ namespace ModTools.ECS.Components
         PLATFORMS,
         BACKGROUNDS,
         PLAYER,
-        TEST_POSITION
+        TEST_POSITION,
+        GLUE,
+        ILLUSION,
+        KNOCKBACK_LEFT,
+        KNOCKBACK_RIGHT,
+        BOUNCE
     }
 
     public class EditorController : Controller
@@ -189,6 +194,17 @@ namespace ModTools.ECS.Components
                 {
                     if (Data.TestPositions.Contains(EditorGhost.Transform.Position))
                         Data.TestPositions.Remove(EditorGhost.Transform.Position);
+                }
+                else if (PlacingState == Placing.GLUE)
+                {
+                    RayResult result = foregroundCollision.Raycast(new PointRay(EditorGhost.Transform.Position));
+                    if (result.hit && result.other.GetType() == typeof(Glue))
+                    {
+                        Glue glueTrap = (Glue)result.other;
+                        glueTrap.Sleep();
+
+                        Data.Traps.Remove(glueTrap);
+                    }
                 }
             }
 

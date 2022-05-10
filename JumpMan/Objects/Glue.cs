@@ -84,6 +84,8 @@ namespace JumpMan.Objects
         {
 
             success = Dependency<Player>(out Player);
+            if (!success)
+                return;
 
             base.Awake();
         }
