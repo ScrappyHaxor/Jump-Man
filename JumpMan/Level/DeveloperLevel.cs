@@ -13,6 +13,7 @@ using Microsoft.Xna.Framework.Graphics;
 using ScrapBox.Framework.Math;
 using ScrapBox.Framework.Services;
 using ScrapBox.Framework.ECS.Systems;
+using ScrapBox.Framework.ECS;
 
 namespace JumpMan.Level
 {
@@ -65,9 +66,6 @@ namespace JumpMan.Level
           
             MainCamera.Zoom = 0.5;
 
-            Platform newPlatform = new Platform("placeholder", ScrapVector.Zero, new ScrapVector(100, 40));
-            newPlatform.Awake();
-
             if (args.Length == 1)
             {
                 if (args[0].GetType() == typeof(string))
@@ -106,8 +104,11 @@ namespace JumpMan.Level
             }
             
             levelData.Player.Awake();
-            Glue glue = new Glue("placeholder", ScrapVector.Zero, new ScrapVector(100, 40));
-            glue.Awake();
+
+            foreach (Entity t in levelData.Traps)
+            {
+                t.Awake();
+            }
 
             topOfScreen =  MainCamera.Position.Y + -MainCamera.Bounds.Height;
             bottomOfScreen = MainCamera.Position.Y + MainCamera.Bounds.Height;
@@ -147,7 +148,7 @@ namespace JumpMan.Level
 
             if (levelData.Player.Transform.Position.Y > bottomOfScreen)
             {
-                MainCamera.Position -= new ScrapVector(0, MainCamera.Bounds.Height * 2);
+                MainCamera.Position += new ScrapVector(0, MainCamera.Bounds.Height * 2);
                 topOfScreen = MainCamera.Position.Y + -MainCamera.Bounds.Height;
                 bottomOfScreen = MainCamera.Position.Y + MainCamera.Bounds.Height;
             }

@@ -19,7 +19,17 @@ namespace JumpMan.Services
         PLAYER,
         PLATFORM,
         BACKGROUND,
-        TEST_POSITION
+        TEST_POSITION,
+        TRAP
+    }
+
+    public enum TrapType
+    {
+        GLUE,
+        ILLUSION,
+        KNOCKBACK_LEFT,
+        KNOCKBACK_RIGHT,
+        BOUNCE_PLATFORM
     }
 
     public static partial class LevelService
@@ -38,6 +48,7 @@ namespace JumpMan.Services
                 //PLATFORM: objectID(1);textureName;xPosition;yPosition;width;height
                 //BACKGROUND: objectID(2);textureName;xPosition;yPosition;width;height
                 //TEST_POSITION: objectID(3);xPosition;yPosition
+                //TRAP: objectID(4);TrapType;textureName;xPosition;yPosition;width;height
 
                 int rawObjectID;
                 if (!int.TryParse(chunks[0], out rawObjectID))
@@ -103,6 +114,46 @@ namespace JumpMan.Services
                     }
 
                     data.TestPositions.Add(new ScrapVector(x, y));
+                }
+                else if (objectID == DataType.TRAP)
+                {
+                    if (!int.TryParse(chunks[1], out int trapIndex) || !int.TryParse(chunks[3], out int x) || !int.TryParse(chunks[4], out int y)
+                        || !int.TryParse(chunks[5], out int width) || !int.TryParse(chunks[6], out int height))
+                    {
+                        LogService.Log(App.AssemblyName, "LevelService", "DeserializeLevelFromData", $"Trap data at row: {row} in level file is invalid. Skipping...", Severity.WARNING);
+                        continue;
+                    }
+
+                    if (!Enum.IsDefined(typeof(TrapType), trapIndex))
+                    {
+                        LogService.Log(App.AssemblyName, "LevelService", "DeserializeLevelFromData", $"Row {row} in level file has out of range trap indicator. Skipping...", Severity.WARNING);
+                        continue;
+                    }
+
+                    Entity loadedTrap = null;
+                    TrapType convertedIndex = (TrapType)trapIndex;
+                    if (convertedIndex == TrapType.GLUE)
+                    {
+                        loadedTrap = new Glue(chunks[2].ToString(), new ScrapVector(x, y), new ScrapVector(width, height));
+                    }
+                    else if (convertedIndex == TrapType.ILLUSION)
+                    {
+                        loadedTrap = new IllusionPlatform(chunks[2].ToString(), new ScrapVector(x, y), new ScrapVector(width, height));
+                    }
+                    else if (convertedIndex == TrapType.KNOCKBACK_LEFT)
+                    {
+                        loadedTrap = new KnockBackPlatformLeft(chunks[2].ToString(), new ScrapVector(x, y), new ScrapVector(width, height));
+                    }
+                    else if (convertedIndex == TrapType.KNOCKBACK_RIGHT)
+                    {
+                        loadedTrap = new KnockBackPlatformRight(chunks[2].ToString(), new ScrapVector(x, y), new ScrapVector(width, height));
+                    }
+                    else if (convertedIndex == TrapType.BOUNCE_PLATFORM)
+                    {
+                        loadedTrap = new FeetBouncePlatform(chunks[2].ToString(), new ScrapVector(x, y), new ScrapVector(width, height));
+                    }
+
+                    data.Traps.Add(loadedTrap);
                 }
 
                 row++;

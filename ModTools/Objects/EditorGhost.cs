@@ -30,8 +30,15 @@ namespace ModTools.Objects
             "placeholder2"
         };
 
+        public List<string> TrapTextures = new List<string>()
+        {
+            "placeholder",
+            "placeholder4"
+        };
+
         public int PlatformTextureIndex;
         public int BackgroundTextureIndex;
+        public int TrapTextureIndex;
 
         public override string Name => "Editor Ghost";
 
@@ -88,6 +95,41 @@ namespace ModTools.Objects
             {
                 Data.TestPositions.Add(Transform.Position);
             }
+            else if (placingState == Placing.GLUE)
+            {
+                Glue trap = new Glue(Sprite.Texture.Name, Transform.Position, Transform.Dimensions);
+                trap.Awake();
+
+                Data.Traps.Add(trap);
+            }
+            else if (placingState == Placing.ILLUSION)
+            {
+                IllusionPlatform trap = new IllusionPlatform(Sprite.Texture.Name, Transform.Position, Transform.Dimensions);
+                trap.Awake();
+
+                Data.Traps.Add(trap);
+            }
+            else if (placingState == Placing.KNOCKBACK_LEFT)
+            {
+                KnockBackPlatformLeft trap = new KnockBackPlatformLeft(Sprite.Texture.Name, Transform.Position, Transform.Dimensions);
+                trap.Awake();
+
+                Data.Traps.Add(trap);
+            }
+            else if (placingState == Placing.KNOCKBACK_RIGHT)
+            {
+                KnockBackPlatformRight trap = new KnockBackPlatformRight(Sprite.Texture.Name, Transform.Position, Transform.Dimensions);
+                trap.Awake();
+
+                Data.Traps.Add(trap);
+            }
+            else if (placingState == Placing.BOUNCE)
+            {
+                FeetBouncePlatform trap = new FeetBouncePlatform(Sprite.Texture.Name, Transform.Position, Transform.Dimensions);
+                trap.Awake();
+
+                Data.Traps.Add(trap);
+            }
         }
 
         public void IncreaseTextureIndex(Placing placingState)
@@ -111,6 +153,17 @@ namespace ModTools.Objects
                 }
 
                 Sprite.Texture = AssetManager.FetchTexture(BackgroundTextures[BackgroundTextureIndex]);
+            }
+            else if (placingState == Placing.GLUE || placingState == Placing.ILLUSION || placingState == Placing.KNOCKBACK_LEFT ||
+                placingState == Placing.KNOCKBACK_RIGHT || placingState == Placing.BOUNCE)
+            {
+                TrapTextureIndex++;
+                if (TrapTextureIndex > TrapTextures.Count - 1)
+                {
+                    TrapTextureIndex = 0;
+                }
+
+                Sprite.Texture = AssetManager.FetchTexture(TrapTextures[TrapTextureIndex]);
             }
         }
 
@@ -136,6 +189,17 @@ namespace ModTools.Objects
 
                 Sprite.Texture = AssetManager.FetchTexture(BackgroundTextures[BackgroundTextureIndex]);
             }
+            else if (placingState == Placing.GLUE || placingState == Placing.ILLUSION || placingState == Placing.KNOCKBACK_LEFT ||
+                placingState == Placing.KNOCKBACK_RIGHT || placingState == Placing.BOUNCE)
+            {
+                TrapTextureIndex--;
+                if (TrapTextureIndex < 0)
+                {
+                    TrapTextureIndex = TrapTextures.Count - 1;
+                }
+
+                Sprite.Texture = AssetManager.FetchTexture(TrapTextures[TrapTextureIndex]);
+            }
         }
 
         public void ChangeToState(Placing placingState)
@@ -158,6 +222,11 @@ namespace ModTools.Objects
             else if (placingState == Placing.TEST_POSITION)
             {
                 Sprite.Texture = AssetManager.FetchTexture(TEST_TEXTURE_NAME);
+                Transform.Dimensions = new ScrapVector(Sprite.Texture.Width, Sprite.Texture.Height);
+            }
+            else if (placingState == Placing.GLUE)
+            {
+                Sprite.Texture = AssetManager.FetchTexture(TrapTextures[TrapTextureIndex]);
                 Transform.Dimensions = new ScrapVector(Sprite.Texture.Width, Sprite.Texture.Height);
             }
         }
