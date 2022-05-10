@@ -23,7 +23,7 @@ namespace JumpMan.ECS.Components
 
         bool jumpInitiated;
         double jumpStarted;
-        ScrapVector jumpForce;
+        public ScrapVector jumpForce;
         private bool hasBounced;
 
         public KeyboardController()
@@ -86,7 +86,6 @@ namespace JumpMan.ECS.Components
                 rigidbody.AddForce(new ScrapVector(-jumpForce.X * 0.3d, jumpForce.Y * 0.1d));
                 hasBounced = true;
             }
-
         }
     }
 }
