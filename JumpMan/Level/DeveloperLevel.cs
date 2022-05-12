@@ -104,6 +104,8 @@ namespace JumpMan.Level
             }
             
             levelData.Player.Awake();
+            Teleportplatform teleport= new Teleportplatform("placeholder", ScrapVector.Zero, new ScrapVector(100, 40));
+            teleport.Awake();
 
             foreach (Entity t in levelData.Traps)
             {
