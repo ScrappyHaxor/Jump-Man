@@ -1,2 +1,6 @@
 menuButton:Font
 menu:Font
+temporary:Font
+temporaryBig:Font
+temporaryBigger:Font
+temporaryBiggest:Font

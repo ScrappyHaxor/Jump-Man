@@ -11,8 +11,11 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
+    <Compile Remove="Level-Files\**" />
     <Compile Remove="Resource-Files\**" />
+    <EmbeddedResource Remove="Level-Files\**" />
     <EmbeddedResource Remove="Resource-Files\**" />
+    <None Remove="Level-Files\**" />
     <None Remove="Resource-Files\**" />
   </ItemGroup>
   <ItemGroup>

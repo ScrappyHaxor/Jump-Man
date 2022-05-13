@@ -91,13 +91,28 @@ namespace ModTools.Objects
 
             if (EditorPlayer.Controller.PlacingState == Placing.PLATFORMS)
             {
+                string evaluation = EditorGhost.GhostPlatformFlag ? "Yes" : "No";
                 Renderer.RenderText(editorFontSmall, $"Platform Size: {EditorGhost.Transform.Dimensions.X} {EditorGhost.Transform.Dimensions.Y}", new ScrapVector(10, 95), Color.White);
                 Renderer.RenderText(editorFontSmall, $"Platform Texture: {EditorGhost.PlatformTextures[EditorGhost.PlatformTextureIndex]}", new ScrapVector(10, 115), Color.White);
+                Renderer.RenderText(editorFontSmall, $"Platform Ghost: {evaluation}", new ScrapVector(10, 135), Color.White);
+
             }
             else if (EditorPlayer.Controller.PlacingState == Placing.BACKGROUNDS)
             {
                 Renderer.RenderText(editorFontSmall, $"Background Size: {EditorGhost.Transform.Dimensions.X} {EditorGhost.Transform.Dimensions.Y}", new ScrapVector(10, 95), Color.White);
                 Renderer.RenderText(editorFontSmall, $"Background Texture: {EditorGhost.BackgroundTextures[EditorGhost.BackgroundTextureIndex]}", new ScrapVector(10, 115), Color.White);
+            }
+            else if (EditorPlayer.Controller.PlacingState == Placing.MOVING_PLATFORMS)
+            {
+                Renderer.RenderText(editorFontSmall, $"Moving Platform Extent: {EditorGhost.Extent}", new ScrapVector(10, 95), Color.White);
+                Renderer.RenderText(editorFontSmall, $"Moving Platform Step: {EditorGhost.Step}", new ScrapVector(10, 115), Color.White);
+                Renderer.RenderText(editorFontSmall, $"Moving Platform Axis Flipped: {EditorGhost.AxisFlippedFlag}", new ScrapVector(10, 135), Color.White);
+            }
+            else if (EditorPlayer.Controller.PlacingState == Placing.SCROLLING)
+            {
+                string evaluation = EditorGhost.IsLeft ? "Left" : "Right";
+                Renderer.RenderText(editorFontSmall, $"Scrolling Platform Direction: {evaluation}", new ScrapVector(10, 95), Color.White);
+                Renderer.RenderText(editorFontSmall, $"Scrolling Platform Speed: {EditorGhost.ScrollSpeed}", new ScrapVector(10, 115), Color.White);
             }
 
             Renderer.RenderText(editorFontBig, "Controls", new ScrapVector(10, 165), Color.White);
@@ -115,6 +130,12 @@ namespace ModTools.Objects
                 Renderer.RenderText(editorFontSmall, $"Control + S - Save level", new ScrapVector(10, 345), Color.White);
                 Renderer.RenderText(editorFontSmall, $"E - Change sprite mode", new ScrapVector(10, 365), Color.White);
                 Renderer.RenderText(editorFontSmall, $"M - Back to menu", new ScrapVector(10, 385), Color.White);
+                Renderer.RenderText(editorFontSmall, $"Insert - Decrease trap stat 1", new ScrapVector(10, 405), Color.White);
+                Renderer.RenderText(editorFontSmall, $"Home - Toggle trap mode", new ScrapVector(10, 425), Color.White);
+                Renderer.RenderText(editorFontSmall, $"PgUp - Increase trap stat 1", new ScrapVector(10, 445), Color.White);
+                Renderer.RenderText(editorFontSmall, $"Delete - Decrease trap stat 2", new ScrapVector(10, 465), Color.White);
+                Renderer.RenderText(editorFontSmall, $"PgDown - Increase trap stat 2", new ScrapVector(10, 485), Color.White);
+                Renderer.RenderText(editorFontSmall, $"End - Toggle sprite for platforms", new ScrapVector(10, 505), Color.White);
             }
             else
             {

@@ -18,6 +18,7 @@ namespace JumpMan.Services
     {
         PLAYER,
         PLATFORM,
+        MOVING_PLATFORM,
         BACKGROUND,
         TEST_POSITION,
         TRAP,
@@ -28,9 +29,9 @@ namespace JumpMan.Services
     {
         GLUE,
         ILLUSION,
-        KNOCKBACK_LEFT,
-        KNOCKBACK_RIGHT,
-        BOUNCE_PLATFORM
+        SCROLLING,
+        BOUNCE,
+        TELEPORT
     }
 
     public static partial class LevelService
@@ -47,11 +48,11 @@ namespace JumpMan.Services
                 string[] chunks = rawData.Split(";");
                 //Each row is structured differently with an identifier at the start corresponding to the enum DATA_TYPE (referred to as objectID)
                 //PLAYER: objectID(0);xPosition;yPosition
-                //PLATFORM: objectID(1);textureName;xPosition;yPosition;width;height
-                //MOVING PLATFORM: objectID(1);textureName;xPosition;yPosition;width;height
-                //BACKGROUND: objectID(2);textureName;xPosition;yPosition;width;height
+                //PLATFORM: objectID(1);textureName;xPosition;yPosition;width;height;mode;ghost
+                //MOVING PLATFORM: objectID(1);textureName;xPosition;yPosition;width;height;mode;extent;step;axisFlipped
+                //BACKGROUND: objectID(2);textureName;xPosition;yPosition;width;height;mode
                 //TEST_POSITION: objectID(3);xPosition;yPosition
-                //TRAP: objectID(4);TrapType;textureName;xPosition;yPosition;width;height
+                //TRAP: objectID(4);TrapType;textureName;xPosition;yPosition;width;height (IsLeft, ScrollSpeed): ScrollingPlatform
                 //LEVEL_END: objectID(5);xPosition;yPosition;width;height
 
                 int rawObjectID;
@@ -83,7 +84,8 @@ namespace JumpMan.Services
                 {
                     if (!int.TryParse(chunks[2], out int x) || !int.TryParse(chunks[3], out int y) || 
                         !int.TryParse(chunks[4], out int width) || !int.TryParse(chunks[5], out int height) ||
-                        !int.TryParse(chunks[6], out int mode) || !Enum.IsDefined(typeof(SpriteMode), mode))
+                        !int.TryParse(chunks[6], out int mode) || !Enum.IsDefined(typeof(SpriteMode), mode) ||
+                        !bool.TryParse(chunks[7], out bool ghost))
                     {
                         LogService.Log(App.AssemblyName, "LevelService", "DeserializeLevelFromData", $"Platform data at row: {row} in level file is invalid. Skipping...", Severity.WARNING);
                         continue;
@@ -91,8 +93,32 @@ namespace JumpMan.Services
 
                     Platform p = new Platform(chunks[1], new ScrapVector(x, y), new ScrapVector(width, height));
                     p.Sprite.Mode = (SpriteMode)mode;
-
+                    if (ghost)
+                    {
+                        p.PurgeComponent(p.Sprite);
+                    }
+                    
                     data.Platforms.Add(p);
+                }
+                else if (objectID == DataType.MOVING_PLATFORM)
+                {
+                    if (!int.TryParse(chunks[2], out int x) || !int.TryParse(chunks[3], out int y) || 
+                        !int.TryParse(chunks[4], out int width) || !int.TryParse(chunks[5], out int height) ||
+                        !int.TryParse(chunks[6], out int mode) || !Enum.IsDefined(typeof(SpriteMode), mode) ||
+                        !int.TryParse(chunks[7], out int extent) || !int.TryParse(chunks[8], out int step) ||
+                        !bool.TryParse(chunks[9], out bool axisFlipped))
+                    {
+                        LogService.Log(App.AssemblyName, "LevelService", "DeserializeLevelFromData", $"Moving platform data at row: {row} in level file is invalid. Skipping...", Severity.WARNING);
+                        continue;
+                    }
+
+                    MovingPlatform movingPlatform = new MovingPlatform(chunks[1], new ScrapVector(x, y), new ScrapVector(width, height));
+                    movingPlatform.Sprite.Mode = (SpriteMode)mode;
+                    movingPlatform.Extent = extent;
+                    movingPlatform.Step = step;
+                    movingPlatform.AxisFlippedFlag = axisFlipped;
+
+                    data.MovingPlatforms.Add(movingPlatform);
                 }
                 else if (objectID == DataType.BACKGROUND)
                 {
@@ -142,19 +168,28 @@ namespace JumpMan.Services
                     }
                     else if (convertedIndex == TrapType.ILLUSION)
                     {
-                        loadedTrap = new IllusionPlatform(chunks[2].ToString(), new ScrapVector(x, y), new ScrapVector(width, height));
+                        loadedTrap = new Platform(chunks[2].ToString(), new ScrapVector(x, y), new ScrapVector(width, height));
+                        ((Platform)loadedTrap).Collider.Layer = SceneManager.CurrentScene.Stack.Fetch(DefaultLayers.BACKGROUND);
                     }
-                    else if (convertedIndex == TrapType.KNOCKBACK_LEFT)
+                    else if (convertedIndex == TrapType.SCROLLING)
                     {
-                        loadedTrap = new KnockBackPlatformLeft(chunks[2].ToString(), new ScrapVector(x, y), new ScrapVector(width, height));
+                        if (!bool.TryParse(chunks[7], out bool isLeft) || !double.TryParse(chunks[8], out double scrollSpeed))
+                        {
+                            LogService.Log(App.AssemblyName, "LevelService", "DeserializeLevelFromData", $"Trap data at row: {row} in level file is invalid. Skipping...", Severity.WARNING);
+                            continue;
+                        }
+
+                        loadedTrap = new ScrollingPlatform(chunks[2].ToString(), new ScrapVector(x, y), new ScrapVector(width, height));
+                        ((ScrollingPlatform)loadedTrap).IsLeft = isLeft;
+                        ((ScrollingPlatform)loadedTrap).ScrollSpeed = scrollSpeed;
                     }
-                    else if (convertedIndex == TrapType.KNOCKBACK_RIGHT)
-                    {
-                        loadedTrap = new KnockBackPlatformRight(chunks[2].ToString(), new ScrapVector(x, y), new ScrapVector(width, height));
-                    }
-                    else if (convertedIndex == TrapType.BOUNCE_PLATFORM)
+                    else if (convertedIndex == TrapType.BOUNCE)
                     {
                         loadedTrap = new FeetBouncePlatform(chunks[2].ToString(), new ScrapVector(x, y), new ScrapVector(width, height));
+                    }
+                    else if (convertedIndex == TrapType.TELEPORT)
+                    {
+                        loadedTrap = new TeleportPlatform(chunks[2].ToString(), new ScrapVector(x, y), new ScrapVector(width, height));
                     }
 
                     data.Traps.Add(loadedTrap);

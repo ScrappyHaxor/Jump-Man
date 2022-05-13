@@ -19,7 +19,14 @@ namespace ModTools.Services
             {
                 ScrapVector pos = p.Transform.Position;
                 ScrapVector size = p.Transform.Dimensions;
-                temp.Add($"{(int)DataType.PLATFORM};{p.Sprite.Texture.Name};{pos.X};{pos.Y};{size.X};{size.Y};{(int)p.Sprite.Mode}");
+                temp.Add($"{(int)DataType.PLATFORM};{p.Sprite.Texture.Name};{pos.X};{pos.Y};{size.X};{size.Y};{(int)p.Sprite.Mode};{p.IsGhost}");
+            }
+
+            foreach (MovingPlatform movingPlatform in data.MovingPlatforms)
+            {
+                ScrapVector pos = movingPlatform.Transform.Position;
+                ScrapVector size = movingPlatform.Transform.Dimensions;
+                temp.Add($"{(int)DataType.MOVING_PLATFORM};{movingPlatform.Sprite.Texture.Name};{pos.X};{pos.Y};{size.X};{size.Y};{(int)movingPlatform.Sprite.Mode};{movingPlatform.Extent};{movingPlatform.Step};{movingPlatform.AxisFlippedFlag}");
             }
 
             foreach (Background b in data.Backgrounds)
@@ -36,47 +43,31 @@ namespace ModTools.Services
 
             foreach (Entity trap in data.Traps)
             {
-                TrapType type = TrapType.GLUE;
-                string texture = string.Empty;
-                ScrapVector position = ScrapVector.Zero;
-                ScrapVector dimensions = ScrapVector.Zero;
                 if (trap.GetType() == typeof(Glue))
                 {
-                    type = TrapType.GLUE;
-                    texture = ((Glue)trap).Sprite.Texture.Name;
-                    position = ((Glue)trap).Transform.Position;
-                    dimensions = ((Glue)trap).Transform.Dimensions;
+                    Glue convertedTrap = (Glue)trap;
+                    temp.Add($"{(int)DataType.TRAP};{(int)TrapType.GLUE};{convertedTrap.Sprite.Texture.Name};{convertedTrap.Transform.Position.X};{convertedTrap.Transform.Position.Y};{convertedTrap.Transform.Dimensions.X};{convertedTrap.Transform.Dimensions.Y}");
                 }
-                else if (trap.GetType() == typeof(IllusionPlatform))
+                else if (trap.GetType() == typeof(Platform))
                 {
-                    type = TrapType.ILLUSION;
-                    texture = ((IllusionPlatform)trap).Sprite.Texture.Name;
-                    position = ((IllusionPlatform)trap).Transform.Position;
-                    dimensions = ((IllusionPlatform)trap).Transform.Dimensions;
+                    Platform convertedTrap = (Platform)trap;
+                    temp.Add($"{(int)DataType.TRAP};{(int)TrapType.ILLUSION};{convertedTrap.Sprite.Texture.Name};{convertedTrap.Transform.Position.X};{convertedTrap.Transform.Position.Y};{convertedTrap.Transform.Dimensions.X};{convertedTrap.Transform.Dimensions.Y}");
                 }
-                else if (trap.GetType() == typeof(KnockBackPlatformLeft))
+                else if (trap.GetType() == typeof(ScrollingPlatform))
                 {
-                    type = TrapType.KNOCKBACK_LEFT;
-                    texture = ((KnockBackPlatformLeft)trap).Sprite.Texture.Name;
-                    position = ((KnockBackPlatformLeft)trap).Transform.Position;
-                    dimensions = ((KnockBackPlatformLeft)trap).Transform.Dimensions;
-                }
-                else if (trap.GetType() == typeof(KnockBackPlatformRight))
-                {
-                    type = TrapType.KNOCKBACK_RIGHT;
-                    texture = ((KnockBackPlatformRight)trap).Sprite.Texture.Name;
-                    position = ((KnockBackPlatformRight)trap).Transform.Position;
-                    dimensions = ((KnockBackPlatformRight)trap).Transform.Dimensions;
+                    ScrollingPlatform convertedTrap = (ScrollingPlatform)trap;
+                    temp.Add($"{(int)DataType.TRAP};{(int)TrapType.SCROLLING};{convertedTrap.Sprite.Texture.Name};{convertedTrap.Transform.Position.X};{convertedTrap.Transform.Position.Y};{convertedTrap.Transform.Dimensions.X};{convertedTrap.Transform.Dimensions.Y};{convertedTrap.IsLeft};{convertedTrap.ScrollSpeed}");
                 }
                 else if (trap.GetType() == typeof(FeetBouncePlatform))
                 {
-                    type = TrapType.BOUNCE_PLATFORM;
-                    texture = ((FeetBouncePlatform)trap).Sprite.Texture.Name;
-                    position = ((FeetBouncePlatform)trap).Transform.Position;
-                    dimensions = ((FeetBouncePlatform)trap).Transform.Dimensions;
+                    FeetBouncePlatform convertedTrap = (FeetBouncePlatform)trap;
+                    temp.Add($"{(int)DataType.TRAP};{(int)TrapType.BOUNCE};{convertedTrap.Sprite.Texture.Name};{convertedTrap.Transform.Position.X};{convertedTrap.Transform.Position.Y};{convertedTrap.Transform.Dimensions.X};{convertedTrap.Transform.Dimensions.Y}");
                 }
-
-                temp.Add($"{(int)DataType.TRAP};{(int)type};{texture};{position.X};{position.Y};{dimensions.X};{dimensions.Y}");
+                else if (trap.GetType() == typeof(TeleportPlatform))
+                {
+                    TeleportPlatform convertedTrap = (TeleportPlatform)trap;
+                    temp.Add($"{(int)DataType.TRAP};{(int)TrapType.TELEPORT};{convertedTrap.Sprite.Texture.Name};{convertedTrap.Transform.Position.X};{convertedTrap.Transform.Position.Y};{convertedTrap.Transform.Dimensions.X};{convertedTrap.Transform.Dimensions.Y}");
+                }
             }
 
             temp.Add($"{(int)DataType.LEVEL_END};{data.EndOfLevel.Transform.Position.X};{data.EndOfLevel.Transform.Position.Y};{data.EndOfLevel.Transform.Dimensions.X};{data.EndOfLevel.Transform.Dimensions.Y}");
@@ -92,7 +83,14 @@ namespace ModTools.Services
             {
                 ScrapVector pos = p.Transform.Position;
                 ScrapVector size = p.Transform.Dimensions;
-                writer.WriteLine($"{(int)DataType.PLATFORM};{p.Sprite.Texture.Name};{pos.X};{pos.Y};{size.X};{size.Y};{(int)p.Sprite.Mode}");
+                writer.WriteLine($"{(int)DataType.PLATFORM};{p.Sprite.Texture.Name};{pos.X};{pos.Y};{size.X};{size.Y};{(int)p.Sprite.Mode};{p.IsGhost}");
+            }
+
+            foreach (MovingPlatform movingPlatform in data.MovingPlatforms)
+            {
+                ScrapVector pos = movingPlatform.Transform.Position;
+                ScrapVector size = movingPlatform.Transform.Dimensions;
+                writer.WriteLine($"{(int)DataType.MOVING_PLATFORM};{movingPlatform.Sprite.Texture.Name};{pos.X};{pos.Y};{size.X};{size.Y};{(int)movingPlatform.Sprite.Mode};{movingPlatform.Extent};{movingPlatform.Step};{movingPlatform.AxisFlippedFlag}");
             }
 
             foreach (Background b in data.Backgrounds)
@@ -109,47 +107,31 @@ namespace ModTools.Services
 
             foreach (Entity trap in data.Traps)
             {
-                TrapType type = TrapType.GLUE;
-                string texture = string.Empty;
-                ScrapVector position = ScrapVector.Zero;
-                ScrapVector dimensions = ScrapVector.Zero;
                 if (trap.GetType() == typeof(Glue))
                 {
-                    type = TrapType.GLUE;
-                    texture = ((Glue)trap).Sprite.Texture.Name;
-                    position = ((Glue)trap).Transform.Position;
-                    dimensions = ((Glue)trap).Transform.Dimensions;
+                    Glue convertedTrap = (Glue)trap;
+                    writer.WriteLine($"{(int)DataType.TRAP};{(int)TrapType.GLUE};{convertedTrap.Sprite.Texture.Name};{convertedTrap.Transform.Position.X};{convertedTrap.Transform.Position.Y};{convertedTrap.Transform.Dimensions.X};{convertedTrap.Transform.Dimensions.Y}");
                 }
-                else if (trap.GetType() == typeof(IllusionPlatform))
+                else if (trap.GetType() == typeof(Platform))
                 {
-                    type = TrapType.ILLUSION;
-                    texture = ((IllusionPlatform)trap).Sprite.Texture.Name;
-                    position = ((IllusionPlatform)trap).Transform.Position;
-                    dimensions = ((IllusionPlatform)trap).Transform.Dimensions;
+                    Platform convertedTrap = (Platform)trap;
+                    writer.WriteLine($"{(int)DataType.TRAP};{(int)TrapType.ILLUSION};{convertedTrap.Sprite.Texture.Name};{convertedTrap.Transform.Position.X};{convertedTrap.Transform.Position.Y};{convertedTrap.Transform.Dimensions.X};{convertedTrap.Transform.Dimensions.Y}");
                 }
-                else if (trap.GetType() == typeof(KnockBackPlatformLeft))
+                else if (trap.GetType() == typeof(ScrollingPlatform))
                 {
-                    type = TrapType.KNOCKBACK_LEFT;
-                    texture = ((KnockBackPlatformLeft)trap).Sprite.Texture.Name;
-                    position = ((KnockBackPlatformLeft)trap).Transform.Position;
-                    dimensions = ((KnockBackPlatformLeft)trap).Transform.Dimensions;
-                }
-                else if (trap.GetType() == typeof(KnockBackPlatformRight))
-                {
-                    type = TrapType.KNOCKBACK_RIGHT;
-                    texture = ((KnockBackPlatformRight)trap).Sprite.Texture.Name;
-                    position = ((KnockBackPlatformRight)trap).Transform.Position;
-                    dimensions = ((KnockBackPlatformRight)trap).Transform.Dimensions;
+                    ScrollingPlatform convertedTrap = (ScrollingPlatform)trap;
+                    writer.WriteLine($"{(int)DataType.TRAP};{(int)TrapType.SCROLLING};{convertedTrap.Sprite.Texture.Name};{convertedTrap.Transform.Position.X};{convertedTrap.Transform.Position.Y};{convertedTrap.Transform.Dimensions.X};{convertedTrap.Transform.Dimensions.Y};{convertedTrap.IsLeft};{convertedTrap.ScrollSpeed}");
                 }
                 else if (trap.GetType() == typeof(FeetBouncePlatform))
                 {
-                    type = TrapType.BOUNCE_PLATFORM;
-                    texture = ((FeetBouncePlatform)trap).Sprite.Texture.Name;
-                    position = ((FeetBouncePlatform)trap).Transform.Position;
-                    dimensions = ((FeetBouncePlatform)trap).Transform.Dimensions;
+                    FeetBouncePlatform convertedTrap = (FeetBouncePlatform)trap;
+                    writer.WriteLine($"{(int)DataType.TRAP};{(int)TrapType.BOUNCE};{convertedTrap.Sprite.Texture.Name};{convertedTrap.Transform.Position.X};{convertedTrap.Transform.Position.Y};{convertedTrap.Transform.Dimensions.X};{convertedTrap.Transform.Dimensions.Y}");
                 }
-
-                writer.WriteLine($"{(int)DataType.TRAP};{(int)type};{texture};{position.X};{position.Y};{dimensions.X};{dimensions.Y}");
+                else if (trap.GetType() == typeof(TeleportPlatform))
+                {
+                    TeleportPlatform convertedTrap = (TeleportPlatform)trap;
+                    writer.WriteLine($"{(int)DataType.TRAP};{(int)TrapType.TELEPORT};{convertedTrap.Sprite.Texture.Name};{convertedTrap.Transform.Position.X};{convertedTrap.Transform.Position.Y};{convertedTrap.Transform.Dimensions.X};{convertedTrap.Transform.Dimensions.Y}");
+                }
             }
 
             writer.WriteLine($"{(int)DataType.LEVEL_END};{data.EndOfLevel.Transform.Position.X};{data.EndOfLevel.Transform.Position.Y};{data.EndOfLevel.Transform.Dimensions.X};{data.EndOfLevel.Transform.Dimensions.Y}");

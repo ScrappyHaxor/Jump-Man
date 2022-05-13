@@ -17,8 +17,8 @@ namespace JumpMan.Level
     {
         public readonly string[] LevelPool =
         {
-            "fallbackLevel",
-            "level1"
+            "level1",
+            "level2"
         };
 
 

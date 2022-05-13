@@ -13,9 +13,11 @@ using static ScrapBox.Framework.ECS.Collider;
 
 namespace JumpMan.Objects
 {
-    public class KnockBackPlatformLeft : Entity
+    public class ScrollingPlatform : Entity
     {
         public override string Name => "Tileable Platform";
+
+        public double ScrollSpeed = 100;
 
         public Transform Transform;
         public Sprite2D Sprite;
@@ -24,7 +26,9 @@ namespace JumpMan.Objects
         public Player player;
         bool success;
 
-        public KnockBackPlatformLeft(string texture, ScrapVector position, ScrapVector dimensions) : base(SceneManager.CurrentScene.Stack.Fetch(DefaultLayers.FOREGROUND))
+        public bool IsLeft;
+
+        public ScrollingPlatform(string texture, ScrapVector position, ScrapVector dimensions) : base(SceneManager.CurrentScene.Stack.Fetch(DefaultLayers.FOREGROUND))
         {
             Transform = new Transform
             {
@@ -75,7 +79,15 @@ namespace JumpMan.Objects
             base.PreLayerTick(dt);
             if (Collision.IntersectPolygons(Collider.GetVerticies(), player.Collider.GetVerticies(), out CollisionManifold manifold) && success)
             {
-                player.RigidBody.AddForce(new ScrapVector(-100, 0));
+                if (IsLeft)
+                {
+                    player.RigidBody.AddForce(new ScrapVector(-ScrollSpeed, 0));
+                }
+                else
+                {
+                    player.RigidBody.AddForce(new ScrapVector(ScrollSpeed, 0));
+                }
+                
             }
 
 

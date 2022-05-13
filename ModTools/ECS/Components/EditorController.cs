@@ -21,14 +21,15 @@ namespace ModTools.ECS.Components
     public enum Placing
     {
         PLATFORMS,
+        MOVING_PLATFORMS,
         BACKGROUNDS,
         PLAYER,
         TEST_POSITION,
         GLUE,
         ILLUSION,
-        KNOCKBACK_LEFT,
-        KNOCKBACK_RIGHT,
+        SCROLLING,
         BOUNCE,
+        TELEPORT,
         LEVEL_END
     }
 
@@ -175,6 +176,17 @@ namespace ModTools.ECS.Components
                     }
 
                 }
+                else if (PlacingState == Placing.MOVING_PLATFORMS)
+                {
+                    RayResult result = foregroundCollision.Raycast(new PointRay(EditorGhost.Transform.Position));
+                    if (result.hit && result.other.GetType() == typeof(MovingPlatform))
+                    {
+                        MovingPlatform platform = (MovingPlatform)result.other;
+                        platform.Sleep();
+
+                        Data.MovingPlatforms.Remove(platform);
+                    }
+                }
                 else if (PlacingState == Placing.BACKGROUNDS)
                 {
                     RayResult result = backgroundCollision.Raycast(new PointRay(EditorGhost.Transform.Position));
@@ -210,34 +222,23 @@ namespace ModTools.ECS.Components
                 else if (PlacingState == Placing.ILLUSION)
                 {
                     RayResult result = backgroundCollision.Raycast(new PointRay(EditorGhost.Transform.Position));
-                    if (result.hit && result.other.GetType() == typeof(IllusionPlatform))
+                    if (result.hit && result.other.GetType() == typeof(Platform))
                     {
-                        IllusionPlatform illusionTrap = (IllusionPlatform)result.other;
+                        Platform illusionTrap = (Platform)result.other;
                         illusionTrap.Sleep();
 
                         Data.Traps.Remove(illusionTrap);
                     }
                 }
-                else if (PlacingState == Placing.KNOCKBACK_LEFT)
+                else if (PlacingState == Placing.SCROLLING)
                 {
                     RayResult result = foregroundCollision.Raycast(new PointRay(EditorGhost.Transform.Position));
-                    if (result.hit && result.other.GetType() == typeof(KnockBackPlatformLeft))
+                    if (result.hit && result.other.GetType() == typeof(ScrollingPlatform))
                     {
-                        KnockBackPlatformLeft leftKnockbackTrap = (KnockBackPlatformLeft)result.other;
-                        leftKnockbackTrap.Sleep();
+                        ScrollingPlatform scrollingPlatform = (ScrollingPlatform)result.other;
+                        scrollingPlatform.Sleep();
 
-                        Data.Traps.Remove(leftKnockbackTrap);
-                    }
-                }
-                else if (PlacingState == Placing.KNOCKBACK_RIGHT)
-                {
-                    RayResult result = foregroundCollision.Raycast(new PointRay(EditorGhost.Transform.Position));
-                    if (result.hit && result.other.GetType() == typeof(KnockBackPlatformRight))
-                    {
-                        KnockBackPlatformRight rightKnockbackTrap = (KnockBackPlatformRight)result.other;
-                        rightKnockbackTrap.Sleep();
-
-                        Data.Traps.Remove(rightKnockbackTrap);
+                        Data.Traps.Remove(scrollingPlatform);
                     }
                 }
                 else if (PlacingState == Placing.BOUNCE)
@@ -249,6 +250,17 @@ namespace ModTools.ECS.Components
                         bounceTrap.Sleep();
 
                         Data.Traps.Remove(bounceTrap);
+                    }
+                }
+                else if (PlacingState == Placing.TELEPORT)
+                {
+                    RayResult result = foregroundCollision.Raycast(new PointRay(EditorGhost.Transform.Position));
+                    if (result.hit && result.other.GetType() == typeof(TeleportPlatform))
+                    {
+                        TeleportPlatform teleTrap = (TeleportPlatform)result.other;
+                        teleTrap.Sleep();
+
+                        Data.Traps.Remove(teleTrap);
                     }
                 }
                 else if (PlacingState == Placing.LEVEL_END)

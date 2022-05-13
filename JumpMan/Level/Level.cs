@@ -123,6 +123,11 @@ namespace JumpMan.Level
             
             levelData.Player.Awake();
 
+            foreach (MovingPlatform movingPlatform in levelData.MovingPlatforms)
+            {
+                movingPlatform.Awake();
+            }
+
             foreach (Entity t in levelData.Traps)
             {
                 t.Awake();

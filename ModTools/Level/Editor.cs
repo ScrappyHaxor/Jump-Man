@@ -107,6 +107,12 @@ namespace ModTools.Level
                 data.Player.Awake();
             }
 
+            foreach (MovingPlatform movingPlatform in data.MovingPlatforms)
+            {
+                movingPlatform.OverrideFlag = true;
+                movingPlatform.Awake();
+            }
+
             foreach (Entity t in data.Traps)
             {
                 t.Awake();
