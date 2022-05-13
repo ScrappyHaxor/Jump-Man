@@ -13,21 +13,27 @@ using ScrapBox.Framework.ECS.Components;
 using System.Text;
 using JumpMan.ECS.Systems;
 using System.Linq;
+using JumpMan.UI;
 
 namespace ModTools.Level
 {
     public class Test : Scene
     {
-        public const double VerticalOffset = -400;
-        public const double InitialVerticalSeparationOffset = 50;
-        public const double VerticalSeparationOffset = 40;
+        public const double OffsetY = -500;
 
-        public const double ButtonWidthPadding = 60;
-        public const double ButtonHeight = 25;
+        public const double buttonWidth = 850;
+        public const double buttonHeight = 100;
+        public const double ButtonYOffset = buttonHeight + 40;
 
-        private MenuLabel mainLabel;
-        private List<MenuButton> buttons;
-        private MenuButton backButton;
+        private GenericLabel mainLabel;
+        private GenericButton levelButton;
+        private List<string> levelFiles;
+        private List<ScrapVector> testPositions;
+        private GenericButton testButton;
+        private GenericButton backButton;
+
+        private int levelIndex;
+        private int testIndex;
 
         public Test(ScrapApp app) : base(app)
         {
@@ -51,50 +57,49 @@ namespace ModTools.Level
 
         public override void Load(params object[] args)
         {
-            buttons = new List<MenuButton>();
+            MainCamera.Zoom = 0.5;
+
+            levelFiles = new List<string>();
+            testPositions = new List<ScrapVector>();
+
             if (args.Length == 1 && args[0].GetType() == typeof(string))
             {
-                List<ScrapVector> positions = new List<ScrapVector>();
-                mainLabel = new MenuLabel(new ScrapVector(0, VerticalOffset), "Select a test position");
+                mainLabel = new GenericLabel(new ScrapVector(0, OffsetY - 60), ScrapVector.Zero, "Select a test position");
+                mainLabel.Label.Font = AssetManager.FetchFont("temporaryBiggest");
                 mainLabel.Awake();
 
                 LevelData deserialized = LevelService.DeserializeLevelFromFile(args[0].ToString());
                 for (int i = 0; i < deserialized.TestPositions.Count; i++)
                 {
                     ScrapVector testPosition = deserialized.TestPositions[i];
-                    positions.Add(testPosition);
-                    ScrapVector position = new ScrapVector(0, VerticalOffset + InitialVerticalSeparationOffset + VerticalSeparationOffset * (i + 1));
-
-                    MenuButton button = new MenuButton(position, ScrapVector.Zero, $"Test position {i} - x: {testPosition.X} y: {testPosition.Y}");
-                    Vector2 textSize = button.Label.Font.MeasureString($"Test position {i} - x: {testPosition.X} y: {testPosition.Y}");
-                    button.Transform.Dimensions = new ScrapVector(ButtonWidthPadding + textSize.X, ButtonHeight);
-                    button.Button.Shape = new ScrapBox.Framework.Shapes.Rectangle(button.Transform.Position, button.Transform.Dimensions);
-
-                    button.Button.Pressed += delegate (object o, EventArgs e)
-                    {
-                        SceneManager.SwapScene("test level", args[0].ToString(), positions[buttons.IndexOf((MenuButton)((Button)o).Owner)]);
-                    };
-
-                    button.Awake();
-                    buttons.Add(button);
+                    testPositions.Add(testPosition);
                 }
 
-                ScrapVector backPosition;
-                if (buttons.LastOrDefault() != null)
+                levelButton = new GenericButton(new ScrapVector(0, OffsetY + ButtonYOffset * 1), new ScrapVector(buttonWidth, buttonHeight), $"{testPositions[testIndex]}");
+                levelButton.Label.Font = AssetManager.FetchFont("temporaryBigger");
+                levelButton.Button.Pressed += delegate (object o, EventArgs e)
                 {
-                    backPosition = new ScrapVector(0, buttons.LastOrDefault().Transform.Position.Y + VerticalSeparationOffset);
-                }
-                else
-                {
-                    backPosition = new ScrapVector(0, VerticalOffset + InitialVerticalSeparationOffset);
-                }
+                    testIndex++;
+                    if (testIndex == testPositions.Count)
+                        testIndex = 0;
 
-                
-                backButton = new MenuButton(backPosition, ScrapVector.Zero, "Back");
+                    levelButton.Label.Text = $"{testPositions[testIndex]}";
+                };
+                levelButton.Awake();
+
+                testButton = new GenericButton(new ScrapVector(0, OffsetY + ButtonYOffset * 2), new ScrapVector(buttonWidth, buttonHeight), "Test Level");
+                testButton.Label.Font = AssetManager.FetchFont("temporaryBigger");
+                testButton.Button.Pressed += delegate (object o, EventArgs e)
+                {
+                    SceneManager.SwapScene("test level", args[0].ToString(), testPositions[testIndex]);
+                };
+                testButton.Awake();
+
+                backButton = new GenericButton(new ScrapVector(0, OffsetY + ButtonYOffset * 3), ScrapVector.Zero, "Back");
                 Vector2 size = backButton.Label.Font.MeasureString($"Back");
-                backButton.Transform.Dimensions = new ScrapVector(ButtonWidthPadding + size.X, ButtonHeight);
+                backButton.Transform.Dimensions = new ScrapVector(buttonWidth, buttonHeight);
                 backButton.Button.Shape = new ScrapBox.Framework.Shapes.Rectangle(backButton.Transform.Position, backButton.Transform.Dimensions);
-
+                backButton.Label.Font = AssetManager.FetchFont("temporaryBigger");
                 backButton.Button.Pressed += delegate (object o, EventArgs e)
                 {
                     SceneManager.SwapScene("test");
@@ -103,34 +108,43 @@ namespace ModTools.Level
             }
             else
             {
-                mainLabel = new MenuLabel(new ScrapVector(0, VerticalOffset), "Select a level to test");
+                mainLabel = new GenericLabel(new ScrapVector(0, OffsetY - 60), ScrapVector.Zero, "Select a level to test");
+                mainLabel.Label.Font = AssetManager.FetchFont("temporaryBiggest");
                 mainLabel.Awake();
 
                 string[] files = Directory.GetFiles("Levels\\");
                 for (int i = 0; i < files.Length; i++)
                 {
                     string file = files[i];
-                    ScrapVector position = new ScrapVector(0, VerticalOffset + InitialVerticalSeparationOffset + VerticalSeparationOffset * (i + 1));
-
-                    MenuButton button = new MenuButton(position, ScrapVector.Zero, Path.GetFileNameWithoutExtension(file));
-                    Vector2 textSize = button.Label.Font.MeasureString(Path.GetFileNameWithoutExtension(file));
-                    button.Transform.Dimensions = new ScrapVector(ButtonWidthPadding + textSize.X, ButtonHeight);
-                    button.Button.Shape = new ScrapBox.Framework.Shapes.Rectangle(button.Transform.Position, button.Transform.Dimensions);
-
-                    button.Button.Pressed += delegate (object o, EventArgs e)
-                    {
-                        SceneManager.SwapScene("test", $"{button.Label.Text}.data");
-                    };
-
-                    button.Awake();
-                    buttons.Add(button);
+                    levelFiles.Add(Path.GetFileNameWithoutExtension(file));
                 }
 
-                ScrapVector backPosition = new ScrapVector(0, buttons.LastOrDefault().Transform.Position.Y + VerticalSeparationOffset);
-                backButton = new MenuButton(backPosition, ScrapVector.Zero, "Back");
+                levelButton = new GenericButton(new ScrapVector(0, OffsetY + ButtonYOffset * 1), new ScrapVector(buttonWidth, buttonHeight), levelFiles[levelIndex]);
+                levelButton.Label.Font = AssetManager.FetchFont("temporaryBigger");
+                levelButton.Button.Pressed += delegate (object o, EventArgs e)
+                {
+                    levelIndex++;
+                    if (levelIndex == levelFiles.Count)
+                        levelIndex = 0;
+
+                    levelButton.Label.Text = levelFiles[levelIndex];
+                };
+                levelButton.Awake();
+
+                testButton = new GenericButton(new ScrapVector(0, OffsetY + ButtonYOffset * 2), new ScrapVector(buttonWidth, buttonHeight), "Test Level");
+                testButton.Label.Font = AssetManager.FetchFont("temporaryBigger");
+                testButton.Button.Pressed += delegate (object o, EventArgs e)
+                {
+                    SceneManager.SwapScene("test", $"{levelFiles[levelIndex]}.data");
+                };
+                testButton.Awake();
+
+                ScrapVector backPosition = new ScrapVector(0, OffsetY + ButtonYOffset * 3);
+                backButton = new GenericButton(backPosition, ScrapVector.Zero, "Back");
                 Vector2 size = backButton.Label.Font.MeasureString($"Back");
-                backButton.Transform.Dimensions = new ScrapVector(ButtonWidthPadding + size.X, ButtonHeight);
+                backButton.Transform.Dimensions = new ScrapVector(buttonWidth, buttonHeight);
                 backButton.Button.Shape = new ScrapBox.Framework.Shapes.Rectangle(backButton.Transform.Position, backButton.Transform.Dimensions);
+                backButton.Label.Font = AssetManager.FetchFont("temporaryBigger");
 
                 backButton.Button.Pressed += delegate (object o, EventArgs e)
                 {

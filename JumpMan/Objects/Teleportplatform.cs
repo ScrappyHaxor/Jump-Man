@@ -11,7 +11,7 @@ using static ScrapBox.Framework.ECS.Collider;
 
 namespace JumpMan.Objects
 {
-    public class Teleportplatform : Entity
+    public class TeleportPlatform : Entity
     {
     
        
@@ -25,7 +25,7 @@ namespace JumpMan.Objects
             public Player player;
         public bool succes;
 
-            public Teleportplatform(string texture, ScrapVector position, ScrapVector dimensions) : base(SceneManager.CurrentScene.Stack.Fetch(DefaultLayers.FOREGROUND))
+            public TeleportPlatform(string texture, ScrapVector position, ScrapVector dimensions) : base(SceneManager.CurrentScene.Stack.Fetch(DefaultLayers.FOREGROUND))
             {
                 Transform = new Transform
                 {

@@ -1,9 +1,11 @@
 ﻿using JumpMan.Container;
 using JumpMan.Objects;
+using Microsoft.Xna.Framework;
 using ModTools.Core;
 using ModTools.ECS.Components;
 using ScrapBox.Framework.ECS;
 using ScrapBox.Framework.ECS.Components;
+using ScrapBox.Framework.Input;
 using ScrapBox.Framework.Level;
 using ScrapBox.Framework.Managers;
 using ScrapBox.Framework.Math;
@@ -20,7 +22,26 @@ namespace ModTools.Objects
         public const string TEST_TEXTURE_NAME = "placeholder3";
         public const string END_TEXTURE_NAME = "placeholder5";
 
+        public const double MAX_EXTENT = 100000;
+        public const double MIN_EXTENT = 100;
+
+        public const double MAX_STEP = 100;
+        public const double MIN_STEP = 1;
+
+        public const double MAX_SCROLL_SPEED = 10000;
+        public const double MIN_SCROLL_SPEED = 50;
+
+        public const double EXTENT_CHANGE = 10;
+        public const double STEP_CHANGE = 1;
+        public const double SCROLL_SPEED_CHANGE = 10;
+
         public List<string> PlatformTextures = new List<string>()
+        {
+            "placeholder",
+            "placeholder4"
+        };
+
+        public List<string> MovingPlatformTextures = new List<string>()
         {
             "placeholder",
             "placeholder4"
@@ -38,8 +59,18 @@ namespace ModTools.Objects
         };
 
         public int PlatformTextureIndex;
+        public int MovingPlatformTextureIndex;
         public int BackgroundTextureIndex;
         public int TrapTextureIndex;
+
+        public double Extent;
+        public double Step;
+        public bool AxisFlippedFlag;
+
+        public double ScrollSpeed;
+        public bool IsLeft;
+
+        public bool GhostPlatformFlag;
 
         public override string Name => "Editor Ghost";
 
@@ -47,6 +78,8 @@ namespace ModTools.Objects
         public Sprite2D Sprite;
 
         public LevelData Data;
+
+        private Placing lastPlacing;
 
 
         public EditorGhost() : base(SceneManager.CurrentScene.Stack.Fetch(DefaultLayers.FOREGROUND))
@@ -67,10 +100,27 @@ namespace ModTools.Objects
             if (placingState == Placing.PLATFORMS)
             {
                 Platform platform = new Platform(Sprite.Texture.Name, Transform.Position, Transform.Dimensions);
+                if (GhostPlatformFlag)
+                {
+                    platform.IsGhost = true;
+                    platform.PurgeComponent(platform.Sprite);
+                }
                 platform.Awake();
                 platform.Sprite.Mode = Sprite.Mode;
 
                 Data.Platforms.Add(platform);
+            }
+            else if (placingState == Placing.MOVING_PLATFORMS)
+            {
+                MovingPlatform platform = new MovingPlatform(Sprite.Texture.Name, Transform.Position, Transform.Dimensions);
+                platform.OverrideFlag = true;
+                platform.Extent = Extent;
+                platform.Step = Step;
+                platform.AxisFlippedFlag = AxisFlippedFlag;
+                platform.Awake();
+                platform.Sprite.Mode = Sprite.Mode;
+
+                Data.MovingPlatforms.Add(platform);
             }
             else if (placingState == Placing.BACKGROUNDS)
             {
@@ -105,21 +155,17 @@ namespace ModTools.Objects
             }
             else if (placingState == Placing.ILLUSION)
             {
-                IllusionPlatform trap = new IllusionPlatform(Sprite.Texture.Name, Transform.Position, Transform.Dimensions);
+                Platform trap = new Platform(Sprite.Texture.Name, Transform.Position, Transform.Dimensions);
+                trap.Collider.Layer = SceneManager.CurrentScene.Stack.Fetch(DefaultLayers.BACKGROUND);
                 trap.Awake();
 
                 Data.Traps.Add(trap);
             }
-            else if (placingState == Placing.KNOCKBACK_LEFT)
+            else if (placingState == Placing.SCROLLING)
             {
-                KnockBackPlatformLeft trap = new KnockBackPlatformLeft(Sprite.Texture.Name, Transform.Position, Transform.Dimensions);
-                trap.Awake();
-
-                Data.Traps.Add(trap);
-            }
-            else if (placingState == Placing.KNOCKBACK_RIGHT)
-            {
-                KnockBackPlatformRight trap = new KnockBackPlatformRight(Sprite.Texture.Name, Transform.Position, Transform.Dimensions);
+                ScrollingPlatform trap = new ScrollingPlatform(Sprite.Texture.Name, Transform.Position, Transform.Dimensions);
+                trap.ScrollSpeed = ScrollSpeed;
+                trap.IsLeft = IsLeft;
                 trap.Awake();
 
                 Data.Traps.Add(trap);
@@ -127,6 +173,13 @@ namespace ModTools.Objects
             else if (placingState == Placing.BOUNCE)
             {
                 FeetBouncePlatform trap = new FeetBouncePlatform(Sprite.Texture.Name, Transform.Position, Transform.Dimensions);
+                trap.Awake();
+
+                Data.Traps.Add(trap);
+            }
+            else if (placingState == Placing.TELEPORT)
+            {
+                TeleportPlatform trap = new TeleportPlatform(Sprite.Texture.Name, Transform.Position, Transform.Dimensions);
                 trap.Awake();
 
                 Data.Traps.Add(trap);
@@ -159,6 +212,16 @@ namespace ModTools.Objects
 
                 Sprite.Texture = AssetManager.FetchTexture(PlatformTextures[PlatformTextureIndex]);
             }
+            else if (placingState == Placing.MOVING_PLATFORMS)
+            {
+                MovingPlatformTextureIndex++;
+                if (MovingPlatformTextureIndex > MovingPlatformTextures.Count - 1)
+                {
+                    MovingPlatformTextureIndex = 0;
+                }
+
+                Sprite.Texture = AssetManager.FetchTexture(MovingPlatformTextures[MovingPlatformTextureIndex]);
+            }
             else if (placingState == Placing.BACKGROUNDS)
             {
                 BackgroundTextureIndex++;
@@ -169,8 +232,8 @@ namespace ModTools.Objects
 
                 Sprite.Texture = AssetManager.FetchTexture(BackgroundTextures[BackgroundTextureIndex]);
             }
-            else if (placingState == Placing.GLUE || placingState == Placing.ILLUSION || placingState == Placing.KNOCKBACK_LEFT ||
-                placingState == Placing.KNOCKBACK_RIGHT || placingState == Placing.BOUNCE)
+            else if (placingState == Placing.GLUE || placingState == Placing.ILLUSION || placingState == Placing.SCROLLING || 
+                placingState == Placing.BOUNCE || placingState == Placing.TELEPORT)
             {
                 TrapTextureIndex++;
                 if (TrapTextureIndex > TrapTextures.Count - 1)
@@ -194,6 +257,16 @@ namespace ModTools.Objects
 
                 Sprite.Texture = AssetManager.FetchTexture(PlatformTextures[PlatformTextureIndex]);
             }
+            else if (placingState == Placing.MOVING_PLATFORMS)
+            {
+                MovingPlatformTextureIndex--;
+                if (MovingPlatformTextureIndex < 0)
+                {
+                    MovingPlatformTextureIndex = MovingPlatformTextures.Count - 1;
+                }
+
+                Sprite.Texture = AssetManager.FetchTexture(MovingPlatformTextures[MovingPlatformTextureIndex]);
+            }
             else if (placingState == Placing.BACKGROUNDS)
             {
                 BackgroundTextureIndex--;
@@ -204,8 +277,8 @@ namespace ModTools.Objects
 
                 Sprite.Texture = AssetManager.FetchTexture(BackgroundTextures[BackgroundTextureIndex]);
             }
-            else if (placingState == Placing.GLUE || placingState == Placing.ILLUSION || placingState == Placing.KNOCKBACK_LEFT ||
-                placingState == Placing.KNOCKBACK_RIGHT || placingState == Placing.BOUNCE)
+            else if (placingState == Placing.GLUE || placingState == Placing.ILLUSION || placingState == Placing.SCROLLING ||
+                placingState == Placing.BOUNCE || placingState == Placing.TELEPORT)
             {
                 TrapTextureIndex--;
                 if (TrapTextureIndex < 0)
@@ -219,9 +292,16 @@ namespace ModTools.Objects
 
         public void ChangeToState(Placing placingState)
         {
+            lastPlacing = placingState;
+
             if (placingState == Placing.PLATFORMS)
             {
                 Sprite.Texture = AssetManager.FetchTexture(PlatformTextures[PlatformTextureIndex]);
+                Transform.Dimensions = new ScrapVector(Sprite.Texture.Width, Sprite.Texture.Height);
+            }
+            else if (placingState == Placing.MOVING_PLATFORMS)
+            {
+                Sprite.Texture = AssetManager.FetchTexture(MovingPlatformTextures[MovingPlatformTextureIndex]);
                 Transform.Dimensions = new ScrapVector(Sprite.Texture.Width, Sprite.Texture.Height);
             }
             else if (placingState == Placing.BACKGROUNDS)
@@ -239,8 +319,8 @@ namespace ModTools.Objects
                 Sprite.Texture = AssetManager.FetchTexture(TEST_TEXTURE_NAME);
                 Transform.Dimensions = new ScrapVector(Sprite.Texture.Width, Sprite.Texture.Height);
             }
-            else if (placingState == Placing.GLUE || placingState == Placing.ILLUSION || placingState == Placing.KNOCKBACK_LEFT ||
-                placingState == Placing.KNOCKBACK_RIGHT || placingState == Placing.BOUNCE)
+            else if (placingState == Placing.GLUE || placingState == Placing.ILLUSION || placingState == Placing.SCROLLING ||
+                placingState == Placing.BOUNCE || placingState == Placing.TELEPORT)
             {
                 Sprite.Texture = AssetManager.FetchTexture(TrapTextures[TrapTextureIndex]);
                 Transform.Dimensions = new ScrapVector(Sprite.Texture.Width, Sprite.Texture.Height);
@@ -277,6 +357,52 @@ namespace ModTools.Objects
 
         public override void PreLayerTick(double dt)
         {
+            Extent = ScrapMath.Clamp(Extent, MIN_EXTENT, MAX_EXTENT);
+            Step = ScrapMath.Clamp(Step, MIN_STEP, MAX_STEP);
+            ScrollSpeed = ScrapMath.Clamp(ScrollSpeed, MIN_SCROLL_SPEED, MAX_SCROLL_SPEED);
+
+            if (InputManager.IsKeyDown(Keys.Delete))
+            {
+                if (lastPlacing == Placing.MOVING_PLATFORMS)
+                    Extent -= EXTENT_CHANGE;
+            }
+            
+            if (InputManager.IsKeyDown(Keys.PageDown))
+            {
+                if (lastPlacing == Placing.MOVING_PLATFORMS)
+                    Extent += EXTENT_CHANGE;
+            }
+
+            if (InputManager.IsKeyDown(Keys.Insert))
+            {
+                if (lastPlacing == Placing.MOVING_PLATFORMS)
+                    Step -= STEP_CHANGE;
+                else if (lastPlacing == Placing.SCROLLING)
+                    ScrollSpeed -= SCROLL_SPEED_CHANGE;
+
+            }
+
+            if (InputManager.IsKeyDown(Keys.PageUp))
+            {
+                if (lastPlacing == Placing.MOVING_PLATFORMS)
+                    Step += STEP_CHANGE;
+                else if (lastPlacing == Placing.SCROLLING)
+                    ScrollSpeed += SCROLL_SPEED_CHANGE;
+            }
+
+            if (InputManager.IsKeyDown(Keys.Home))
+            {
+                if (lastPlacing == Placing.MOVING_PLATFORMS)
+                    AxisFlippedFlag = !AxisFlippedFlag;
+                else if (lastPlacing == Placing.SCROLLING)
+                    IsLeft = !IsLeft;
+            }
+
+            if (InputManager.IsKeyDown(Keys.End))
+            {
+                GhostPlatformFlag = !GhostPlatformFlag;
+            }
+
             base.PreLayerTick(dt);
         }
 
@@ -292,9 +418,44 @@ namespace ModTools.Objects
 
         public override void PostLayerRender(Camera camera)
         {
+            foreach (Platform platform in Data.Platforms)
+            {
+                if (!platform.Sprite.IsAwake)
+                {
+                    TriangulationService.Triangulate(platform.Collider.GetVerticies(), TriangulationMethod.EAR_CLIPPING, out int[] indicies);
+                    Renderer.RenderPolygonWireframe(platform.Collider.GetVerticies(), indicies, Color.Red, camera, null, 2);
+                }
+            }
+
             foreach (ScrapVector position in Data.TestPositions)
             {
                 Renderer.RenderSprite(AssetManager.FetchTexture(TEST_TEXTURE_NAME), position, camera);
+            }
+
+            foreach (MovingPlatform platform in Data.MovingPlatforms)
+            {
+                if (!platform.AxisFlippedFlag)
+                {
+                    Renderer.RenderLine(platform.Transform.Position - new ScrapVector(platform.Transform.Dimensions.X / 2 + platform.Extent, 0), platform.Transform.Position + new ScrapVector(platform.Transform.Dimensions.X / 2 + platform.Extent, 0), Color.Green, camera, null, 5);
+                }
+                else
+                {
+                    Renderer.RenderLine(platform.Transform.Position - new ScrapVector(0, platform.Transform.Dimensions.Y / 2 + platform.Extent), platform.Transform.Position + new ScrapVector(0, platform.Transform.Dimensions.Y / 2 + platform.Extent), Color.Green, camera, null, 5);
+                }
+                
+            }
+
+            if (lastPlacing == Placing.MOVING_PLATFORMS)
+            {
+                if (!AxisFlippedFlag)
+                {
+                    Renderer.RenderLine(Transform.Position - new ScrapVector(Transform.Dimensions.X / 2 + Extent, 0), Transform.Position + new ScrapVector(Transform.Dimensions.X / 2 + Extent, 0), Color.Green, camera, null, 5);
+                }
+                else
+                {
+                    Renderer.RenderLine(Transform.Position - new ScrapVector(0, Transform.Dimensions.Y / 2 + Extent), Transform.Position + new ScrapVector(0, Transform.Dimensions.Y / 2 + Extent), Color.Green, camera, null, 5);
+                }
+                
             }
 
             base.PostLayerRender(camera);

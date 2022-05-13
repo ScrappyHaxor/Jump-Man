@@ -24,8 +24,14 @@ namespace JumpMan.Objects
         public Player player;
         bool success;
 
+        public double Extent = 100;
+        public double Step = 1;
+
+        public bool OverrideFlag;
+        public bool AxisFlippedFlag;
+
         public ScrapVector startPosition;
-        ScrapVector vector = new ScrapVector(1, 0);
+        ScrapVector vector;
         public MovingPlatform(string texture, ScrapVector position, ScrapVector dimensions) : base(SceneManager.CurrentScene.Stack.Fetch(DefaultLayers.FOREGROUND))
         {
             Transform = new Transform
@@ -64,6 +70,20 @@ namespace JumpMan.Objects
         public override void Awake()
         {
             success = Dependency<Player>(out player);
+
+            if (!success)
+                return;
+
+            if (!AxisFlippedFlag)
+            {
+                vector = new ScrapVector(Step, 0);
+            }
+            else
+            {
+                vector = new ScrapVector(0, Step);
+            }
+
+            
             base.Awake();
         }
 
@@ -75,18 +95,42 @@ namespace JumpMan.Objects
         public override void PreLayerTick(double dt)
         {
             base.PreLayerTick(dt);
-            
+
+            if (OverrideFlag)
+                return;
+
             Transform.Position += vector;
-            if (Transform.Position.X < startPosition.X - 100)
+
+            if (!AxisFlippedFlag)
             {
-                vector = new ScrapVector(1, 0);
+                if (Transform.Position.X < startPosition.X - Extent)
+                {
+                    vector = new ScrapVector(Step, 0);
+                }
+                else if (Transform.Position.X > startPosition.X + Extent)
+                {
+                    vector = new ScrapVector(-Step, 0);
+                }
             }
-            else if(Transform.Position.X > startPosition.X + 100)
+            else
             {
-                vector = new ScrapVector(-1, 0);
+                if (Transform.Position.Y < startPosition.Y - Extent)
+                {
+                    vector = new ScrapVector(0, Step);
+                }
+                else if (Transform.Position.Y > startPosition.Y + Extent)
+                {
+                    vector = new ScrapVector(0, -Step);
+                }
             }
+
+
+
             if (Collision.IntersectPolygons(Collider.GetVerticies(), player.Collider.GetVerticies(), out CollisionManifold manifold) && success)
             {
+                if (vector == new ScrapVector(0, Step))
+                    return;
+
                 player.Transform.Position += vector;
             }
         }

@@ -11,6 +11,7 @@ namespace JumpMan.Container
     {
         public Player Player;
         public readonly List<Platform> Platforms;
+        public readonly List<MovingPlatform> MovingPlatforms;
         public readonly List<Background> Backgrounds;
         public readonly List<ScrapVector> TestPositions;
         public readonly List<Entity> Traps;
@@ -20,16 +21,18 @@ namespace JumpMan.Container
         {
             Player = new Player(ScrapVector.Zero);
             Platforms = new List<Platform>();
+            MovingPlatforms = new List<MovingPlatform>();
             Backgrounds = new List<Background>();
             TestPositions = new List<ScrapVector>();
             Traps = new List<Entity>();
             EndOfLevel = new EndOfLevel(new ScrapVector(0, -100), new ScrapVector(64, 64));
         }
 
-        public LevelData(Player player, List<Platform> platforms, List<Background> backgrounds, List<ScrapVector> testPositions, List<Entity> traps, EndOfLevel endOfLevel)
+        public LevelData(Player player, List<Platform> platforms, List<MovingPlatform> movingPlatforms, List<Background> backgrounds, List<ScrapVector> testPositions, List<Entity> traps, EndOfLevel endOfLevel)
         {
             Player = player;
             Platforms = platforms;
+            MovingPlatforms = movingPlatforms;
             Backgrounds = backgrounds;
             TestPositions = testPositions;
             Traps = traps;

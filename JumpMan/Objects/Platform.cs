@@ -21,6 +21,8 @@ namespace JumpMan.Objects
         public RigidBody2D Rigidbody;
         public BoxCollider2D Collider;
 
+        public bool IsGhost;
+
         public Platform(string texture, ScrapVector position, ScrapVector dimensions) : base(SceneManager.CurrentScene.Stack.Fetch(DefaultLayers.FOREGROUND))
         {
             Transform = new Transform
