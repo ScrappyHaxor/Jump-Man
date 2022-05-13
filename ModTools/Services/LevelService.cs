@@ -79,6 +79,8 @@ namespace ModTools.Services
                 temp.Add($"{(int)DataType.TRAP};{(int)type};{texture};{position.X};{position.Y};{dimensions.X};{dimensions.Y}");
             }
 
+            temp.Add($"{(int)DataType.LEVEL_END};{data.EndOfLevel.Transform.Position.X};{data.EndOfLevel.Transform.Position.Y};{data.EndOfLevel.Transform.Dimensions.X};{data.EndOfLevel.Transform.Dimensions.Y}");
+
             return temp.ToArray();
         }
 
@@ -149,6 +151,8 @@ namespace ModTools.Services
 
                 writer.WriteLine($"{(int)DataType.TRAP};{(int)type};{texture};{position.X};{position.Y};{dimensions.X};{dimensions.Y}");
             }
+
+            writer.WriteLine($"{(int)DataType.LEVEL_END};{data.EndOfLevel.Transform.Position.X};{data.EndOfLevel.Transform.Position.Y};{data.EndOfLevel.Transform.Dimensions.X};{data.EndOfLevel.Transform.Dimensions.Y}");
 
             writer.Flush();
             writer.Dispose();

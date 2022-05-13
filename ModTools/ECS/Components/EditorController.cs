@@ -28,7 +28,8 @@ namespace ModTools.ECS.Components
         ILLUSION,
         KNOCKBACK_LEFT,
         KNOCKBACK_RIGHT,
-        BOUNCE
+        BOUNCE,
+        LEVEL_END
     }
 
     public class EditorController : Controller
@@ -206,6 +207,61 @@ namespace ModTools.ECS.Components
                         Data.Traps.Remove(glueTrap);
                     }
                 }
+                else if (PlacingState == Placing.ILLUSION)
+                {
+                    RayResult result = backgroundCollision.Raycast(new PointRay(EditorGhost.Transform.Position));
+                    if (result.hit && result.other.GetType() == typeof(IllusionPlatform))
+                    {
+                        IllusionPlatform illusionTrap = (IllusionPlatform)result.other;
+                        illusionTrap.Sleep();
+
+                        Data.Traps.Remove(illusionTrap);
+                    }
+                }
+                else if (PlacingState == Placing.KNOCKBACK_LEFT)
+                {
+                    RayResult result = foregroundCollision.Raycast(new PointRay(EditorGhost.Transform.Position));
+                    if (result.hit && result.other.GetType() == typeof(KnockBackPlatformLeft))
+                    {
+                        KnockBackPlatformLeft leftKnockbackTrap = (KnockBackPlatformLeft)result.other;
+                        leftKnockbackTrap.Sleep();
+
+                        Data.Traps.Remove(leftKnockbackTrap);
+                    }
+                }
+                else if (PlacingState == Placing.KNOCKBACK_RIGHT)
+                {
+                    RayResult result = foregroundCollision.Raycast(new PointRay(EditorGhost.Transform.Position));
+                    if (result.hit && result.other.GetType() == typeof(KnockBackPlatformRight))
+                    {
+                        KnockBackPlatformRight rightKnockbackTrap = (KnockBackPlatformRight)result.other;
+                        rightKnockbackTrap.Sleep();
+
+                        Data.Traps.Remove(rightKnockbackTrap);
+                    }
+                }
+                else if (PlacingState == Placing.BOUNCE)
+                {
+                    RayResult result = foregroundCollision.Raycast(new PointRay(EditorGhost.Transform.Position));
+                    if (result.hit && result.other.GetType() == typeof(FeetBouncePlatform))
+                    {
+                        FeetBouncePlatform bounceTrap = (FeetBouncePlatform)result.other;
+                        bounceTrap.Sleep();
+
+                        Data.Traps.Remove(bounceTrap);
+                    }
+                }
+                else if (PlacingState == Placing.LEVEL_END)
+                {
+                    RayResult result = foregroundCollision.Raycast(new PointRay(EditorGhost.Transform.Position));
+                    if (result.hit && result.other.GetType() == typeof(EndOfLevel))
+                    {
+                        EndOfLevel endOfLevel = (EndOfLevel)result.other;
+                        endOfLevel.Sleep();
+
+                        Data.Traps.Remove(endOfLevel);
+                    }
+                }
             }
 
             if (InputManager.IsKeyHeld(Keys.W))
@@ -230,6 +286,9 @@ namespace ModTools.ECS.Components
 
             if (InputManager.IsKeyDown(Keys.Up))
             {
+                if (PlacingState == Placing.PLAYER || PlacingState == Placing.TEST_POSITION)
+                    return;
+
                 EditorGhost.Transform.Dimensions += new ScrapVector(0, EditorGhost.Sprite.Texture.Height);
                 double clamped = ScrapMath.Clamp(EditorGhost.Transform.Dimensions.Y, EditorGhost.Sprite.Texture.Height, EditorGhost.Sprite.Texture.Height * UPPER_SIZE_LIMIT);
                 EditorGhost.Transform.Dimensions = new ScrapVector(EditorGhost.Transform.Dimensions.X, clamped);
@@ -237,6 +296,9 @@ namespace ModTools.ECS.Components
 
             if (InputManager.IsKeyDown(Keys.Down))
             {
+                if (PlacingState == Placing.PLAYER || PlacingState == Placing.TEST_POSITION)
+                    return;
+
                 EditorGhost.Transform.Dimensions -= new ScrapVector(0, EditorGhost.Sprite.Texture.Height);
                 double clamped = ScrapMath.Clamp(EditorGhost.Transform.Dimensions.Y, EditorGhost.Sprite.Texture.Height, EditorGhost.Sprite.Texture.Height * UPPER_SIZE_LIMIT);
                 EditorGhost.Transform.Dimensions = new ScrapVector(EditorGhost.Transform.Dimensions.X, clamped);
@@ -244,6 +306,9 @@ namespace ModTools.ECS.Components
 
             if (InputManager.IsKeyDown(Keys.Right))
             {
+                if (PlacingState == Placing.PLAYER || PlacingState == Placing.TEST_POSITION)
+                    return;
+
                 EditorGhost.Transform.Dimensions += new ScrapVector(EditorGhost.Sprite.Texture.Width, 0);
                 double clamped = ScrapMath.Clamp(EditorGhost.Transform.Dimensions.X, EditorGhost.Sprite.Texture.Width, EditorGhost.Sprite.Texture.Width * UPPER_SIZE_LIMIT);
                 EditorGhost.Transform.Dimensions = new ScrapVector(clamped, EditorGhost.Transform.Dimensions.Y);
@@ -251,6 +316,9 @@ namespace ModTools.ECS.Components
 
             if (InputManager.IsKeyDown(Keys.Left))
             {
+                if (PlacingState == Placing.PLAYER || PlacingState == Placing.TEST_POSITION)
+                    return;
+
                 EditorGhost.Transform.Dimensions -= new ScrapVector(EditorGhost.Sprite.Texture.Width, 0);
                 double clamped = ScrapMath.Clamp(EditorGhost.Transform.Dimensions.X, EditorGhost.Sprite.Texture.Width, EditorGhost.Sprite.Texture.Width * UPPER_SIZE_LIMIT);
                 EditorGhost.Transform.Dimensions = new ScrapVector(clamped, EditorGhost.Transform.Dimensions.Y);

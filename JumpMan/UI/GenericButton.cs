@@ -11,7 +11,7 @@ using Rectangle = ScrapBox.Framework.Shapes.Rectangle;
 
 namespace JumpMan.UI
 {
-    public class MainMenuButton : Entity
+    public class GenericButton : Entity
     {
         public override string Name => "Main Menu Button";
 
@@ -19,7 +19,7 @@ namespace JumpMan.UI
         public Label Label;
         public Button Button;
 
-        public MainMenuButton(ScrapVector position, ScrapVector dimensions, string text) : base(SceneManager.CurrentScene.Stack.Fetch(DefaultLayers.UI))
+        public GenericButton(ScrapVector position, ScrapVector dimensions, string text) : base(SceneManager.CurrentScene.Stack.Fetch(DefaultLayers.UI))
         {
             Transform = new Transform
             {
@@ -31,10 +31,11 @@ namespace JumpMan.UI
 
             Button = new Button
             {
-                BorderColor = Color.White,
-                HoverColor = Color.Gray,
-                FillColor = Color.White,
+                BorderColor = new Color(93, 139, 244),
+                HoverColor = new Color(45, 49, 250),
+                FillColor = new Color(5, 19, 103),
                 Shape = new Rectangle(Transform.Position, Transform.Dimensions),
+                OutlineThickness = 2
             };
 
             RegisterComponent(Button);
@@ -43,7 +44,7 @@ namespace JumpMan.UI
             {
                 Font = AssetManager.FetchFont("temporary"),
                 Text = text,
-                TextColor = Color.Black
+                TextColor = new Color(223, 246, 255)
             };
 
             RegisterComponent(Label);

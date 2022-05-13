@@ -23,6 +23,8 @@ namespace JumpMan.ECS.Components
         public double MaxJumpMultiplier = DEFAULT_MAX_JUMP_MULTIPLIER;
         public double JumpDirectionalDegree = DEFAULT_JUMP_DIRECTIONAL_DEGREE;
 
+        public string SelectedLevel;
+
         protected RigidBody2D rigidbody;
 
         public override void Awake()

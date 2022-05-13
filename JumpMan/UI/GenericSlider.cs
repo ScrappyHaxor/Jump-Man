@@ -10,14 +10,14 @@ using System.Text;
 
 namespace JumpMan.UI
 {
-    public class MenuSlider : Entity
+    public class GenericSlider : Entity
     {
         public override string Name => "Menu Slider";
 
         public Transform Transform;
         public Slider Slider;
 
-        public MenuSlider(ScrapVector position, ScrapVector dimensions) : base(SceneManager.CurrentScene.Stack.Fetch(DefaultLayers.UI))
+        public GenericSlider(ScrapVector position, ScrapVector dimensions) : base(SceneManager.CurrentScene.Stack.Fetch(DefaultLayers.UI))
         {
             Transform = new Transform()
             {

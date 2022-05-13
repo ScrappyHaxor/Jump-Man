@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework.Audio;
+﻿using JumpMan.Container;
+using Microsoft.Xna.Framework.Audio;
 using ScrapBox.Framework.ECS;
 using ScrapBox.Framework.ECS.Components;
 using ScrapBox.Framework.ECS.Systems;
@@ -8,6 +9,7 @@ using ScrapBox.Framework.Math;
 using ScrapBox.Framework.Services;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 
 namespace JumpMan.ECS.Components
@@ -26,6 +28,7 @@ namespace JumpMan.ECS.Components
         double jumpStarted;
         public ScrapVector jumpForce;
         private bool hasBounced;
+        private ScrapVector lastPosition;
 
         public KeyboardController()
         {
@@ -46,6 +49,31 @@ namespace JumpMan.ECS.Components
             {
                 input = new ScrapVector(-1, input.Y);
             }
+
+            if (rigidbody.Grounded())
+            {
+                if (SelectedLevel != null && rigidbody.Transform.Position != lastPosition)
+                {
+                    lastPosition = rigidbody.Transform.Position;
+                    SaveFile newSave = new SaveFile(SelectedLevel, rigidbody.Transform.Position);
+                    newSave.Save();
+                }
+
+                hasBounced = false;
+                if (!jumpInitiated)
+                    rigidbody.AddForce(input * MoveForce);
+            }
+
+            if (!rigidbody.Grounded() && rigidbody.Bounce() && !hasBounced)
+            {
+                rigidbody.AddForce(new ScrapVector(-jumpForce.X * 0.3d, jumpForce.Y * 0.1d));
+                hasBounced = true;
+
+                if (SoundManager.Collision.State != SoundState.Playing)
+                    SoundManager.Collision.Play();
+            }
+
+
 
             if (InputManager.IsKeyDown(Keys.Space) && rigidbody.Grounded())
             {
@@ -74,25 +102,6 @@ namespace JumpMan.ECS.Components
                 {
                     rigidbody.AddForce(jumpForce);
                 }
-
-
-                LogService.Out($"Jump multiplier: {jumpMultiplier}");
-            }
-
-            if (rigidbody.Grounded())
-            {
-                hasBounced = false;
-                if (!jumpInitiated)
-                    rigidbody.AddForce(input * MoveForce);
-            }
-
-            if(!rigidbody.Grounded() && rigidbody.Bounce() && !hasBounced)
-            {
-                rigidbody.AddForce(new ScrapVector(-jumpForce.X * 0.3d, jumpForce.Y * 0.1d));
-                hasBounced = true;
-
-                if (SoundManager.Collision.State != SoundState.Playing)
-                    SoundManager.Collision.Play();
             }
         }
     }
