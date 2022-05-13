@@ -18,6 +18,7 @@ namespace ModTools.Objects
     {
         public const string PLAYER_TEXTURE_NAME = "player";
         public const string TEST_TEXTURE_NAME = "placeholder3";
+        public const string END_TEXTURE_NAME = "placeholder5";
 
         public List<string> PlatformTextures = new List<string>()
         {
@@ -130,6 +131,20 @@ namespace ModTools.Objects
 
                 Data.Traps.Add(trap);
             }
+            else if (placingState == Placing.LEVEL_END)
+            {
+                if (Data.EndOfLevel != null)
+                {
+                    Data.EndOfLevel.Sleep();
+                    Data.EndOfLevel = null;
+                }
+
+                EndOfLevel endOfLevel = new EndOfLevel(Transform.Position, Transform.Dimensions);
+                endOfLevel.PurgeComponent(endOfLevel.Collider);
+                endOfLevel.Awake();
+
+                Data.EndOfLevel = endOfLevel;
+            }
         }
 
         public void IncreaseTextureIndex(Placing placingState)
@@ -224,11 +239,18 @@ namespace ModTools.Objects
                 Sprite.Texture = AssetManager.FetchTexture(TEST_TEXTURE_NAME);
                 Transform.Dimensions = new ScrapVector(Sprite.Texture.Width, Sprite.Texture.Height);
             }
-            else if (placingState == Placing.GLUE)
+            else if (placingState == Placing.GLUE || placingState == Placing.ILLUSION || placingState == Placing.KNOCKBACK_LEFT ||
+                placingState == Placing.KNOCKBACK_RIGHT || placingState == Placing.BOUNCE)
             {
                 Sprite.Texture = AssetManager.FetchTexture(TrapTextures[TrapTextureIndex]);
                 Transform.Dimensions = new ScrapVector(Sprite.Texture.Width, Sprite.Texture.Height);
             }
+            else if (placingState == Placing.LEVEL_END)
+            {
+                Sprite.Texture = AssetManager.FetchTexture(END_TEXTURE_NAME);
+                Transform.Dimensions = new ScrapVector(Sprite.Texture.Width, Sprite.Texture.Height);
+            }
+
         }
 
         public override void Awake()

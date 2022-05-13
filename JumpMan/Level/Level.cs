@@ -14,10 +14,11 @@ using ScrapBox.Framework.Math;
 using ScrapBox.Framework.Services;
 using ScrapBox.Framework.ECS.Systems;
 using ScrapBox.Framework.ECS;
+using JumpMan.UI;
 
 namespace JumpMan.Level
 {
-    public partial class DeveloperLevel : Scene
+    public partial class Level : Scene
     {
         public const double CameraOffset = -800;
 
@@ -32,9 +33,10 @@ namespace JumpMan.Level
         private double topOfScreen;
         private double bottomOfScreen;
 
-        
+        private SettingsOverlay inGameSettingsOverlay;
+        private InGameOverlay pauseOverlay;
 
-        public DeveloperLevel(ScrapApp app)
+        public Level(ScrapApp app)
             : base(app)
         {
 
@@ -43,6 +45,8 @@ namespace JumpMan.Level
         public override void Initialize()
         {
             base.Initialize();
+
+            Stack.InsertAt(3, new Layer("Super UI"));
 
             //Register custom system
             ControllerSystem controllerSystem = new ControllerSystem();
@@ -66,12 +70,16 @@ namespace JumpMan.Level
           
             MainCamera.Zoom = 0.5;
 
+            inGameSettingsOverlay = new SettingsOverlay(ScrapVector.Zero, new ScrapVector(600, 650));
+            pauseOverlay = new InGameOverlay(inGameSettingsOverlay, ScrapVector.Zero, new ScrapVector(500, 450));
+
             if (args.Length == 1)
             {
                 if (args[0].GetType() == typeof(string))
                 {
                     string levelName = args[0].ToString();
                     levelData = LevelService.DeserializeLevelFromFile(levelName);
+                    levelData.Player.Controller.SelectedLevel = levelName;
                 }
                 else if (args[0].GetType() == typeof(string[]))
                 {
@@ -86,10 +94,20 @@ namespace JumpMan.Level
             {
                 if (args[0].GetType() == typeof(string) && args[1].GetType() == typeof(ScrapVector))
                 {
-                    levelData = LevelService.DeserializeLevelFromFile(args[0].ToString());
+                    string levelName = args[0].ToString();
+                    levelData = LevelService.DeserializeLevelFromFile(levelName);
                     levelData.Player.Transform.Position = (ScrapVector)args[1];
 
                     testFlag = true;
+                }
+                else if (args[0].GetType() == typeof(string) && args[1].GetType() == typeof(SaveFile))
+                {
+                    string levelName = args[0].ToString();
+                    SaveFile file = (SaveFile)args[1];
+                    levelData = LevelService.DeserializeLevelFromFile(levelName);
+                    levelData.Player.Transform.Position = file.Position;
+                    levelData.Player.Controller.SelectedLevel = file.LevelName;
+
                 }
             }
 
@@ -104,13 +122,24 @@ namespace JumpMan.Level
             }
             
             levelData.Player.Awake();
-            Teleportplatform teleport= new Teleportplatform("placeholder", ScrapVector.Zero, new ScrapVector(100, 40));
-            teleport.Awake();
 
             foreach (Entity t in levelData.Traps)
             {
                 t.Awake();
             }
+
+            if (!editorFlag && !testFlag)
+            {
+                levelData.EndOfLevel.PurgeComponent(levelData.EndOfLevel.Sprite);
+            }
+            else
+            {
+                levelData.EndOfLevel.OverrideFlag = true;
+                levelData.EndOfLevel.TestFlag = testFlag;
+                levelData.EndOfLevel.EditorFlag = editorFlag;
+                levelData.EndOfLevel.Container = new object[] { editorMeta };
+            }
+            levelData.EndOfLevel.Awake();
 
             topOfScreen =  MainCamera.Position.Y + -MainCamera.Bounds.Height;
             bottomOfScreen = MainCamera.Position.Y + MainCamera.Bounds.Height;
@@ -130,6 +159,24 @@ namespace JumpMan.Level
 
         public override void PreStackTick(double dt)
         {
+            if (InputManager.IsKeyDown(Keys.Escape) && !testFlag && !editorFlag)
+            {
+                if (pauseOverlay.IsAwake)
+                {
+                    pauseOverlay.Sleep();
+                    levelData.Player.Controller.Awake();
+                }
+                else
+                {
+                    pauseOverlay.Awake();
+                    levelData.Player.Controller.Sleep();
+                }
+                
+            }
+
+            if (!pauseOverlay.IsAwake && !pauseOverlay.SettingsOverlay.IsAwake && !levelData.Player.Controller.IsAwake)
+                levelData.Player.Controller.Awake();
+
             if (editorFlag && InputManager.IsKeyDown(Keys.F5))
             {
                 object[] container = new object[] { editorMeta };

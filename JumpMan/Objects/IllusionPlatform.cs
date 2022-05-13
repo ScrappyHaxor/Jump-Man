@@ -19,9 +19,9 @@ namespace JumpMan.Objects
         public Transform Transform;
         public Sprite2D Sprite;
         public RigidBody2D Rigidbody;
-                
+        BoxCollider2D Collider;
 
-        public IllusionPlatform(string texture, ScrapVector position, ScrapVector dimensions) : base(SceneManager.CurrentScene.Stack.Fetch(DefaultLayers.FOREGROUND))
+        public IllusionPlatform(string texture, ScrapVector position, ScrapVector dimensions) : base(SceneManager.CurrentScene.Stack.Fetch(DefaultLayers.BACKGROUND))
         {
             Transform = new Transform
             {
@@ -38,6 +38,14 @@ namespace JumpMan.Objects
             };
 
             RegisterComponent(Rigidbody);
+
+            Collider = new BoxCollider2D
+            {
+                Algorithm = CollisionAlgorithm.SAT,
+                Dimensions = dimensions
+            };
+
+            RegisterComponent(Collider);
 
 
             Sprite = new Sprite2D

@@ -12,17 +12,17 @@ namespace ModTools.Core
     {
         public const string AssemblyName = "Level Editor";
 
-        private Menu toolMenu;
-        private Editor editor;
-        private Test testPlay;
-        private DeveloperLevel devLevel;
+        private readonly Menu toolMenu;
+        private readonly Editor editor;
+        private readonly Test testPlay;
+        private readonly JumpMan.Level.Level devLevel;
 
         public App()
         {
             toolMenu = new Menu(this);
             editor = new Editor(this);
             testPlay = new Test(this);
-            devLevel = new DeveloperLevel(this);
+            devLevel = new JumpMan.Level.Level(this);
 
             SceneManager.RegisterScene("tool menu", toolMenu);
             SceneManager.RegisterScene("editor", editor);

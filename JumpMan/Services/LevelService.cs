@@ -20,7 +20,8 @@ namespace JumpMan.Services
         PLATFORM,
         BACKGROUND,
         TEST_POSITION,
-        TRAP
+        TRAP,
+        LEVEL_END
     }
 
     public enum TrapType
@@ -39,6 +40,7 @@ namespace JumpMan.Services
             LevelData data = new LevelData();
 
             bool playerAssigned = false;
+            bool endAssigned = false;
             int row = 1;
             foreach (string rawData in content)
             {
@@ -46,9 +48,11 @@ namespace JumpMan.Services
                 //Each row is structured differently with an identifier at the start corresponding to the enum DATA_TYPE (referred to as objectID)
                 //PLAYER: objectID(0);xPosition;yPosition
                 //PLATFORM: objectID(1);textureName;xPosition;yPosition;width;height
+                //MOVING PLATFORM: objectID(1);textureName;xPosition;yPosition;width;height
                 //BACKGROUND: objectID(2);textureName;xPosition;yPosition;width;height
                 //TEST_POSITION: objectID(3);xPosition;yPosition
                 //TRAP: objectID(4);TrapType;textureName;xPosition;yPosition;width;height
+                //LEVEL_END: objectID(5);xPosition;yPosition;width;height
 
                 int rawObjectID;
                 if (!int.TryParse(chunks[0], out rawObjectID))
@@ -155,6 +159,18 @@ namespace JumpMan.Services
 
                     data.Traps.Add(loadedTrap);
                 }
+                else if (objectID == DataType.LEVEL_END)
+                {
+                    if (!int.TryParse(chunks[1], out int x) || !int.TryParse(chunks[2], out int y) || !int.TryParse(chunks[3], out int width) ||
+                        !int.TryParse(chunks[4], out int height))
+                    {
+                        LogService.Log(App.AssemblyName, "LevelService", "DeserializeLevelFromData", $"Level end data at row: {row} in level file is invalid. Skipping...", Severity.WARNING);
+                        continue;
+                    }
+
+                    data.EndOfLevel = new EndOfLevel(new ScrapVector(x, y), new ScrapVector(width, height));
+                    endAssigned = true;
+                }
 
                 row++;
             }
@@ -163,6 +179,11 @@ namespace JumpMan.Services
             {
                 //Log error here
                 LogService.Log(App.AssemblyName, "LevelService", "DeserializeLevelFromData", "Player info missing from level file. Assuming default.", Severity.WARNING);
+            }
+
+            if (!endAssigned)
+            {
+                LogService.Log(App.AssemblyName, "LevelService", "DeserializeLevelFromData", "End of level data missing from level file. Assuming default.", Severity.WARNING);
             }
 
             return data;

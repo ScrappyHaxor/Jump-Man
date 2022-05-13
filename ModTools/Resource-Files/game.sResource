@@ -3,3 +3,6 @@ placeholder:Texture2D
 placeholder2:Texture2D
 placeholder4:Texture2D
 temporary:Font
+placeholder5:Texture2D
+temporaryBig:Font
+temporaryBigger:Font

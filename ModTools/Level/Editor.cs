@@ -112,6 +112,9 @@ namespace ModTools.Level
                 t.Awake();
             }
 
+            data.EndOfLevel.PurgeComponent(data.EndOfLevel.Collider);
+            data.EndOfLevel.Awake();
+
             base.Load(args);
         }
 
@@ -147,7 +150,7 @@ namespace ModTools.Level
 
                 Console.WriteLine("Autosave created");
                 DateTime now = DateTime.Now;
-                LevelService.SerializeLevel($"autosaves/date_{DateTime.Now.ToString("dd-MM-yy")}_time_{DateTime.Now.ToString("HH-mm-ss")}.data", data);
+                LevelService.SerializeLevel($"autosaves/date_{DateTime.Now:dd-MM-yy}_time_{DateTime.Now:HH-mm-ss}.data", data);
                 lastAuto = DateTimeOffset.Now.ToUnixTimeMilliseconds();
             }
 

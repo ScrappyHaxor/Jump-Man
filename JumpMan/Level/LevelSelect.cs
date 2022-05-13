@@ -25,7 +25,7 @@ namespace JumpMan.Level
         public const double ButtonWidthPadding = 60;
         public const double ButtonHeight = 25;
 
-        private List<MainMenuButton> buttons;
+        private List<GenericButton> buttons;
 
         public LevelSelect(ScrapApp app) : base(app)
         {
@@ -48,14 +48,14 @@ namespace JumpMan.Level
 
         public override void Load(params object[] args)
         {
-            buttons = new List<MainMenuButton>();
+            buttons = new List<GenericButton>();
             string[] files = Directory.GetFiles("Levels\\");
             for (int i = 0; i < files.Length; i++)
             {
                 string file = files[i];
                 ScrapVector position = new ScrapVector(0, VerticalOffset + InitialVerticalSeparationOffset + VerticalSeparationOffset * (i + 1));
 
-                MainMenuButton button = new MainMenuButton(position, ScrapVector.Zero, Path.GetFileNameWithoutExtension(file));
+                GenericButton button = new GenericButton(position, ScrapVector.Zero, Path.GetFileNameWithoutExtension(file));
                 Vector2 textSize = button.Label.Font.MeasureString(Path.GetFileNameWithoutExtension(file));
                 button.Transform.Dimensions = new ScrapVector(ButtonWidthPadding + textSize.X, ButtonHeight);
                 button.Button.Shape = new ScrapBox.Framework.Shapes.Rectangle(button.Transform.Position, button.Transform.Dimensions);

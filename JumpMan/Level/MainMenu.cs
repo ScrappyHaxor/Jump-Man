@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using JumpMan.UI;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using ScrapBox.Framework;
 using ScrapBox.Framework.Level;
 using ScrapBox.Framework.Managers;
@@ -14,26 +15,36 @@ namespace JumpMan.Level
 {
     public class MainMenu : Scene
     {
-        public const int OffsetY = -200;
+        public readonly string[] LevelPool =
+        {
+            "fallbackLevel",
+            "level1"
+        };
 
-        public const int ButtonYSize = 30;
-        public const int ButtonYOffset = ButtonYSize + 10;
 
-        private MainMenuButton singleplayer;
-        private MainMenuButton multiplayer;
-        private MainMenuButton cosmetics;
-        private MainMenuButton quit;
+        private MainMenuOverlay menuOverlay;
+        private SingleplayerOverlay singleplayerOverlay;
+        private SettingsOverlay settingsOverlay;
 
         public MainMenu(ScrapApp app)
             : base(app)
         {
-
+            
         }
 
         public override void Initialize()
         {
             //Edit things like window size here
             base.Initialize();
+            
+            Parent.EnqueueChange(() =>
+            {
+                Graphics.PreferredBackBufferWidth = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width - 100;
+                Graphics.PreferredBackBufferHeight = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height - 100;
+                Graphics.ApplyChanges();
+            });
+
+            Stack.InsertAt(3, new Layer("Super UI"));
         }
 
         public override void LoadAssets()
@@ -47,46 +58,18 @@ namespace JumpMan.Level
 
         public override void Load(params object[] args)
         {
+            MainCamera.Zoom = 0.5;
+
             //Instance level things
             Renderer.ClearColor = new Color(10, 10, 10);
 
-            ScrapVector buttonDimensions = new ScrapVector(120, ButtonYSize);
+            singleplayerOverlay = new SingleplayerOverlay(LevelPool);
+            settingsOverlay = new SettingsOverlay(ScrapVector.Zero, new ScrapVector(800, 600));
 
-            singleplayer = new MainMenuButton(new ScrapVector(0, OffsetY), buttonDimensions, "Singleplayer");
-            singleplayer.Button.Pressed += delegate(object sender, EventArgs e)
-            {
-                SceneManager.SwapScene("Level Select");
-            };
+            menuOverlay = new MainMenuOverlay(singleplayerOverlay, settingsOverlay);
+            menuOverlay.Awake();
 
-            singleplayer.Awake();
-
-            multiplayer = new MainMenuButton(new ScrapVector(0, OffsetY + ButtonYOffset * 1), buttonDimensions, "Multiplayer");
-            multiplayer.Button.Pressed += delegate (object sender, EventArgs e)
-            {
-                SceneManager.SwapScene("Level Select");
-            };
-
-            multiplayer.Awake();
-
-            cosmetics = new MainMenuButton(new ScrapVector(0, OffsetY + ButtonYOffset * 2), buttonDimensions, "Cosmetics");
-            cosmetics.Button.Pressed += delegate (object sender, EventArgs e)
-            {
-                SceneManager.SwapScene("Level Select");
-            };
-
-            cosmetics.Awake();
-
-            quit = new MainMenuButton(new ScrapVector(0, OffsetY + ButtonYOffset * 3), buttonDimensions, "Quit");
-            quit.Button.Pressed += delegate (object sender, EventArgs e)
-            {
-                //0 = Exit code - OK
-                Environment.Exit(0);
-            };
-
-            quit.Awake();
-
-            MenuSlider slider = new MenuSlider(ScrapVector.Zero, new ScrapVector(100, 20));
-            slider.Awake();
+            
 
             base.Load(args);
         }
