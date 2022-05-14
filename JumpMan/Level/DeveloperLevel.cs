@@ -14,6 +14,7 @@ using ScrapBox.Framework.Math;
 using ScrapBox.Framework.Services;
 using ScrapBox.Framework.ECS.Systems;
 using ScrapBox.Framework.ECS;
+using ScrapBox.Framework.ECS.Components;
 
 namespace JumpMan.Level
 {
@@ -63,7 +64,7 @@ namespace JumpMan.Level
         public override void Load(params object[] args)
         {
             PhysicsSystem.Gravity = new ScrapVector(0, 14);
-          
+
             MainCamera.Zoom = 0.5;
 
             if (args.Length == 1)
@@ -104,6 +105,11 @@ namespace JumpMan.Level
             }
             
             levelData.Player.Awake();
+
+            FallingPlatform fp = new FallingPlatform("placeholder", new ScrapVector(200, 900), new ScrapVector(300, 64), new ScrapVector(200, 920));
+            fp.Awake();
+
+            
 
             foreach (Entity t in levelData.Traps)
             {
