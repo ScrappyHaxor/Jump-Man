@@ -7,3 +7,4 @@ editorBig:Font
 editorSmall:Font
 editorButtonText:Font
 placeholder5:Texture2D
+placeholderTeleport:Texture2D
