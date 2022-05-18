@@ -146,8 +146,8 @@ namespace JumpMan.Level
             }
             levelData.EndOfLevel.Awake();
 
-            topOfScreen =  MainCamera.Position.Y + -MainCamera.Bounds.Height;
-            bottomOfScreen = MainCamera.Position.Y + MainCamera.Bounds.Height;
+            topOfScreen =  MainCamera.Position.Y + -(MainCamera.Bounds.Height * (MainCamera.Bounds.Height / Camera.VirtualHeight));
+            bottomOfScreen = MainCamera.Position.Y + (MainCamera.Bounds.Height * (MainCamera.Bounds.Height / Camera.VirtualHeight));
 
             base.Load(args);
         }
@@ -196,15 +196,15 @@ namespace JumpMan.Level
             if (levelData.Player.Transform.Position.Y < topOfScreen)
             {
                 MainCamera.Position += new ScrapVector(0, -MainCamera.Bounds.Height * 2);
-                topOfScreen = MainCamera.Position.Y + -MainCamera.Bounds.Height;
-                bottomOfScreen = MainCamera.Position.Y + MainCamera.Bounds.Height;
+                topOfScreen = MainCamera.Position.Y + -(MainCamera.Bounds.Height * (MainCamera.Bounds.Height / Camera.VirtualHeight));
+                bottomOfScreen = MainCamera.Position.Y + (MainCamera.Bounds.Height * (MainCamera.Bounds.Height / Camera.VirtualHeight));
             }
 
             if (levelData.Player.Transform.Position.Y > bottomOfScreen)
             {
                 MainCamera.Position += new ScrapVector(0, MainCamera.Bounds.Height * 2);
-                topOfScreen = MainCamera.Position.Y + -MainCamera.Bounds.Height;
-                bottomOfScreen = MainCamera.Position.Y + MainCamera.Bounds.Height;
+                topOfScreen = MainCamera.Position.Y + -(MainCamera.Bounds.Height * (MainCamera.Bounds.Height / Camera.VirtualHeight));
+                bottomOfScreen = MainCamera.Position.Y + (MainCamera.Bounds.Height * (MainCamera.Bounds.Height / Camera.VirtualHeight));
             }
 
             base.PreStackTick(dt);

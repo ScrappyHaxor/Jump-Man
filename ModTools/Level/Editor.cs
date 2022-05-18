@@ -154,8 +154,6 @@ namespace ModTools.Level
                     Directory.CreateDirectory("autosaves");
                 }
 
-                Console.WriteLine("Autosave created");
-                DateTime now = DateTime.Now;
                 LevelService.SerializeLevel($"autosaves/date_{DateTime.Now:dd-MM-yy}_time_{DateTime.Now:HH-mm-ss}.data", data);
                 lastAuto = DateTimeOffset.Now.ToUnixTimeMilliseconds();
             }
