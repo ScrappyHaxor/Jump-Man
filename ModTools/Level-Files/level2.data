@@ -20,4 +20,5 @@
 1;placeholder;-544;-2624;256;64;1;False
 1;placeholder;-1760;-2272;64;1792;1;False
 1;placeholder;1760;-2272;64;1792;1;False
-2;placeholder2;544;512;704;192;1;False
+3;placeholder2;544;512;704;192;1
+6;-608;-2752;128;192
