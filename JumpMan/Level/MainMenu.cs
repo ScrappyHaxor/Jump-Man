@@ -18,7 +18,7 @@ namespace JumpMan.Level
         public readonly string[] LevelPool =
         {
             "level1",
-            "level2"
+            "level2",
         };
 
 
