@@ -195,14 +195,14 @@ namespace JumpMan.Level
 
             if (levelData.Player.Transform.Position.Y < topOfScreen)
             {
-                MainCamera.Position += new ScrapVector(0, -MainCamera.Bounds.Height * 2);
+                MainCamera.Position += new ScrapVector(0, -(MainCamera.Bounds.Height * (MainCamera.Bounds.Height / Camera.VirtualHeight)) * 2);
                 topOfScreen = MainCamera.Position.Y + -(MainCamera.Bounds.Height * (MainCamera.Bounds.Height / Camera.VirtualHeight));
                 bottomOfScreen = MainCamera.Position.Y + (MainCamera.Bounds.Height * (MainCamera.Bounds.Height / Camera.VirtualHeight));
             }
 
             if (levelData.Player.Transform.Position.Y > bottomOfScreen)
             {
-                MainCamera.Position += new ScrapVector(0, MainCamera.Bounds.Height * 2);
+                MainCamera.Position += new ScrapVector(0, (MainCamera.Bounds.Height * (MainCamera.Bounds.Height / Camera.VirtualHeight)) * 2);
                 topOfScreen = MainCamera.Position.Y + -(MainCamera.Bounds.Height * (MainCamera.Bounds.Height / Camera.VirtualHeight));
                 bottomOfScreen = MainCamera.Position.Y + (MainCamera.Bounds.Height * (MainCamera.Bounds.Height / Camera.VirtualHeight));
             }
