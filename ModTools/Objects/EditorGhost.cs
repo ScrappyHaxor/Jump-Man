@@ -5,6 +5,7 @@ using ModTools.Core;
 using ModTools.ECS.Components;
 using ScrapBox.Framework.ECS;
 using ScrapBox.Framework.ECS.Components;
+using ScrapBox.Framework.ECS.Systems;
 using ScrapBox.Framework.Input;
 using ScrapBox.Framework.Level;
 using ScrapBox.Framework.Managers;
@@ -83,9 +84,14 @@ namespace ModTools.Objects
 
         private Placing lastPlacing;
 
+        private CollisionSystem foregroundCollision;
+        private CollisionSystem backgroundCollision;
 
         public EditorGhost() : base(SceneManager.CurrentScene.Stack.Fetch(DefaultLayers.FOREGROUND))
         {
+            foregroundCollision = SceneManager.CurrentScene.Stack.Fetch(DefaultLayers.FOREGROUND).GetSystem<CollisionSystem>();
+            backgroundCollision = SceneManager.CurrentScene.Stack.Fetch(DefaultLayers.BACKGROUND).GetSystem<CollisionSystem>();
+
             Transform = new Transform();
             RegisterComponent(Transform);
 
@@ -333,6 +339,92 @@ namespace ModTools.Objects
                 Transform.Dimensions = new ScrapVector(Sprite.Texture.Width, Sprite.Texture.Height);
             }
 
+        }
+
+        public void Substitute()
+        {
+            if (lastPlacing == Placing.PLATFORMS)
+            {
+                RayResult result = foregroundCollision.Raycast(new PointRay(Transform.Position));
+                if (result.hit && result.other.GetType() == typeof(Platform))
+                {
+                    Platform platform = (Platform)result.other;
+                    platform.Sprite.Texture = Sprite.Texture;
+                }
+
+            }
+            else if (lastPlacing == Placing.MOVING_PLATFORMS)
+            {
+                RayResult result = foregroundCollision.Raycast(new PointRay(Transform.Position));
+                if (result.hit && result.other.GetType() == typeof(MovingPlatform))
+                {
+                    MovingPlatform platform = (MovingPlatform)result.other;
+                    platform.Sprite.Texture = Sprite.Texture;
+                }
+            }
+            else if (lastPlacing == Placing.BACKGROUNDS)
+            {
+                RayResult result = backgroundCollision.Raycast(new PointRay(Transform.Position));
+                if (result.hit && result.other.GetType() == typeof(Background))
+                {
+                    Background background = (Background)result.other;
+                    background.Sprite.Texture = Sprite.Texture;
+                }
+            }
+            else if (lastPlacing == Placing.GLUE)
+            {
+                RayResult result = foregroundCollision.Raycast(new PointRay(Transform.Position));
+                if (result.hit && result.other.GetType() == typeof(Glue))
+                {
+                    Glue glueTrap = (Glue)result.other;
+                    glueTrap.Sprite.Texture = Sprite.Texture;
+                }
+            }
+            else if (lastPlacing == Placing.ILLUSION)
+            {
+                RayResult result = backgroundCollision.Raycast(new PointRay(Transform.Position));
+                if (result.hit && result.other.GetType() == typeof(Platform))
+                {
+                    Platform illusionTrap = (Platform)result.other;
+                    illusionTrap.Sprite.Texture = Sprite.Texture;
+                }
+            }
+            else if (lastPlacing == Placing.SCROLLING)
+            {
+                RayResult result = foregroundCollision.Raycast(new PointRay(Transform.Position));
+                if (result.hit && result.other.GetType() == typeof(ScrollingPlatform))
+                {
+                    ScrollingPlatform scrollingPlatform = (ScrollingPlatform)result.other;
+                    scrollingPlatform.Sprite.Texture = Sprite.Texture;
+                }
+            }
+            else if (lastPlacing == Placing.BOUNCE)
+            {
+                RayResult result = foregroundCollision.Raycast(new PointRay(Transform.Position));
+                if (result.hit && result.other.GetType() == typeof(FeetBouncePlatform))
+                {
+                    FeetBouncePlatform bounceTrap = (FeetBouncePlatform)result.other;
+                    bounceTrap.Sprite.Texture = Sprite.Texture;
+                }
+            }
+            else if (lastPlacing == Placing.TELEPORT)
+            {
+                RayResult result = foregroundCollision.Raycast(new PointRay(Transform.Position));
+                if (result.hit && result.other.GetType() == typeof(TeleportPlatform))
+                {
+                    TeleportPlatform teleTrap = (TeleportPlatform)result.other;
+                    teleTrap.Sprite.Texture = Sprite.Texture;
+                }
+            }
+            else if (lastPlacing == Placing.LEVEL_END)
+            {
+                RayResult result = foregroundCollision.Raycast(new PointRay(Transform.Position));
+                if (result.hit && result.other.GetType() == typeof(EndOfLevel))
+                {
+                    EndOfLevel endOfLevel = (EndOfLevel)result.other;
+                    endOfLevel.Sprite.Texture = Sprite.Texture;
+                }
+            }
         }
 
         public override void Awake()

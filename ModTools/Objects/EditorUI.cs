@@ -136,6 +136,7 @@ namespace ModTools.Objects
                 Renderer.RenderText(editorFontSmall, $"Delete - Decrease trap stat 2", new ScrapVector(10, 465), Color.White);
                 Renderer.RenderText(editorFontSmall, $"PgDown - Increase trap stat 2", new ScrapVector(10, 485), Color.White);
                 Renderer.RenderText(editorFontSmall, $"End - Toggle sprite for platforms", new ScrapVector(10, 505), Color.White);
+                Renderer.RenderText(editorFontSmall, $"Space - Change texture of placed object to active texture", new ScrapVector(10, 525), Color.White);
             }
             else
             {

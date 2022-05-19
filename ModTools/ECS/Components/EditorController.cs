@@ -276,6 +276,11 @@ namespace ModTools.ECS.Components
                 }
             }
 
+            if (InputManager.IsKeyDown(Keys.Space))
+            {
+                EditorGhost.Substitute();
+            }
+
             if (InputManager.IsKeyHeld(Keys.W))
             {
                 Camera.Position += new ScrapVector(0, -CAMERA_POSITION_INCREMENT);
