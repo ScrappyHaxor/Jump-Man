@@ -6,3 +6,4 @@ temporary:Font
 placeholder5:Texture2D
 temporaryBig:Font
 temporaryBigger:Font
+placeholderTeleport:Texture2D

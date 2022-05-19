@@ -38,7 +38,8 @@ namespace ModTools.Objects
         public List<string> PlatformTextures = new List<string>()
         {
             "placeholder",
-            "placeholder4"
+            "placeholder4",
+            "placeholderTeleport"
         };
 
         public List<string> MovingPlatformTextures = new List<string>()
@@ -55,7 +56,8 @@ namespace ModTools.Objects
         public List<string> TrapTextures = new List<string>()
         {
             "placeholder",
-            "placeholder4"
+            "placeholder4",
+            "placeholderTeleport"
         };
 
         public int PlatformTextureIndex;
