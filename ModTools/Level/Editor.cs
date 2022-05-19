@@ -29,6 +29,11 @@ namespace ModTools.Level
         private EditorGhost editorGhost;
         private EditorUI editorUI;
 
+        private double topOfScreen;
+        private double bottomOfScreen;
+        private double leftOfScreen;
+        private double rightOfScreen;
+
         private double lastAuto;
 
         public Editor(ScrapApp app) : base(app)
@@ -121,6 +126,11 @@ namespace ModTools.Level
             data.EndOfLevel.PurgeComponent(data.EndOfLevel.Collider);
             data.EndOfLevel.Awake();
 
+            topOfScreen = MainCamera.Position.Y + -(MainCamera.Bounds.Height / (MainCamera.Bounds.Height / Camera.VirtualHeight));
+            bottomOfScreen = MainCamera.Position.Y + (MainCamera.Bounds.Height / (MainCamera.Bounds.Height / Camera.VirtualHeight));
+            leftOfScreen = MainCamera.Position.X + -(MainCamera.Bounds.Width / (MainCamera.Bounds.Width / Camera.VirtualWidth));
+            rightOfScreen = MainCamera.Position.X + (MainCamera.Bounds.Width / (MainCamera.Bounds.Width / Camera.VirtualWidth));
+
             base.Load(args);
         }
 
@@ -169,6 +179,8 @@ namespace ModTools.Level
 
         public override void PostStackRender()
         {
+            Renderer.RenderLine(new ScrapVector(leftOfScreen, topOfScreen), new ScrapVector(rightOfScreen, topOfScreen), Color.Red, MainCamera, null, 5);
+            Renderer.RenderLine(new ScrapVector(leftOfScreen, bottomOfScreen), new ScrapVector(rightOfScreen, bottomOfScreen), Color.Red, MainCamera, null, 5);
             base.PostStackRender();
         }
     }
