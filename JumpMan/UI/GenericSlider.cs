@@ -29,13 +29,14 @@ namespace JumpMan.UI
 
             Slider = new Slider()
             {
-                BarColor = Color.Gray,
-                BarBorderColor = Color.White,
-                HandleColor = Color.Red,
-                HandleHoverColor = Color.Blue,
+                BarColor = new Color(5, 19, 103),
+                BarBorderColor = new Color(93, 139, 244),
+                HandleColor = Color.White,
+                HandleHoverColor = Color.Gray,
                 Font = AssetManager.FetchFont("temporary"),
                 HandlePoints = 20,
-                HandleRadius = 12
+                HandleRadius = dimensions.Y,
+                LineThickness = 3
             };
 
             RegisterComponent(Slider);

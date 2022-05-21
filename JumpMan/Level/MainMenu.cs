@@ -5,6 +5,7 @@ using JumpMan.UI;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ScrapBox.Framework;
+using ScrapBox.Framework.Input;
 using ScrapBox.Framework.Level;
 using ScrapBox.Framework.Managers;
 using ScrapBox.Framework.Math;
@@ -26,6 +27,9 @@ namespace JumpMan.Level
         private SingleplayerOverlay singleplayerOverlay;
         private SettingsOverlay settingsOverlay;
 
+        private SoundOverlay soundSection;
+        private ControlsOverlay controlsSection;
+
         public MainMenu(ScrapApp app)
             : base(app)
         {
@@ -45,6 +49,7 @@ namespace JumpMan.Level
             });
 
             Stack.InsertAt(3, new Layer("Super UI"));
+            Stack.InsertAt(4, new Layer("Options Section"));
         }
 
         public override void LoadAssets()
@@ -63,13 +68,14 @@ namespace JumpMan.Level
             //Instance level things
             Renderer.ClearColor = new Color(10, 10, 10);
 
+            soundSection = new SoundOverlay(new ScrapVector(0, 120), new ScrapVector(800, 400));
+            controlsSection = new ControlsOverlay(new ScrapVector(0, 120), new ScrapVector(800, 400));
+
             singleplayerOverlay = new SingleplayerOverlay(LevelPool);
-            settingsOverlay = new SettingsOverlay(ScrapVector.Zero, new ScrapVector(800, 600));
+            settingsOverlay = new SettingsOverlay(ScrapVector.Zero, new ScrapVector(800, 600), soundSection, controlsSection);
 
             menuOverlay = new MainMenuOverlay(singleplayerOverlay, settingsOverlay);
             menuOverlay.Awake();
-
-            
 
             base.Load(args);
         }
@@ -106,6 +112,7 @@ namespace JumpMan.Level
 
         public override void PostStackRender()
         {
+            //Renderer.RenderPolygonOutline(ellipse.Verticies, Color.Green, MainCamera, null, 5);
             base.PostStackRender();
         }
     }

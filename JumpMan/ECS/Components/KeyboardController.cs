@@ -30,6 +30,8 @@ namespace JumpMan.ECS.Components
         private bool hasBounced;
         private ScrapVector lastPosition;
 
+        private SettingsData settingsData;
+
         public KeyboardController()
         {
 
@@ -37,15 +39,21 @@ namespace JumpMan.ECS.Components
 
         public override void TakeInput()
         {
+            settingsData = SettingsData.LoadSettings();
+            if (settingsData == null)
+                settingsData = new SettingsData();
+
+            settingsData.SaveSettings();
+
             //Do input mapping here using InputManager
 
             ScrapVector input = ScrapVector.Zero;
-            if (InputManager.IsKeyHeld(Keys.D))
+            if (InputManager.IsKeyHeld(settingsData.RightKey))
             {
                 input = new ScrapVector(1, input.Y);
             }
             
-            if (InputManager.IsKeyHeld(Keys.A))
+            if (InputManager.IsKeyHeld(settingsData.LeftKey))
             {
                 input = new ScrapVector(-1, input.Y);
             }
@@ -69,27 +77,26 @@ namespace JumpMan.ECS.Components
                 rigidbody.AddForce(new ScrapVector(-jumpForce.X * 0.3d, jumpForce.Y * 0.1d));
                 hasBounced = true;
 
-                if (SoundManager.Collision.State != SoundState.Playing)
-                    SoundManager.Collision.Play();
+                SoundEffect sound = AssetManager.FetchAudio("collision");
+                sound.Play(settingsData.EffectVolume / 100f, 0, 0);
             }
 
 
 
-            if (InputManager.IsKeyDown(Keys.Space) && rigidbody.Grounded())
+            if (InputManager.IsKeyDown(settingsData.JumpKey) && rigidbody.Grounded())
             {
                 jumpInitiated = true;
                 jumpStarted = DateTimeOffset.Now.ToUnixTimeMilliseconds() / 1000d;
             }
 
-            if (!InputManager.IsKeyAlreadyDown(Keys.Space) && jumpInitiated && rigidbody.Grounded())
+            if (!InputManager.IsKeyAlreadyDown(settingsData.JumpKey) && jumpInitiated && rigidbody.Grounded())
             {
                 jumpInitiated = false;
                 double jumpMultiplier = (DateTimeOffset.Now.ToUnixTimeMilliseconds() / 1000d) - jumpStarted;
                 jumpMultiplier = ScrapMath.Clamp(jumpMultiplier, MinJumpMultiplier, MaxJumpMultiplier);
 
-                if (SoundManager.Jump.State == SoundState.Playing)
-                    SoundManager.Jump.Stop();
-                SoundManager.Jump.Play();
+                SoundEffect sound = AssetManager.FetchAudio("jumping");
+                sound.Play(settingsData.EffectVolume / 100f, 0, 0);
 
                 jumpForce = new ScrapVector(0, -JumpForce * jumpMultiplier);
                 if (input != ScrapVector.Zero)
