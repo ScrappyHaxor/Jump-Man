@@ -29,7 +29,6 @@ namespace JumpMan.Objects
         public Sprite2D Sprite;
         public RigidBody2D Rigidbody;
         public BoxCollider2D Collider;
-        public Label l;
 
         public FallingPlatform(string texture, ScrapVector position, ScrapVector dimensions, ScrapVector minPos) : base(SceneManager.CurrentScene.Stack.Fetch(DefaultLayers.FOREGROUND))
         {
