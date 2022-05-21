@@ -40,8 +40,14 @@ namespace JumpMan.UI
 
         public bool OverrideFlag;
 
-        public SettingsOverlay(ScrapVector position, ScrapVector dimensions) : base(SceneManager.CurrentScene.Stack.Fetch(3))
+        private SoundOverlay soundSection;
+        private ControlsOverlay controlsSection;
+
+        public SettingsOverlay(ScrapVector position, ScrapVector dimensions, SoundOverlay soundSection, ControlsOverlay controlsSection) : base(SceneManager.CurrentScene.Stack.Fetch(3))
         {
+            this.soundSection = soundSection;
+            this.controlsSection = controlsSection;
+
             TitleLabel = new GenericLabel(new ScrapVector(position.X, position.Y - dimensions.Y + TitleHeight / 2 + 20), new ScrapVector(TitleWidth, TitleHeight), "Options")
             {
                 Layer = layer
@@ -75,6 +81,11 @@ namespace JumpMan.UI
             Sound.Layer = layer;
             Sound.Button.OutlineThickness = 2;
             Sound.Label.Font = AssetManager.FetchFont("temporaryBig");
+            Sound.Button.Pressed += delegate (object o, EventArgs e)
+            {
+                controlsSection.Sleep();
+                soundSection.Awake();
+            };
             Register.Add(Sound);
 
             Gameplay = new GenericButton(new ScrapVector(position.X, position.Y - dimensions.Y + TitleHeight + OptionButtonHeight / 2 + 50), new ScrapVector(ButtonWidth, OptionButtonHeight), "Gameplay");
@@ -87,6 +98,11 @@ namespace JumpMan.UI
             Controls.Layer = layer;
             Controls.Button.OutlineThickness = 2;
             Controls.Label.Font = AssetManager.FetchFont("temporaryBig");
+            Controls.Button.Pressed += delegate (object o, EventArgs e)
+            {
+                soundSection.Sleep();
+                controlsSection.Awake();
+            };
             Register.Add(Controls);
 
             Multiplayer = new GenericButton(new ScrapVector(position.X + ButtonWidth * 2, position.Y - dimensions.Y + TitleHeight + OptionButtonHeight / 2 + 50), new ScrapVector(ButtonWidth, OptionButtonHeight), "Multiplayer");
@@ -96,6 +112,18 @@ namespace JumpMan.UI
             Register.Add(Multiplayer);
 
             BackRect = new ScrapBox.Framework.Shapes.Rectangle(position, dimensions);
+        }
+
+        public override void Awake()
+        {
+            base.Awake();
+        }
+
+        public override void Sleep()
+        {
+            soundSection.Sleep();
+            controlsSection.Sleep();
+            base.Sleep();
         }
 
         public override void PreLayerTick(double dt)

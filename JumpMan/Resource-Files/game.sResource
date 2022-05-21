@@ -5,5 +5,13 @@ placeholder4:Texture2D
 temporary:Font
 placeholder5:Texture2D
 temporaryBig:Font
+<<<<<<< Updated upstream
 temporaryBigger:Font
 placeholderTeleport:2D
+||||||| constructed merge base
+temporaryBigger:Font
+=======
+temporaryBigger:Font
+collision:Audio
+jumping:Audio
+>>>>>>> Stashed changes

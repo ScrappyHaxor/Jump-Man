@@ -6,5 +6,13 @@ placeholder4:Texture2D
 editorBig:Font
 editorSmall:Font
 editorButtonText:Font
+<<<<<<< Updated upstream
 placeholder5:Texture2D
 placeholderTeleport:Texture2D
+||||||| constructed merge base
+placeholder5:Texture2D
+=======
+placeholder5:Texture2D
+collision:Audio
+jumping:Audio
+>>>>>>> Stashed changes

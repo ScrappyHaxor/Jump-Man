@@ -35,6 +35,8 @@ namespace JumpMan.Level
 
         private SettingsOverlay inGameSettingsOverlay;
         private InGameOverlay pauseOverlay;
+        private SoundOverlay soundSection;
+        private ControlsOverlay controlsSection;
 
         public Level(ScrapApp app)
             : base(app)
@@ -47,6 +49,7 @@ namespace JumpMan.Level
             base.Initialize();
 
             Stack.InsertAt(3, new Layer("Super UI"));
+            Stack.InsertAt(4, new Layer("Options Section"));
 
             //Register custom system
             ControllerSystem controllerSystem = new ControllerSystem();
@@ -70,7 +73,10 @@ namespace JumpMan.Level
           
             MainCamera.Zoom = 0.5;
 
-            inGameSettingsOverlay = new SettingsOverlay(ScrapVector.Zero, new ScrapVector(600, 650));
+            soundSection = new SoundOverlay(new ScrapVector(0, 50), new ScrapVector(800, 400));
+            controlsSection = new ControlsOverlay(new ScrapVector(0, 50), new ScrapVector(800, 400));
+
+            inGameSettingsOverlay = new SettingsOverlay(ScrapVector.Zero, new ScrapVector(800, 600), soundSection, controlsSection);
             pauseOverlay = new InGameOverlay(inGameSettingsOverlay, ScrapVector.Zero, new ScrapVector(500, 450));
 
             if (args.Length == 1)
