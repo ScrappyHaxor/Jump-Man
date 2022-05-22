@@ -33,6 +33,7 @@ namespace JumpMan.Level
         private double topOfScreen;
         private double bottomOfScreen;
 
+        private GameplayOverlay gameplayOverlay;
         private SettingsOverlay inGameSettingsOverlay;
         private InGameOverlay pauseOverlay;
         private SoundOverlay soundSection;
@@ -78,6 +79,8 @@ namespace JumpMan.Level
 
             inGameSettingsOverlay = new SettingsOverlay(ScrapVector.Zero, new ScrapVector(800, 600), soundSection, controlsSection);
             pauseOverlay = new InGameOverlay(inGameSettingsOverlay, ScrapVector.Zero, new ScrapVector(500, 450));
+
+            gameplayOverlay = new GameplayOverlay();
 
             if (args.Length == 1)
             {
