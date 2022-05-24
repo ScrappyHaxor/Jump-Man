@@ -23,6 +23,11 @@ namespace JumpMan.Container
         public Keys CycleTextureLeft;
         public Keys CycleTextureRight;
 
+        public const int SETTINGS_COUNT = 12;
+        public const int COSMETIC_COUNT = 4;
+        public bool[] CosmeticStatus;
+        public string CosmeticInUse;
+
         public SettingsData()
         {
             MusicVolume = 100;
@@ -39,6 +44,11 @@ namespace JumpMan.Container
 
             CycleTextureLeft = Keys.OemMinus;
             CycleTextureRight = Keys.OemPlus;
+
+            CosmeticStatus = new bool[COSMETIC_COUNT];
+            CosmeticStatus[0] = true;
+
+            CosmeticInUse = "player";
         }
 
         public void SaveSettings()
@@ -55,6 +65,13 @@ namespace JumpMan.Container
             writer.WriteLine($"{(int)CameraDownKey}");
             writer.WriteLine($"{(int)CycleTextureLeft}");
             writer.WriteLine($"{(int)CycleTextureRight}");
+            writer.WriteLine($"{CosmeticInUse}");
+
+            for (int i = 0; i < CosmeticStatus.Length; i++)
+            {
+                writer.WriteLine($"{CosmeticStatus[i]}");
+            }
+
             writer.Flush();
             writer.Close();
             writer.Dispose();
@@ -68,7 +85,7 @@ namespace JumpMan.Container
                 return null;
 
             string[] lines = File.ReadAllLines($"settings.config");
-            if (lines.Length != 11)
+            if (lines.Length != SETTINGS_COUNT + COSMETIC_COUNT)
                 return null;
 
             if (!float.TryParse(lines[0], out float musicVolume) || !float.TryParse(lines[1], out float effectVolume) ||
@@ -100,6 +117,16 @@ namespace JumpMan.Container
 
             settings.CycleTextureLeft = (Keys)cycleLeft;
             settings.CycleTextureRight = (Keys)cycleRight;
+
+            settings.CosmeticInUse = lines[11];
+
+            for (int i = 0; i < COSMETIC_COUNT; i++)
+            {
+                if (!bool.TryParse(lines[SETTINGS_COUNT + i], out bool status))
+                    return null;
+
+                settings.CosmeticStatus[i] = status;
+            }
 
             return settings;
         }

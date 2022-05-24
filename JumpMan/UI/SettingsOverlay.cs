@@ -83,8 +83,11 @@ namespace JumpMan.UI
             Sound.Label.Font = AssetManager.FetchFont("temporaryBig");
             Sound.Button.Pressed += delegate (object o, EventArgs e)
             {
-                controlsSection.Sleep();
-                soundSection.Awake();
+                if (controlsSection.IsAwake)
+                    controlsSection.Sleep();
+                
+                if (!soundSection.IsAwake)
+                    soundSection.Awake();
             };
             Register.Add(Sound);
 
@@ -100,8 +103,11 @@ namespace JumpMan.UI
             Controls.Label.Font = AssetManager.FetchFont("temporaryBig");
             Controls.Button.Pressed += delegate (object o, EventArgs e)
             {
-                soundSection.Sleep();
-                controlsSection.Awake();
+                if (soundSection.IsAwake)
+                    soundSection.Sleep();
+
+                if (!controlsSection.IsAwake)
+                    controlsSection.Awake();
             };
             Register.Add(Controls);
 
@@ -121,8 +127,11 @@ namespace JumpMan.UI
 
         public override void Sleep()
         {
-            soundSection.Sleep();
-            controlsSection.Sleep();
+            if (soundSection.IsAwake)
+                soundSection.Sleep();
+
+            if (controlsSection.IsAwake)
+                controlsSection.Sleep();
             base.Sleep();
         }
 

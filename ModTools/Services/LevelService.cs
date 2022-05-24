@@ -70,6 +70,11 @@ namespace ModTools.Services
                 }
             }
 
+            foreach (CosmeticDrop drop in data.CosmeticDrops)
+            {
+                temp.Add($"{(int)DataType.COSMETIC};{drop.Transform.Position.X};{drop.Transform.Position.Y};{drop.Sprite.Texture.Name}");
+            }
+
             temp.Add($"{(int)DataType.LEVEL_END};{data.EndOfLevel.Transform.Position.X};{data.EndOfLevel.Transform.Position.Y};{data.EndOfLevel.Transform.Dimensions.X};{data.EndOfLevel.Transform.Dimensions.Y}");
 
             return temp.ToArray();
@@ -132,6 +137,11 @@ namespace ModTools.Services
                     TeleportPlatform convertedTrap = (TeleportPlatform)trap;
                     writer.WriteLine($"{(int)DataType.TRAP};{(int)TrapType.TELEPORT};{convertedTrap.Sprite.Texture.Name};{convertedTrap.Transform.Position.X};{convertedTrap.Transform.Position.Y};{convertedTrap.Transform.Dimensions.X};{convertedTrap.Transform.Dimensions.Y}");
                 }
+            }
+
+            foreach (CosmeticDrop drop in data.CosmeticDrops)
+            {
+                writer.WriteLine($"{(int)DataType.COSMETIC};{drop.Transform.Position.X};{drop.Transform.Position.Y};{drop.Sprite.Texture.Name}");
             }
 
             writer.WriteLine($"{(int)DataType.LEVEL_END};{data.EndOfLevel.Transform.Position.X};{data.EndOfLevel.Transform.Position.Y};{data.EndOfLevel.Transform.Dimensions.X};{data.EndOfLevel.Transform.Dimensions.Y}");

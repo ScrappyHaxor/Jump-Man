@@ -26,6 +26,7 @@ namespace JumpMan.ECS.Components
         public string SelectedLevel;
 
         protected RigidBody2D rigidbody;
+        protected Sprite2D sprite;
 
         public override void Awake()
         {
@@ -36,6 +37,7 @@ namespace JumpMan.ECS.Components
             //The player controller needs a Rigidbody2D so it can just require it.
             //If the rigidbody isnt attached to the player or isnt awake it will cause a console error and put itself back to sleep.
             bool success = Dependency(out rigidbody, true);
+            success = Dependency(out sprite, true);
 
             if (Layer == null)
                 Layer = Owner.Layer;

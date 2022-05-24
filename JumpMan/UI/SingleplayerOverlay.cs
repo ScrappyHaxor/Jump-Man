@@ -26,7 +26,7 @@ namespace JumpMan.UI
         public GenericLabel DLCLabel;
         public GenericButton DLCButton;
 
-        private string[] levelPool;
+        private readonly string[] levelPool;
         private int selectionIndex;
 
         public SingleplayerOverlay(string[] levelPool) : base(SceneManager.CurrentScene.Stack.Fetch(3))
@@ -55,11 +55,11 @@ namespace JumpMan.UI
                 SaveFile file = SaveFile.Load(levelPool[selectionIndex]);
                 if (file == null)
                 {
-                    SceneManager.SwapScene("Developer Level", $"{levelPool[selectionIndex]}.data");
+                    SceneManager.SwapScene("Developer Level", $"{this.levelPool[selectionIndex]}.data");
                 }
                 else
                 {
-                    SceneManager.SwapScene("Developer Level", $"{levelPool[selectionIndex]}.data", file);
+                    SceneManager.SwapScene("Developer Level", $"{this.levelPool[selectionIndex]}.data", file);
                 }
             };
             Register.Add(ContinueButton);

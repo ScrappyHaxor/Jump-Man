@@ -1,4 +1,5 @@
 ﻿using JumpMan.Container;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using ScrapBox.Framework.ECS;
 using ScrapBox.Framework.ECS.Components;
@@ -41,12 +42,13 @@ namespace JumpMan.ECS.Components
         {
             settingsData = SettingsData.LoadSettings();
             if (settingsData == null)
+            {
                 settingsData = new SettingsData();
+                settingsData.SaveSettings();
+            }
 
-            settingsData.SaveSettings();
 
             //Do input mapping here using InputManager
-
             ScrapVector input = ScrapVector.Zero;
             if (InputManager.IsKeyHeld(settingsData.RightKey))
             {
@@ -69,7 +71,17 @@ namespace JumpMan.ECS.Components
 
                 hasBounced = false;
                 if (!jumpInitiated)
+                {
+                    if (input.X < 0)
+                        sprite.SourceRectangle = new Rectangle(0, 0, sprite.SourceRectangle.Width, sprite.SourceRectangle.Height);
+                    else if (input.X > 0)
+                        sprite.SourceRectangle = new Rectangle(sprite.SourceRectangle.Width, 0, sprite.SourceRectangle.Width, sprite.SourceRectangle.Height);
+                    else
+                        sprite.SourceRectangle = new Rectangle(sprite.SourceRectangle.Width * 4, 0, sprite.SourceRectangle.Width, sprite.SourceRectangle.Height);
+
                     rigidbody.AddForce(input * MoveForce);
+                }
+                    
             }
 
             if (!rigidbody.Grounded() && rigidbody.Bounce() && !hasBounced)
@@ -78,10 +90,35 @@ namespace JumpMan.ECS.Components
                 hasBounced = true;
 
                 SoundEffect sound = AssetManager.FetchAudio("collision");
-                sound.Play(settingsData.EffectVolume / 100f, 0, 0);
+                if (sound != null)
+                {
+                    try
+                    {
+                        //sound.Play(settingsData.EffectVolume / 100f, 0, 0);
+                    }
+                    catch (Exception _) { }
+                }
+                    
             }
 
-
+            if (jumpInitiated && (DateTimeOffset.Now.ToUnixTimeMilliseconds() / 1000d) - jumpStarted >= MaxJumpMultiplier / 2)
+            {
+                if (input.X < 0)
+                    sprite.SourceRectangle = new Rectangle(sprite.SourceRectangle.Width * 2, 0, sprite.SourceRectangle.Width, sprite.SourceRectangle.Height);
+                else if (input.X > 0)
+                    sprite.SourceRectangle = new Rectangle(sprite.SourceRectangle.Width * 3, 0, sprite.SourceRectangle.Width, sprite.SourceRectangle.Height);
+                else
+                    sprite.SourceRectangle = new Rectangle(sprite.SourceRectangle.Width * 5, 0, sprite.SourceRectangle.Width, sprite.SourceRectangle.Height);
+            }
+            else
+            {
+                if (input.X < 0)
+                    sprite.SourceRectangle = new Rectangle(0, 0, sprite.SourceRectangle.Width, sprite.SourceRectangle.Height);
+                else if (input.X > 0)
+                    sprite.SourceRectangle = new Rectangle(sprite.SourceRectangle.Width, 0, sprite.SourceRectangle.Width, sprite.SourceRectangle.Height);
+                else
+                    sprite.SourceRectangle = new Rectangle(sprite.SourceRectangle.Width * 4, 0, sprite.SourceRectangle.Width, sprite.SourceRectangle.Height);
+            }
 
             if (InputManager.IsKeyDown(settingsData.JumpKey) && rigidbody.Grounded())
             {
@@ -96,17 +133,31 @@ namespace JumpMan.ECS.Components
                 jumpMultiplier = ScrapMath.Clamp(jumpMultiplier, MinJumpMultiplier, MaxJumpMultiplier);
 
                 SoundEffect sound = AssetManager.FetchAudio("jumping");
-                sound.Play(settingsData.EffectVolume / 100f, 0, 0);
+                if (sound != null)
+                {
+                    try
+                    {
+                        //sound.Play(settingsData.EffectVolume / 100f, 0, 0);
+                    }
+                    catch (Exception _) { }
+                }
 
                 jumpForce = new ScrapVector(0, -JumpForce * jumpMultiplier);
                 if (input != ScrapVector.Zero)
                 {
+                    if (input.X < 0)
+                        sprite.SourceRectangle = new Rectangle(0, 0, sprite.SourceRectangle.Width, sprite.SourceRectangle.Height);
+                    else if (input.X > 0)
+                        sprite.SourceRectangle = new Rectangle(sprite.SourceRectangle.Width, 0, sprite.SourceRectangle.Width, sprite.SourceRectangle.Height);
+                        
+
                     //Cant get this to work
                     jumpForce = ScrapMath.RotatePoint(jumpForce, ScrapMath.ToRadians(input.X * JumpDirectionalDegree));
                     rigidbody.AddForce(jumpForce);
                 }
                 else
                 {
+                    sprite.SourceRectangle = new Rectangle(sprite.SourceRectangle.Width * 4, 0, sprite.SourceRectangle.Width, sprite.SourceRectangle.Height);
                     rigidbody.AddForce(jumpForce);
                 }
             }

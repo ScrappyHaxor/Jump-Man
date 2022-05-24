@@ -27,6 +27,7 @@ namespace JumpMan.Level
 
         private MainMenuOverlay menuOverlay;
         private SingleplayerOverlay singleplayerOverlay;
+        private CosmeticsOverlay cosmeticsOverlay;
         private SettingsOverlay settingsOverlay;
 
         private SoundOverlay soundSection;
@@ -75,8 +76,9 @@ namespace JumpMan.Level
 
             singleplayerOverlay = new SingleplayerOverlay(LevelPool);
             settingsOverlay = new SettingsOverlay(ScrapVector.Zero, new ScrapVector(800, 600), soundSection, controlsSection);
+            cosmeticsOverlay = new CosmeticsOverlay();
 
-            menuOverlay = new MainMenuOverlay(singleplayerOverlay, settingsOverlay);
+            menuOverlay = new MainMenuOverlay(singleplayerOverlay, cosmeticsOverlay, settingsOverlay);
             menuOverlay.Awake();
 
             base.Load(args);
