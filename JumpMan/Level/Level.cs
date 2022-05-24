@@ -127,6 +127,11 @@ namespace JumpMan.Level
                 b.Awake();
             }
             
+            foreach (CosmeticDrop drop in levelData.CosmeticDrops)
+            {
+                drop.Awake();
+            }
+
             levelData.Player.Awake();
 
             foreach (MovingPlatform movingPlatform in levelData.MovingPlatforms)
@@ -228,9 +233,6 @@ namespace JumpMan.Level
 
         public override void PostStackRender()
         {
-            Renderer.RenderBox(new ScrapVector(0, topOfScreen), new ScrapVector(10, 10), 0, Color.White, MainCamera);
-            Renderer.RenderBox(new ScrapVector(0, bottomOfScreen), new ScrapVector(10, 10), 0, Color.White, MainCamera);
-
             if (editorFlag)
             {
                 Vector2 textDims = devFont.MeasureString("DEVELOPER MODE - F5 TO RETURN");

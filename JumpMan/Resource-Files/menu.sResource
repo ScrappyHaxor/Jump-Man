@@ -2,3 +2,7 @@ temporary:Font
 temporaryBig:Font
 temporaryBigger:Font
 temporaryBiggest:Font
+player:Texture2D
+player1:Texture2D
+player2:Texture2D
+player3:Texture2D

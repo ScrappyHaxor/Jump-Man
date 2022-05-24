@@ -17,20 +17,22 @@ namespace JumpMan.UI
 
         public override List<Entity> Register { get; set; }
 
-        private GenericLabel title;
+        private readonly GenericLabel title;
 
-        private GenericButton singleplayer;
-        private GenericButton multiplayer;
-        private GenericButton cosmetics;
-        private GenericButton settings;
-        private GenericButton quit;
+        private readonly GenericButton singleplayer;
+        //private GenericButton multiplayer;
+        private readonly GenericButton cosmetics;
+        private readonly GenericButton settings;
+        private readonly GenericButton quit;
 
         private readonly SingleplayerOverlay singleplayerOverlay;
+        private readonly CosmeticsOverlay cosmeticsOverlay;
         private readonly SettingsOverlay settingsOverlay;
 
-        public MainMenuOverlay(SingleplayerOverlay singleplayerOverlay, SettingsOverlay settingsOverlay) : base(SceneManager.CurrentScene.Stack.Fetch(DefaultLayers.UI))
+        public MainMenuOverlay(SingleplayerOverlay singleplayerOverlay, CosmeticsOverlay cosmeticsOverlay, SettingsOverlay settingsOverlay) : base(SceneManager.CurrentScene.Stack.Fetch(DefaultLayers.UI))
         {
             this.singleplayerOverlay = singleplayerOverlay;
+            this.cosmeticsOverlay = cosmeticsOverlay;
             this.settingsOverlay = settingsOverlay;
 
             ScrapVector buttonDimensions = new ScrapVector(ButtonXSize, ButtonYSize);
@@ -43,44 +45,47 @@ namespace JumpMan.UI
             singleplayer.Label.Font = AssetManager.FetchFont("temporaryBigger");
             singleplayer.Button.Pressed += delegate (object sender, EventArgs e)
             {
-                if (singleplayerOverlay.IsAwake)
+                if (this.singleplayerOverlay.IsAwake)
                     return;
 
                 Sleep();
-                singleplayerOverlay.Awake();
+                this.singleplayerOverlay.Awake();
             };
             Register.Add(singleplayer);
 
+            //multiplayer = new GenericButton(new ScrapVector(0, OffsetY + ButtonYOffset * 2), buttonDimensions, "Multiplayer");
+            //multiplayer.Label.Font = AssetManager.FetchFont("temporaryBigger");
+            //multiplayer.Button.Pressed += delegate (object sender, EventArgs e)
+            //{
+            //    SceneManager.SwapScene("Level Select");
+            //};
+            //Register.Add(multiplayer);
 
-            multiplayer = new GenericButton(new ScrapVector(0, OffsetY + ButtonYOffset * 2), buttonDimensions, "Multiplayer");
-            multiplayer.Label.Font = AssetManager.FetchFont("temporaryBigger");
-            multiplayer.Button.Pressed += delegate (object sender, EventArgs e)
-            {
-                SceneManager.SwapScene("Level Select");
-            };
-            Register.Add(multiplayer);
-
-            cosmetics = new GenericButton(new ScrapVector(0, OffsetY + ButtonYOffset * 3), buttonDimensions, "Cosmetics");
+            cosmetics = new GenericButton(new ScrapVector(0, OffsetY + ButtonYOffset * 2), buttonDimensions, "Cosmetics");
             cosmetics.Label.Font = AssetManager.FetchFont("temporaryBigger");
             cosmetics.Button.Pressed += delegate (object sender, EventArgs e)
             {
-                SceneManager.SwapScene("Level Select");
-            };
-            Register.Add(cosmetics);
-
-            settings = new GenericButton(new ScrapVector(0, OffsetY + ButtonYOffset * 4), buttonDimensions, "Settings");
-            settings.Label.Font = AssetManager.FetchFont("temporaryBigger");
-            settings.Button.Pressed += delegate (object sender, EventArgs e)
-            {
-                if (settingsOverlay.IsAwake)
+                if (this.cosmeticsOverlay.IsAwake)
                     return;
 
                 Sleep();
-                settingsOverlay.Awake();
+                this.cosmeticsOverlay.Awake();
+            };
+            Register.Add(cosmetics);
+
+            settings = new GenericButton(new ScrapVector(0, OffsetY + ButtonYOffset * 3), buttonDimensions, "Settings");
+            settings.Label.Font = AssetManager.FetchFont("temporaryBigger");
+            settings.Button.Pressed += delegate (object sender, EventArgs e)
+            {
+                if (this.settingsOverlay.IsAwake)
+                    return;
+
+                Sleep();
+                this.settingsOverlay.Awake();
             };
             Register.Add(settings);
 
-            quit = new GenericButton(new ScrapVector(0, OffsetY + ButtonYOffset * 5), buttonDimensions, "Quit");
+            quit = new GenericButton(new ScrapVector(0, OffsetY + ButtonYOffset * 4), buttonDimensions, "Quit");
             quit.Label.Font = AssetManager.FetchFont("temporaryBigger");
             quit.Button.Pressed += delegate (object sender, EventArgs e)
             {

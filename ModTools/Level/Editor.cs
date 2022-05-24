@@ -66,6 +66,7 @@ namespace ModTools.Level
                 {
                     data = JumpMan.Services.LevelService.DeserializeLevelFromFile(args[0].ToString());
                     data.Player.RigidBody.IsStatic = true;
+                    data.Player.PurgeComponent(data.Player.Controller);
                     data.Player.Awake();
                 }
                 else if (args[0].GetType() == typeof(string[]))
@@ -73,6 +74,7 @@ namespace ModTools.Level
                     string[] package = (string[])args[0];
                     data = JumpMan.Services.LevelService.DeserializeLevelFromData(package);
                     data.Player.RigidBody.IsStatic = true;
+                    data.Player.PurgeComponent(data.Player.Controller);
                     data.Player.Awake();
                 }
             }
@@ -85,6 +87,11 @@ namespace ModTools.Level
             foreach (Background b in data.Backgrounds)
             {
                 b.Awake();
+            }
+
+            foreach (CosmeticDrop drop in data.CosmeticDrops)
+            {
+                drop.Awake();
             }
 
             lastAuto = DateTimeOffset.Now.ToUnixTimeMilliseconds();
@@ -109,6 +116,7 @@ namespace ModTools.Level
             {
                 data.Player = new Player(ScrapVector.Zero);
                 data.Player.RigidBody.IsStatic = true;
+                data.Player.PurgeComponent(data.Player.Controller);
                 data.Player.Awake();
             }
 

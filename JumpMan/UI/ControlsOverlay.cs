@@ -76,18 +76,14 @@ namespace JumpMan.UI
             this.position = position;
             this.dimensions = dimensions;
 
-            settingsData = SettingsData.LoadSettings();
-            if (settingsData == null)
-                settingsData = new SettingsData();
 
-            settingsData.SaveSettings();
 
             leftLabel = new GenericLabel(new ScrapVector(position.X - dimensions.Y, position.Y - dimensions.Y - ButtonHeight), ScrapVector.Zero, "Move Left");
             leftLabel.Layer = layer;
             leftLabel.Label.Font = AssetManager.FetchFont("temporaryBig");
             Register.Add(leftLabel);
 
-            leftHotkey = new GenericButton(new ScrapVector(position.X - dimensions.Y, position.Y - dimensions.Y + ButtonHeight / 2), new ScrapVector(ButtonWidth, ButtonHeight), $"{settingsData.LeftKey}");
+            leftHotkey = new GenericButton(new ScrapVector(position.X - dimensions.Y, position.Y - dimensions.Y + ButtonHeight / 2), new ScrapVector(ButtonWidth, ButtonHeight), "LeftKey");
             leftHotkey.Layer = layer;
             leftHotkey.Label.Font = AssetManager.FetchFont("temporaryBig");
             leftHotkey.Button.Pressed += delegate (object o, EventArgs e)
@@ -103,7 +99,7 @@ namespace JumpMan.UI
             rightLabel.Label.Font = AssetManager.FetchFont("temporaryBig");
             Register.Add(rightLabel);
 
-            rightHotkey = new GenericButton(new ScrapVector(position.X + dimensions.Y, position.Y - dimensions.Y + ButtonHeight / 2), new ScrapVector(ButtonWidth, ButtonHeight), $"{settingsData.RightKey}");
+            rightHotkey = new GenericButton(new ScrapVector(position.X + dimensions.Y, position.Y - dimensions.Y + ButtonHeight / 2), new ScrapVector(ButtonWidth, ButtonHeight), $"RightKey");
             rightHotkey.Layer = layer;
             rightHotkey.Label.Font = AssetManager.FetchFont("temporaryBig");
             rightHotkey.Button.Pressed += delegate (object o, EventArgs e)
@@ -119,7 +115,7 @@ namespace JumpMan.UI
             jumpLabel.Label.Font = AssetManager.FetchFont("temporaryBig");
             Register.Add(jumpLabel);
 
-            jumpHotkey = new GenericButton(new ScrapVector(position.X, position.Y - dimensions.Y + ButtonHeight / 2), new ScrapVector(ButtonWidth, ButtonHeight), $"{settingsData.JumpKey}");
+            jumpHotkey = new GenericButton(new ScrapVector(position.X, position.Y - dimensions.Y + ButtonHeight / 2), new ScrapVector(ButtonWidth, ButtonHeight), $"JumpKey");
             jumpHotkey.Layer = layer;
             jumpHotkey.Label.Font = AssetManager.FetchFont("temporaryBig");
             jumpHotkey.Button.Pressed += delegate (object o, EventArgs e)
@@ -135,7 +131,7 @@ namespace JumpMan.UI
             leftCameraLabel.Label.Font = AssetManager.FetchFont("temporaryBig");
             Register.Add(leftCameraLabel);
 
-            leftCameraHotkey = new GenericButton(new ScrapVector(position.X - dimensions.Y, position.Y - dimensions.Y + ButtonHeight * 4), new ScrapVector(ButtonWidth, ButtonHeight), $"{settingsData.CameraLeftKey}");
+            leftCameraHotkey = new GenericButton(new ScrapVector(position.X - dimensions.Y, position.Y - dimensions.Y + ButtonHeight * 4), new ScrapVector(ButtonWidth, ButtonHeight), $"CameraLeft");
             leftCameraHotkey.Layer = layer;
             leftCameraHotkey.Label.Font = AssetManager.FetchFont("temporaryBig");
             leftCameraHotkey.Button.Pressed += delegate (object o, EventArgs e)
@@ -151,7 +147,7 @@ namespace JumpMan.UI
             rightCameraLabel.Label.Font = AssetManager.FetchFont("temporaryBig");
             Register.Add(rightCameraLabel);
 
-            rightCameraHotkey = new GenericButton(new ScrapVector(position.X + dimensions.Y, position.Y - dimensions.Y + ButtonHeight * 4), new ScrapVector(ButtonWidth, ButtonHeight), $"{settingsData.CameraRightKey}");
+            rightCameraHotkey = new GenericButton(new ScrapVector(position.X + dimensions.Y, position.Y - dimensions.Y + ButtonHeight * 4), new ScrapVector(ButtonWidth, ButtonHeight), $"CameraRight");
             rightCameraHotkey.Layer = layer;
             rightCameraHotkey.Label.Font = AssetManager.FetchFont("temporaryBig");
             rightCameraHotkey.Button.Pressed += delegate (object o, EventArgs e)
@@ -167,7 +163,7 @@ namespace JumpMan.UI
             upCameraLabel.Label.Font = AssetManager.FetchFont("temporaryBig");
             Register.Add(upCameraLabel);
 
-            upCameraHotkey = new GenericButton(new ScrapVector(position.X, position.Y - dimensions.Y + ButtonHeight * 4), new ScrapVector(ButtonWidth, ButtonHeight), $"{settingsData.CameraUpKey}");
+            upCameraHotkey = new GenericButton(new ScrapVector(position.X, position.Y - dimensions.Y + ButtonHeight * 4), new ScrapVector(ButtonWidth, ButtonHeight), $"CameraUp");
             upCameraHotkey.Layer = layer;
             upCameraHotkey.Label.Font = AssetManager.FetchFont("temporaryBig");
             upCameraHotkey.Button.Pressed += delegate (object o, EventArgs e)
@@ -183,7 +179,7 @@ namespace JumpMan.UI
             downCameraLabel.Label.Font = AssetManager.FetchFont("temporaryBig");
             Register.Add(downCameraLabel);
 
-            downCameraHotkey = new GenericButton(new ScrapVector(position.X, position.Y - dimensions.Y + ButtonHeight * 8), new ScrapVector(ButtonWidth, ButtonHeight), $"{settingsData.CameraDownKey}");
+            downCameraHotkey = new GenericButton(new ScrapVector(position.X, position.Y - dimensions.Y + ButtonHeight * 8), new ScrapVector(ButtonWidth, ButtonHeight), $"CameraDown");
             downCameraHotkey.Layer = layer;
             downCameraHotkey.Label.Font = AssetManager.FetchFont("temporaryBig");
             downCameraHotkey.Button.Pressed += delegate (object o, EventArgs e)
@@ -199,7 +195,7 @@ namespace JumpMan.UI
             cycleLeftLabel.Label.Font = AssetManager.FetchFont("temporaryBig");
             Register.Add(cycleLeftLabel);
 
-            cycleLeftHotkey = new GenericButton(new ScrapVector(position.X - dimensions.Y, position.Y - dimensions.Y + ButtonHeight * 8), new ScrapVector(ButtonWidth, ButtonHeight), $"{settingsData.CycleTextureLeft}");
+            cycleLeftHotkey = new GenericButton(new ScrapVector(position.X - dimensions.Y, position.Y - dimensions.Y + ButtonHeight * 8), new ScrapVector(ButtonWidth, ButtonHeight), $"CycleLeft");
             cycleLeftHotkey.Layer = layer;
             cycleLeftHotkey.Label.Font = AssetManager.FetchFont("temporaryBig");
             cycleLeftHotkey.Button.Pressed += delegate (object o, EventArgs e)
@@ -215,7 +211,7 @@ namespace JumpMan.UI
             cycleRightLabel.Label.Font = AssetManager.FetchFont("temporaryBig");
             Register.Add(cycleRightLabel);
 
-            cycleRightHotkey = new GenericButton(new ScrapVector(position.X + dimensions.Y, position.Y - dimensions.Y + ButtonHeight * 8), new ScrapVector(ButtonWidth, ButtonHeight), $"{settingsData.CycleTextureRight}");
+            cycleRightHotkey = new GenericButton(new ScrapVector(position.X + dimensions.Y, position.Y - dimensions.Y + ButtonHeight * 8), new ScrapVector(ButtonWidth, ButtonHeight), $"CycleRight");
             cycleRightHotkey.Layer = layer;
             cycleRightHotkey.Label.Font = AssetManager.FetchFont("temporaryBig");
             cycleRightHotkey.Button.Pressed += delegate (object o, EventArgs e)
@@ -229,6 +225,24 @@ namespace JumpMan.UI
 
         public override void Awake()
         {
+            settingsData = SettingsData.LoadSettings();
+            if (settingsData == null)
+            {
+                settingsData = new SettingsData();
+                settingsData.SaveSettings();
+            }
+
+
+            leftHotkey.Label.Text = $"{settingsData.LeftKey}";
+            rightHotkey.Label.Text = $"{settingsData.RightKey}";
+            jumpHotkey.Label.Text = $"{settingsData.JumpKey}";
+            leftCameraHotkey.Label.Text = $"{settingsData.CameraLeftKey}";
+            rightCameraHotkey.Label.Text = $"{settingsData.CameraRightKey}";
+            upCameraHotkey.Label.Text = $"{settingsData.CameraUpKey}";
+            downCameraHotkey.Label.Text = $"{settingsData.CameraDownKey}";
+            cycleLeftHotkey.Label.Text = $"{settingsData.CycleTextureLeft}";
+            cycleRightHotkey.Label.Text = $"{settingsData.CycleTextureRight}";
+
             base.Awake();
         }
 

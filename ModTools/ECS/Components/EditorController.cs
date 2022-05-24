@@ -30,7 +30,8 @@ namespace ModTools.ECS.Components
         SCROLLING,
         BOUNCE,
         TELEPORT,
-        LEVEL_END
+        LEVEL_END,
+        COSMETIC
     }
 
     public class EditorController : Controller
@@ -271,7 +272,18 @@ namespace ModTools.ECS.Components
                         EndOfLevel endOfLevel = (EndOfLevel)result.other;
                         endOfLevel.Sleep();
 
-                        Data.Traps.Remove(endOfLevel);
+                        Data.EndOfLevel = null;
+                    }
+                }
+                else if (PlacingState == Placing.COSMETIC)
+                {
+                    RayResult result = foregroundCollision.Raycast(new PointRay(EditorGhost.Transform.Position));
+                    if (result.hit && result.other.GetType() == typeof(EndOfLevel))
+                    {
+                        CosmeticDrop drop = (CosmeticDrop)result.other;
+                        drop.Sleep();
+
+                        Data.CosmeticDrops.Remove(drop);
                     }
                 }
             }

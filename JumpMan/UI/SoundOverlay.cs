@@ -39,12 +39,6 @@ namespace JumpMan.UI
             this.position = position;
             this.dimensions = dimensions;
 
-            settingsData = SettingsData.LoadSettings();
-            if (settingsData == null)
-                settingsData = new SettingsData();
-
-            settingsData.SaveSettings();
-
             MusicSlider = new GenericSlider(new ScrapVector(position.X + dimensions.Y, position.Y - dimensions.Y + SliderHeight / 2), new ScrapVector(SliderWidth, SliderHeight));
             MusicSlider.Layer = layer;
             MusicSlider.Slider.Font = AssetManager.FetchFont("temporaryBig");
@@ -66,9 +60,10 @@ namespace JumpMan.UI
         {
             settingsData = SettingsData.LoadSettings();
             if (settingsData == null)
+            {
                 settingsData = new SettingsData();
-
-            settingsData.SaveSettings();
+                settingsData.SaveSettings();
+            }
 
             base.Awake();
             MusicSlider.Slider.SetValue((int)settingsData.MusicVolume);

@@ -22,7 +22,8 @@ namespace JumpMan.Services
         BACKGROUND,
         TEST_POSITION,
         TRAP,
-        LEVEL_END
+        LEVEL_END,
+        COSMETIC
     }
 
     public enum TrapType
@@ -54,6 +55,7 @@ namespace JumpMan.Services
                 //TEST_POSITION: objectID(3);xPosition;yPosition
                 //TRAP: objectID(4);TrapType;textureName;xPosition;yPosition;width;height (IsLeft, ScrollSpeed): ScrollingPlatform
                 //LEVEL_END: objectID(5);xPosition;yPosition;width;height
+                //COSMETIC: objectID(6);xPosition;yPosition;cosmetic
 
                 int rawObjectID;
                 if (!int.TryParse(chunks[0], out rawObjectID))
@@ -205,6 +207,17 @@ namespace JumpMan.Services
 
                     data.EndOfLevel = new EndOfLevel(new ScrapVector(x, y), new ScrapVector(width, height));
                     endAssigned = true;
+                }
+                else if (objectID == DataType.COSMETIC)
+                {
+                    if (!int.TryParse(chunks[1], out int x) || !int.TryParse(chunks[2], out int y))
+                    {
+                        LogService.Log(App.AssemblyName, "LevelService", "DeserializeLevelFromData", $"Cosmetic data at row: {row} in level file is invalid. Skipping...", Severity.WARNING);
+                        continue;
+                    }
+
+                    CosmeticDrop drop = new CosmeticDrop(new ScrapVector(x, y), chunks[3]);
+                    data.CosmeticDrops.Add(drop);
                 }
 
                 row++;

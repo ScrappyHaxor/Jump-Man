@@ -16,6 +16,7 @@ namespace JumpMan.Container
         public readonly List<ScrapVector> TestPositions;
         public readonly List<Entity> Traps;
         public EndOfLevel EndOfLevel;
+        public readonly List<CosmeticDrop> CosmeticDrops;
 
         public LevelData()
         {
@@ -26,9 +27,10 @@ namespace JumpMan.Container
             TestPositions = new List<ScrapVector>();
             Traps = new List<Entity>();
             EndOfLevel = new EndOfLevel(new ScrapVector(0, -100), new ScrapVector(64, 64));
+            CosmeticDrops = new List<CosmeticDrop>();
         }
 
-        public LevelData(Player player, List<Platform> platforms, List<MovingPlatform> movingPlatforms, List<Background> backgrounds, List<ScrapVector> testPositions, List<Entity> traps, EndOfLevel endOfLevel)
+        public LevelData(Player player, List<Platform> platforms, List<MovingPlatform> movingPlatforms, List<Background> backgrounds, List<ScrapVector> testPositions, List<Entity> traps, EndOfLevel endOfLevel, List<CosmeticDrop> cosmeticDrops)
         {
             Player = player;
             Platforms = platforms;
@@ -37,6 +39,7 @@ namespace JumpMan.Container
             TestPositions = testPositions;
             Traps = traps;
             EndOfLevel = endOfLevel;
+            CosmeticDrops = cosmeticDrops;
         }
     }
 }

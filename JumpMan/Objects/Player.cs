@@ -1,4 +1,5 @@
-﻿using JumpMan.ECS.Components;
+﻿using JumpMan.Container;
+using JumpMan.ECS.Components;
 using Microsoft.Xna.Framework;
 using ScrapBox.Framework.ECS;
 using ScrapBox.Framework.ECS.Components;
@@ -21,8 +22,8 @@ namespace JumpMan.Objects
 
         //Used in the future for animation. Basically the engine scales the player up or down depending on SIZE_X and SIZE_Y but needs to know the actual texture
         //Cell size for each square in the animation sheet.
-        public const double CELL_SIZE_X = 64;
-        public const double CELL_SIZE_Y = 64;
+        public const int CELL_SIZE_X = 64;
+        public const int CELL_SIZE_Y = 64;
 
         public override string Name => "Player";
 
@@ -31,6 +32,8 @@ namespace JumpMan.Objects
         public BoxCollider2D Collider; // Maybe use a CircleCollider2D instead in the future.
         public Sprite2D Sprite;
         public KeyboardController Controller; // Make this a generic controller once other controllers are implemented.
+
+        private SettingsData settingsData;
 
         public Player(ScrapVector position) : base(SceneManager.CurrentScene.Stack.Fetch(DefaultLayers.FOREGROUND))
         {
@@ -63,8 +66,8 @@ namespace JumpMan.Objects
 
             Sprite = new Sprite2D
             {
-                Texture = AssetManager.FetchTexture("player"),
-                TintColor = Color.White
+                TintColor = Color.White,
+                SourceRectangle = new Rectangle(0, 0, CELL_SIZE_X, CELL_SIZE_Y)
             };
 
             RegisterComponent(Sprite);
@@ -76,6 +79,14 @@ namespace JumpMan.Objects
 
         public override void Awake()
         {
+            settingsData = SettingsData.LoadSettings();
+            if (settingsData == null)
+            {
+                settingsData = new SettingsData();
+                settingsData.SaveSettings();
+            }
+
+            Sprite.Texture = AssetManager.FetchTexture(settingsData.CosmeticInUse);
             base.Awake();
         }
 

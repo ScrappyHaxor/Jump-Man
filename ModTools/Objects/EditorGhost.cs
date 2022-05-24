@@ -1,5 +1,6 @@
 ﻿using JumpMan.Container;
 using JumpMan.Objects;
+using JumpMan.UI;
 using Microsoft.Xna.Framework;
 using ModTools.Core;
 using ModTools.ECS.Components;
@@ -67,6 +68,7 @@ namespace ModTools.Objects
         public int MovingPlatformTextureIndex;
         public int BackgroundTextureIndex;
         public int TrapTextureIndex;
+        public int CosmeticTextureIndex;
 
         public double Extent;
         public double Step;
@@ -208,6 +210,13 @@ namespace ModTools.Objects
 
                 Data.EndOfLevel = endOfLevel;
             }
+            else if (placingState == Placing.COSMETIC)
+            {
+                CosmeticDrop drop = new CosmeticDrop(Transform.Position, CosmeticsOverlay.TextureNameTable[CosmeticTextureIndex]);
+                drop.Awake();
+
+                Data.CosmeticDrops.Add(drop);
+            }
         }
 
         public void IncreaseTextureIndex(Placing placingState)
@@ -221,6 +230,7 @@ namespace ModTools.Objects
                 }
 
                 Sprite.Texture = AssetManager.FetchTexture(PlatformTextures[PlatformTextureIndex]);
+                Sprite.SourceRectangle = new Rectangle(0, 0, Sprite.Texture.Width, Sprite.Texture.Height);
             }
             else if (placingState == Placing.MOVING_PLATFORMS)
             {
@@ -231,6 +241,7 @@ namespace ModTools.Objects
                 }
 
                 Sprite.Texture = AssetManager.FetchTexture(MovingPlatformTextures[MovingPlatformTextureIndex]);
+                Sprite.SourceRectangle = new Rectangle(0, 0, Sprite.Texture.Width, Sprite.Texture.Height);
             }
             else if (placingState == Placing.BACKGROUNDS)
             {
@@ -241,6 +252,7 @@ namespace ModTools.Objects
                 }
 
                 Sprite.Texture = AssetManager.FetchTexture(BackgroundTextures[BackgroundTextureIndex]);
+                Sprite.SourceRectangle = new Rectangle(0, 0, Sprite.Texture.Width, Sprite.Texture.Height);
             }
             else if (placingState == Placing.GLUE || placingState == Placing.ILLUSION || placingState == Placing.SCROLLING || 
                 placingState == Placing.BOUNCE || placingState == Placing.TELEPORT)
@@ -252,6 +264,18 @@ namespace ModTools.Objects
                 }
 
                 Sprite.Texture = AssetManager.FetchTexture(TrapTextures[TrapTextureIndex]);
+                Sprite.SourceRectangle = new Rectangle(0, 0, Sprite.Texture.Width, Sprite.Texture.Height);
+            }
+            else if (placingState == Placing.COSMETIC)
+            {
+                CosmeticTextureIndex++;
+                if (CosmeticTextureIndex > CosmeticsOverlay.TextureNameTable.Length - 1)
+                {
+                    CosmeticTextureIndex = 0;
+                }
+
+                Sprite.Texture = AssetManager.FetchTexture(CosmeticsOverlay.TextureNameTable[CosmeticTextureIndex]);
+                Sprite.SourceRectangle = new Rectangle(0, 0, CosmeticDrop.CELL_SIZE_X, CosmeticDrop.CELL_SIZE_Y);
             }
         }
 
@@ -266,6 +290,7 @@ namespace ModTools.Objects
                 }
 
                 Sprite.Texture = AssetManager.FetchTexture(PlatformTextures[PlatformTextureIndex]);
+                Sprite.SourceRectangle = new Rectangle(0, 0, Sprite.Texture.Width, Sprite.Texture.Height);
             }
             else if (placingState == Placing.MOVING_PLATFORMS)
             {
@@ -276,6 +301,7 @@ namespace ModTools.Objects
                 }
 
                 Sprite.Texture = AssetManager.FetchTexture(MovingPlatformTextures[MovingPlatformTextureIndex]);
+                Sprite.SourceRectangle = new Rectangle(0, 0, Sprite.Texture.Width, Sprite.Texture.Height);
             }
             else if (placingState == Placing.BACKGROUNDS)
             {
@@ -286,6 +312,7 @@ namespace ModTools.Objects
                 }
 
                 Sprite.Texture = AssetManager.FetchTexture(BackgroundTextures[BackgroundTextureIndex]);
+                Sprite.SourceRectangle = new Rectangle(0, 0, Sprite.Texture.Width, Sprite.Texture.Height);
             }
             else if (placingState == Placing.GLUE || placingState == Placing.ILLUSION || placingState == Placing.SCROLLING ||
                 placingState == Placing.BOUNCE || placingState == Placing.TELEPORT)
@@ -297,6 +324,18 @@ namespace ModTools.Objects
                 }
 
                 Sprite.Texture = AssetManager.FetchTexture(TrapTextures[TrapTextureIndex]);
+                Sprite.SourceRectangle = new Rectangle(0, 0, Sprite.Texture.Width, Sprite.Texture.Height);
+            }
+            else if (placingState == Placing.COSMETIC)
+            {
+                CosmeticTextureIndex--;
+                if (CosmeticTextureIndex < 0)
+                {
+                    CosmeticTextureIndex = CosmeticsOverlay.TextureNameTable.Length - 1;
+                }
+
+                Sprite.Texture = AssetManager.FetchTexture(CosmeticsOverlay.TextureNameTable[CosmeticTextureIndex]);
+                Sprite.SourceRectangle = new Rectangle(0, 0, CosmeticDrop.CELL_SIZE_X, CosmeticDrop.CELL_SIZE_Y);
             }
         }
 
@@ -308,37 +347,50 @@ namespace ModTools.Objects
             {
                 Sprite.Texture = AssetManager.FetchTexture(PlatformTextures[PlatformTextureIndex]);
                 Transform.Dimensions = new ScrapVector(Sprite.Texture.Width, Sprite.Texture.Height);
+                Sprite.SourceRectangle = new Rectangle(0, 0, Sprite.Texture.Width, Sprite.Texture.Height);
             }
             else if (placingState == Placing.MOVING_PLATFORMS)
             {
                 Sprite.Texture = AssetManager.FetchTexture(MovingPlatformTextures[MovingPlatformTextureIndex]);
                 Transform.Dimensions = new ScrapVector(Sprite.Texture.Width, Sprite.Texture.Height);
+                Sprite.SourceRectangle = new Rectangle(0, 0, Sprite.Texture.Width, Sprite.Texture.Height);
             }
             else if (placingState == Placing.BACKGROUNDS)
             {
                 Sprite.Texture = AssetManager.FetchTexture(BackgroundTextures[BackgroundTextureIndex]);
                 Transform.Dimensions = new ScrapVector(Sprite.Texture.Width, Sprite.Texture.Height);
+                Sprite.SourceRectangle = new Rectangle(0, 0, Sprite.Texture.Width, Sprite.Texture.Height);
             }
             else if (placingState == Placing.PLAYER)
             {
                 Sprite.Texture = AssetManager.FetchTexture(PLAYER_TEXTURE_NAME);
                 Transform.Dimensions = new ScrapVector(Sprite.Texture.Width, Sprite.Texture.Height);
+                Sprite.SourceRectangle = new Rectangle(0, 0, Sprite.Texture.Width, Sprite.Texture.Height);
             }
             else if (placingState == Placing.TEST_POSITION)
             {
                 Sprite.Texture = AssetManager.FetchTexture(TEST_TEXTURE_NAME);
                 Transform.Dimensions = new ScrapVector(Sprite.Texture.Width, Sprite.Texture.Height);
+                Sprite.SourceRectangle = new Rectangle(0, 0, Sprite.Texture.Width, Sprite.Texture.Height);
             }
             else if (placingState == Placing.GLUE || placingState == Placing.ILLUSION || placingState == Placing.SCROLLING ||
                 placingState == Placing.BOUNCE || placingState == Placing.TELEPORT)
             {
                 Sprite.Texture = AssetManager.FetchTexture(TrapTextures[TrapTextureIndex]);
                 Transform.Dimensions = new ScrapVector(Sprite.Texture.Width, Sprite.Texture.Height);
+                Sprite.SourceRectangle = new Rectangle(0, 0, Sprite.Texture.Width, Sprite.Texture.Height);
             }
             else if (placingState == Placing.LEVEL_END)
             {
                 Sprite.Texture = AssetManager.FetchTexture(END_TEXTURE_NAME);
                 Transform.Dimensions = new ScrapVector(Sprite.Texture.Width, Sprite.Texture.Height);
+                Sprite.SourceRectangle = new Rectangle(0, 0, Sprite.Texture.Width, Sprite.Texture.Height);
+            }
+            else if (placingState == Placing.COSMETIC)
+            {
+                Sprite.Texture = AssetManager.FetchTexture(CosmeticsOverlay.TextureNameTable[CosmeticTextureIndex]);
+                Transform.Dimensions = new ScrapVector(Sprite.Texture.Width, Sprite.Texture.Height);
+                Sprite.SourceRectangle = new Rectangle(0, 0, CosmeticDrop.CELL_SIZE_X, CosmeticDrop.CELL_SIZE_Y);
             }
 
         }
@@ -425,6 +477,15 @@ namespace ModTools.Objects
                 {
                     EndOfLevel endOfLevel = (EndOfLevel)result.other;
                     endOfLevel.Sprite.Texture = Sprite.Texture;
+                }
+            }
+            else if (lastPlacing == Placing.COSMETIC)
+            {
+                RayResult result = foregroundCollision.Raycast(new PointRay(Transform.Position));
+                if (result.hit && result.other.GetType() == typeof(EndOfLevel))
+                {
+                    CosmeticDrop drop = (CosmeticDrop)result.other;
+                    drop.Sprite.Texture = Sprite.Texture;
                 }
             }
         }
