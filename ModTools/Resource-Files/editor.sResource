@@ -7,6 +7,7 @@ editorBig:Font
 editorSmall:Font
 editorButtonText:Font
 placeholderTeleport:Texture2D
+grass:Texture2D
 placeholder5:Texture2D
 collision:Audio
 jumping:Audio

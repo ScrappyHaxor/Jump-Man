@@ -20,6 +20,8 @@ namespace JumpMan.Level
         {
             "level1",
             "level2",
+            "firstlevel",
+            "secondlevel",
         };
 
 

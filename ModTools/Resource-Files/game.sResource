@@ -7,5 +7,6 @@ placeholder5:Texture2D
 temporaryBig:Font
 temporaryBigger:Font
 placeholderTeleport:Texture2D
+grass:Texture2D
 collision:Audio
 jumping:Audio
