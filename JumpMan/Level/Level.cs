@@ -180,11 +180,13 @@ namespace JumpMan.Level
                 if (pauseOverlay.IsAwake)
                 {
                     pauseOverlay.Sleep();
+                    pauseOverlay.Position = MainCamera.Position;
                     levelData.Player.Controller.Awake();
                 }
                 else
                 {
                     pauseOverlay.Awake();
+                    pauseOverlay.Position = MainCamera.Position;
                     levelData.Player.Controller.Sleep();
                 }
                 

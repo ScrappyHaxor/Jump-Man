@@ -95,6 +95,13 @@ namespace JumpMan.UI
         {
             BackRect.Position = Position;
             BackRect.Dimensions = Dimensions;
+
+            TitleLabel.Transform.Position = new ScrapVector(Position.X, Position.Y - Dimensions.Y + ButtonHeight / 2 + HEIGHT_OFFSET);
+            ResumeButton.Transform.Position = new ScrapVector(Position.X, Position.Y - Dimensions.Y + ButtonHeight * 1.5d + HEIGHT_OFFSET * 2);
+            SettingsButton.Transform.Position = new ScrapVector(Position.X, Position.Y - Dimensions.Y + ButtonHeight * 2.5d + HEIGHT_OFFSET * 3);
+            MenuButton.Transform.Position = new ScrapVector(Position.X, Position.Y - Dimensions.Y + ButtonHeight * 3.5d + HEIGHT_OFFSET * 4);
+            ExitButton.Transform.Position = new ScrapVector(Position.X, Position.Y - Dimensions.Y + ButtonHeight * 4.5d + HEIGHT_OFFSET * 5);
+
             base.PreLayerTick(dt);
         }
 
