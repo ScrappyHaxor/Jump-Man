@@ -37,6 +37,11 @@ namespace JumpMan.UI
 
         public InGameOverlay(SettingsOverlay settingsOverlay, ScrapVector position, ScrapVector dimensions) : base(SceneManager.CurrentScene.Stack.Fetch(DefaultLayers.UI))
         {
+            //Console.WriteLine(position);
+
+            Position = position;
+            Dimensions = dimensions;
+
             SettingsOverlay = settingsOverlay;
 
             TitleLabel = new GenericLabel(new ScrapVector(position.X, position.Y - dimensions.Y + ButtonHeight / 2 + HEIGHT_OFFSET), new ScrapVector(ButtonWidth, ButtonHeight), "Game Menu");
@@ -93,8 +98,10 @@ namespace JumpMan.UI
 
         public override void PreLayerTick(double dt)
         {
-            BackRect.Position = Position;
-            BackRect.Dimensions = Dimensions;
+            //Console.WriteLine(Position);
+
+            //BackRect.Position = Position;
+            //BackRect.Dimensions = Dimensions;
 
             TitleLabel.Transform.Position = new ScrapVector(Position.X, Position.Y - Dimensions.Y + ButtonHeight / 2 + HEIGHT_OFFSET);
             ResumeButton.Transform.Position = new ScrapVector(Position.X, Position.Y - Dimensions.Y + ButtonHeight * 1.5d + HEIGHT_OFFSET * 2);
@@ -107,10 +114,10 @@ namespace JumpMan.UI
 
         public override void PreLayerRender(Camera mainCamera)
         {
-            TriangulationService.Triangulate(BackRect.Verticies, TriangulationMethod.EAR_CLIPPING, out int[] indicies);
+            //TriangulationService.Triangulate(BackRect.Verticies, TriangulationMethod.EAR_CLIPPING, out int[] indicies);
 
-            Renderer.RenderPolygon(BackRect.Verticies, indicies, new Color(1, 6, 36), mainCamera);
-            Renderer.RenderPolygonOutline(BackRect.Verticies, new Color(93, 139, 244), mainCamera, null, 2);
+            //Renderer.RenderPolygon(BackRect.Verticies, indicies, new Color(1, 6, 36), mainCamera);
+            //Renderer.RenderPolygonOutline(BackRect.Verticies, new Color(93, 139, 244), mainCamera, null, 2);
             base.PreLayerRender(mainCamera);
         }
     }
