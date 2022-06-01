@@ -20,18 +20,20 @@ namespace JumpMan.UI
         private readonly GenericLabel title;
 
         private readonly GenericButton singleplayer;
-        //private GenericButton multiplayer;
+        private readonly GenericButton multiplayer;
         private readonly GenericButton cosmetics;
         private readonly GenericButton settings;
         private readonly GenericButton quit;
 
         private readonly SingleplayerOverlay singleplayerOverlay;
+        private readonly MultiplayerOverlay multiplayerOverlay;
         private readonly CosmeticsOverlay cosmeticsOverlay;
         private readonly SettingsOverlay settingsOverlay;
 
-        public MainMenuOverlay(SingleplayerOverlay singleplayerOverlay, CosmeticsOverlay cosmeticsOverlay, SettingsOverlay settingsOverlay) : base(SceneManager.CurrentScene.Stack.Fetch(DefaultLayers.UI))
+        public MainMenuOverlay(SingleplayerOverlay singleplayerOverlay, MultiplayerOverlay multiplayerOverlay, CosmeticsOverlay cosmeticsOverlay, SettingsOverlay settingsOverlay) : base(SceneManager.CurrentScene.Stack.Fetch(DefaultLayers.UI))
         {
             this.singleplayerOverlay = singleplayerOverlay;
+            this.multiplayerOverlay = multiplayerOverlay;
             this.cosmeticsOverlay = cosmeticsOverlay;
             this.settingsOverlay = settingsOverlay;
 
@@ -53,15 +55,19 @@ namespace JumpMan.UI
             };
             Register.Add(singleplayer);
 
-            //multiplayer = new GenericButton(new ScrapVector(0, OffsetY + ButtonYOffset * 2), buttonDimensions, "Multiplayer");
-            //multiplayer.Label.Font = AssetManager.FetchFont("temporaryBigger");
-            //multiplayer.Button.Pressed += delegate (object sender, EventArgs e)
-            //{
-            //    SceneManager.SwapScene("Level Select");
-            //};
-            //Register.Add(multiplayer);
+            multiplayer = new GenericButton(new ScrapVector(0, OffsetY + ButtonYOffset * 2), buttonDimensions, "Multiplayer");
+            multiplayer.Label.Font = AssetManager.FetchFont("temporaryBigger");
+            multiplayer.Button.Pressed += delegate (object sender, EventArgs e)
+            {
+                if (this.multiplayerOverlay.IsAwake)
+                    return;
 
-            cosmetics = new GenericButton(new ScrapVector(0, OffsetY + ButtonYOffset * 2), buttonDimensions, "Cosmetics");
+                Sleep();
+                this.multiplayerOverlay.Awake();
+            };
+            Register.Add(multiplayer);
+
+            cosmetics = new GenericButton(new ScrapVector(0, OffsetY + ButtonYOffset * 3), buttonDimensions, "Cosmetics");
             cosmetics.Label.Font = AssetManager.FetchFont("temporaryBigger");
             cosmetics.Button.Pressed += delegate (object sender, EventArgs e)
             {
@@ -73,7 +79,7 @@ namespace JumpMan.UI
             };
             Register.Add(cosmetics);
 
-            settings = new GenericButton(new ScrapVector(0, OffsetY + ButtonYOffset * 3), buttonDimensions, "Settings");
+            settings = new GenericButton(new ScrapVector(0, OffsetY + ButtonYOffset * 4), buttonDimensions, "Settings");
             settings.Label.Font = AssetManager.FetchFont("temporaryBigger");
             settings.Button.Pressed += delegate (object sender, EventArgs e)
             {
@@ -85,7 +91,7 @@ namespace JumpMan.UI
             };
             Register.Add(settings);
 
-            quit = new GenericButton(new ScrapVector(0, OffsetY + ButtonYOffset * 4), buttonDimensions, "Quit");
+            quit = new GenericButton(new ScrapVector(0, OffsetY + ButtonYOffset * 5), buttonDimensions, "Quit");
             quit.Label.Font = AssetManager.FetchFont("temporaryBigger");
             quit.Button.Pressed += delegate (object sender, EventArgs e)
             {

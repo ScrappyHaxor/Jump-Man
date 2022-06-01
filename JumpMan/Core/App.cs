@@ -16,18 +16,21 @@ namespace JumpMan.Core
 
         private readonly MainMenu mainMenu;
         private readonly LevelSelect levelSelect;
-        private readonly Level.Level devLevel;
+        private readonly SingleplayerLevel singleLevel;
+        private readonly MultiplayerLevel multiLevel;
 
         public App()
         {
             mainMenu = new MainMenu(this);
             levelSelect = new LevelSelect(this);
-            devLevel = new Level.Level(this);
+            singleLevel = new SingleplayerLevel(this);
+            multiLevel = new MultiplayerLevel(this);
 
             //The world manager is the master of everything. It handles entities, components, levels, systems. Everything you could think of.
             SceneManager.RegisterScene("Main Menu", mainMenu);
             SceneManager.RegisterScene("Level Select", levelSelect);
-            SceneManager.RegisterScene("Developer Level", devLevel);
+            SceneManager.RegisterScene("Developer Level", singleLevel);
+            SceneManager.RegisterScene("Multiplayer Level", multiLevel);
 
             //SceneManager.LoadingScene = new LoadingScreen(this);
         }

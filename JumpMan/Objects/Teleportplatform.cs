@@ -13,94 +13,96 @@ namespace JumpMan.Objects
 {
     public class TeleportPlatform : Entity
     {
-    
-       
-        
-            public override string Name => "Tileable Platform";
+        public override string Name => "Tileable Platform";
 
-            public Transform Transform;
-            public Sprite2D Sprite;
-            public RigidBody2D Rigidbody;
-            public BoxCollider2D Collider;
-            public Player player;
-        public bool succes;
+        public Transform Transform;
+        public Sprite2D Sprite;
+        public RigidBody2D Rigidbody;
+        public BoxCollider2D Collider;
 
-            public TeleportPlatform(string texture, ScrapVector position, ScrapVector dimensions) : base(SceneManager.CurrentScene.Stack.Fetch(DefaultLayers.FOREGROUND))
-            {
-                Transform = new Transform
-                {
-                    Position = position,
-                    Dimensions = dimensions
-                };
+        public List<Player> Players;
 
-                RegisterComponent(Transform);
-
-                Rigidbody = new RigidBody2D
-                {
-                    IsStatic = true
-                };
-
-                RegisterComponent(Rigidbody);
-
-                Collider = new BoxCollider2D
-                {
-                    Algorithm = CollisionAlgorithm.SAT,
-                    Dimensions = dimensions
-                };
-
-                RegisterComponent(Collider);
-
-                Sprite = new Sprite2D
-                {
-                    Texture = AssetManager.FetchTexture(texture),
-                    Mode = SpriteMode.TILE
-                };
-
-                RegisterComponent(Sprite);
-            }
-
-        public void TelportP()
+        public TeleportPlatform(string texture, ScrapVector position, ScrapVector dimensions) : base(SceneManager.CurrentScene.Stack.Fetch(DefaultLayers.FOREGROUND))
         {
-            if (Collision.IntersectPolygons(Collider.GetVerticies(), player.Collider.GetVerticies(), out CollisionManifold manifold))
+            Transform = new Transform
             {
-                
-                player.Transform.Position += new ScrapVector(-900, 120);
+                Position = position,
+                Dimensions = dimensions
+            };
+
+            RegisterComponent(Transform);
+
+            Rigidbody = new RigidBody2D
+            {
+                IsStatic = true
+            };
+
+            RegisterComponent(Rigidbody);
+
+            Collider = new BoxCollider2D
+            {
+                Algorithm = CollisionAlgorithm.SAT,
+                Dimensions = dimensions
+            };
+
+            RegisterComponent(Collider);
+
+            Sprite = new Sprite2D
+            {
+                Texture = AssetManager.FetchTexture(texture),
+                Mode = SpriteMode.TILE
+            };
+
+            RegisterComponent(Sprite);
+
+            Players = new List<Player>();
+        }
+
+        public override void Awake()
+        {
+            base.Awake();
+        }
+
+        public override void Sleep()
+        {
+            base.Sleep();
+        }
+
+        public override void PreLayerTick(double dt)
+        {
+            base.PreLayerTick(dt);
+        }
+
+        public override void PostLayerTick(double dt)
+        {
+            base.PostLayerTick(dt);
+
+            for (int i = 0; i < Players.Count; i++)
+            {
+                Player player = Players[i];
+                try
+                {
+                    if (Collision.IntersectPolygons(Collider.GetVerticies(), player.Collider.GetVerticies(), out CollisionManifold manifold))
+                    {
+                        player.Transform.Position += new ScrapVector(-900, 120);
+                    }
+                }
+                catch (NullReferenceException)
+                {
+                    continue;
+                }
             }
         }
 
-            public override void Awake()
-            {
-            succes = Dependency<Player>(out player);
-            base.Awake();
-            }
+        public override void PreLayerRender(Camera camera)
+        {
+            base.PreLayerRender(camera);
+        }
 
-            public override void Sleep()
-            {
-            
-            base.Sleep();
-            }
-
-            public override void PreLayerTick(double dt)
-            {
-                base.PreLayerTick(dt);
-            }
-
-            public override void PostLayerTick(double dt)
-            {
-                base.PostLayerTick(dt);
-            TelportP();
-
-            }
-
-            public override void PreLayerRender(Camera camera)
-            {
-                base.PreLayerRender(camera);
-            }
-
-            public override void PostLayerRender(Camera camera)
-            {
-                base.PostLayerRender(camera);
-            }
+        public override void PostLayerRender(Camera camera)
+        {
+            base.PostLayerRender(camera);
+        }
         }
     }
 

@@ -27,6 +27,7 @@ namespace JumpMan.Level
 
         private MainMenuOverlay menuOverlay;
         private SingleplayerOverlay singleplayerOverlay;
+        private MultiplayerOverlay multiplayerOverlay;
         private CosmeticsOverlay cosmeticsOverlay;
         private SettingsOverlay settingsOverlay;
 
@@ -46,8 +47,8 @@ namespace JumpMan.Level
             
             Parent.EnqueueChange(() =>
             {
-                Graphics.PreferredBackBufferWidth = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width - 100;
-                Graphics.PreferredBackBufferHeight = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height - 100;
+                Graphics.PreferredBackBufferWidth = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width - 400;
+                Graphics.PreferredBackBufferHeight = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height - 200;
                 Graphics.ApplyChanges();
             });
 
@@ -75,10 +76,11 @@ namespace JumpMan.Level
             controlsSection = new ControlsOverlay(new ScrapVector(0, 120), new ScrapVector(800, 400));
 
             singleplayerOverlay = new SingleplayerOverlay(LevelPool);
+            multiplayerOverlay = new MultiplayerOverlay();
             settingsOverlay = new SettingsOverlay(ScrapVector.Zero, new ScrapVector(800, 600), soundSection, controlsSection);
             cosmeticsOverlay = new CosmeticsOverlay();
 
-            menuOverlay = new MainMenuOverlay(singleplayerOverlay, cosmeticsOverlay, settingsOverlay);
+            menuOverlay = new MainMenuOverlay(singleplayerOverlay, multiplayerOverlay, cosmeticsOverlay, settingsOverlay);
             menuOverlay.Awake();
 
             base.Load(args);

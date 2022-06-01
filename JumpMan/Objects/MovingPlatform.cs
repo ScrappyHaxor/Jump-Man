@@ -21,8 +21,8 @@ namespace JumpMan.Objects
         public Sprite2D Sprite;
         public RigidBody2D Rigidbody;
         public BoxCollider2D Collider;
-        public Player player;
-        bool success;
+
+        public List<Player> Players;
 
         public double Extent = 100;
         public double Step = 1;
@@ -30,8 +30,11 @@ namespace JumpMan.Objects
         public bool OverrideFlag;
         public bool AxisFlippedFlag;
 
+        public bool Server;
+
         public ScrapVector startPosition;
-        ScrapVector vector;
+        private ScrapVector vector;
+
         public MovingPlatform(string texture, ScrapVector position, ScrapVector dimensions) : base(SceneManager.CurrentScene.Stack.Fetch(DefaultLayers.FOREGROUND))
         {
             Transform = new Transform
@@ -65,15 +68,12 @@ namespace JumpMan.Objects
             };
 
             RegisterComponent(Sprite);
+
+            Players = new List<Player>();
         }
 
         public override void Awake()
         {
-            success = Dependency<Player>(out player);
-
-            if (!success)
-                return;
-
             if (!AxisFlippedFlag)
             {
                 vector = new ScrapVector(Step, 0);
@@ -124,14 +124,23 @@ namespace JumpMan.Objects
                 }
             }
 
-
-
-            if (Collision.IntersectPolygons(Collider.GetVerticies(), player.Collider.GetVerticies(), out CollisionManifold manifold) && success)
+            for (int i = 0; i < Players.Count; i++)
             {
-                if (vector == new ScrapVector(0, Step))
-                    return;
+                Player player = Players[i];
+                try
+                {
+                    if (Collision.IntersectPolygons(Collider.GetVerticies(), player.Collider.GetVerticies(), out CollisionManifold manifold))
+                    {
+                        if (vector == new ScrapVector(0, Step))
+                            return;
 
-                player.Transform.Position += vector;
+                        player.Transform.Position += vector;
+                    }
+                }
+                catch (NullReferenceException)
+                {
+                    continue;
+                }
             }
         }
 

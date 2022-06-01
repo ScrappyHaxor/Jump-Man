@@ -1,4 +1,5 @@
-﻿using ScrapBox.Framework.ECS;
+﻿using JumpMan.ECS.Components;
+using ScrapBox.Framework.ECS;
 using ScrapBox.Framework.ECS.Components;
 using ScrapBox.Framework.Level;
 using ScrapBox.Framework.Managers;
@@ -11,18 +12,18 @@ using static ScrapBox.Framework.ECS.Collider;
 
 namespace JumpMan.Objects
 {
-    public class FeetBouncePlatform : Entity
+    public class GluePlatform: Entity 
     {
         public override string Name => "Tileable Platform";
-
-        Player Player;
 
         public Transform Transform;
         public Sprite2D Sprite;
         public RigidBody2D Rigidbody;
         public BoxCollider2D Collider;
 
-        public FeetBouncePlatform(string texture, ScrapVector position, ScrapVector dimensions) : base(SceneManager.CurrentScene.Stack.Fetch(DefaultLayers.FOREGROUND))
+        public List<Player> Players;
+
+        public GluePlatform(string texture, ScrapVector position, ScrapVector dimensions) : base(SceneManager.CurrentScene.Stack.Fetch(DefaultLayers.FOREGROUND))
         {
             Transform = new Transform
             {
@@ -54,12 +55,12 @@ namespace JumpMan.Objects
             };
 
             RegisterComponent(Sprite);
+
+            Players = new List<Player>();
         }
 
         public override void Awake()
         {
-            bool success = Dependency<Player>(out Player);
-
             base.Awake();
         }
 
@@ -68,34 +69,33 @@ namespace JumpMan.Objects
             base.Sleep();
         }
 
-        //temporary test variables
-        bool hasBounced = false;
-
-        bool curr = false;
-        bool prev;
-
         public override void PreLayerTick(double dt)
         {
-            bool success = Dependency<Player>(out Player);
-
-            prev = curr;
-            curr = Player.RigidBody.Grounded();
-
-            if (Player != null)
+            for (int i = 0; i < Players.Count; i++)
             {
-                bool collided = Collision.IntersectPolygons(Collider.GetVerticies(), Player.Collider.GetVerticies(), out CollisionManifold manifold);
-
-                if (collided && hasBounced == false && prev == false && curr == true)
+                Player player = Players[i];
+                try
                 {
-                    Player.RigidBody.AddForce(new ScrapVector(Player.Controller.jumpForce.X * 0.2f, Player.Controller.jumpForce.Y * 0.5f));
+                    if (Collision.IntersectPolygons(Collider.GetVerticies(), player.Collider.GetVerticies(), out CollisionManifold manifold))
+                    {
 
-                    hasBounced = true;
+                        player.Controller.MoveForce = 50;
+                        player.Controller.JumpForce = 1500;
+                        player.Controller.JumpDirectionalDegree = 60;
+
+                    }
+
+                    else
+                    {
+                        player.Controller.MoveForce = Controller.DEFAULT_MOVE_FORCE;
+                        player.Controller.JumpForce = Controller.DEFAULT_JUMP_FORCE;
+                        player.Controller.JumpDirectionalDegree = Controller.DEFAULT_JUMP_DIRECTIONAL_DEGREE;
+                    }
                 }
-            }
-
-            if (Player.RigidBody.Grounded() && hasBounced == true)
-            {
-                hasBounced = false;
+                catch (NullReferenceException)
+                {
+                    continue;
+                }
             }
 
             base.PreLayerTick(dt);
@@ -116,4 +116,6 @@ namespace JumpMan.Objects
             base.PostLayerRender(camera);
         }
     }
+
+
 }

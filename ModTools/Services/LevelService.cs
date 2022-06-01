@@ -41,33 +41,29 @@ namespace ModTools.Services
                 temp.Add($"{(int)DataType.TEST_POSITION};{position.X};{position.Y}");
             }
 
-            foreach (Entity trap in data.Traps)
+            foreach (GluePlatform gluePlatform in data.GluePlatforms)
             {
-                if (trap.GetType() == typeof(Glue))
-                {
-                    Glue convertedTrap = (Glue)trap;
-                    temp.Add($"{(int)DataType.TRAP};{(int)TrapType.GLUE};{convertedTrap.Sprite.Texture.Name};{convertedTrap.Transform.Position.X};{convertedTrap.Transform.Position.Y};{convertedTrap.Transform.Dimensions.X};{convertedTrap.Transform.Dimensions.Y}");
-                }
-                else if (trap.GetType() == typeof(Platform))
-                {
-                    Platform convertedTrap = (Platform)trap;
-                    temp.Add($"{(int)DataType.TRAP};{(int)TrapType.ILLUSION};{convertedTrap.Sprite.Texture.Name};{convertedTrap.Transform.Position.X};{convertedTrap.Transform.Position.Y};{convertedTrap.Transform.Dimensions.X};{convertedTrap.Transform.Dimensions.Y}");
-                }
-                else if (trap.GetType() == typeof(ScrollingPlatform))
-                {
-                    ScrollingPlatform convertedTrap = (ScrollingPlatform)trap;
-                    temp.Add($"{(int)DataType.TRAP};{(int)TrapType.SCROLLING};{convertedTrap.Sprite.Texture.Name};{convertedTrap.Transform.Position.X};{convertedTrap.Transform.Position.Y};{convertedTrap.Transform.Dimensions.X};{convertedTrap.Transform.Dimensions.Y};{convertedTrap.IsLeft};{convertedTrap.ScrollSpeed}");
-                }
-                else if (trap.GetType() == typeof(FeetBouncePlatform))
-                {
-                    FeetBouncePlatform convertedTrap = (FeetBouncePlatform)trap;
-                    temp.Add($"{(int)DataType.TRAP};{(int)TrapType.BOUNCE};{convertedTrap.Sprite.Texture.Name};{convertedTrap.Transform.Position.X};{convertedTrap.Transform.Position.Y};{convertedTrap.Transform.Dimensions.X};{convertedTrap.Transform.Dimensions.Y}");
-                }
-                else if (trap.GetType() == typeof(TeleportPlatform))
-                {
-                    TeleportPlatform convertedTrap = (TeleportPlatform)trap;
-                    temp.Add($"{(int)DataType.TRAP};{(int)TrapType.TELEPORT};{convertedTrap.Sprite.Texture.Name};{convertedTrap.Transform.Position.X};{convertedTrap.Transform.Position.Y};{convertedTrap.Transform.Dimensions.X};{convertedTrap.Transform.Dimensions.Y}");
-                }
+                temp.Add($"{(int)DataType.TRAP};{(int)TrapType.GLUE};{gluePlatform.Sprite.Texture.Name};{gluePlatform.Transform.Position.X};{gluePlatform.Transform.Position.Y};{gluePlatform.Transform.Dimensions.X};{gluePlatform.Transform.Dimensions.Y}");
+            }
+
+            foreach (Platform illusionPlatform in data.IllusionPlatforms)
+            {
+                temp.Add($"{(int)DataType.TRAP};{(int)TrapType.ILLUSION};{illusionPlatform.Sprite.Texture.Name};{illusionPlatform.Transform.Position.X};{illusionPlatform.Transform.Position.Y};{illusionPlatform.Transform.Dimensions.X};{illusionPlatform.Transform.Dimensions.Y}");
+            }
+
+            foreach (ScrollingPlatform scrollingPlatform in data.ScrollingPlatforms)
+            {
+                temp.Add($"{(int)DataType.TRAP};{(int)TrapType.SCROLLING};{scrollingPlatform.Sprite.Texture.Name};{scrollingPlatform.Transform.Position.X};{scrollingPlatform.Transform.Position.Y};{scrollingPlatform.Transform.Dimensions.X};{scrollingPlatform.Transform.Dimensions.Y};{scrollingPlatform.IsLeft};{scrollingPlatform.ScrollSpeed}");
+            }
+
+            foreach (BouncePlatform bouncePlatform in data.BouncePlatforms)
+            {
+                temp.Add($"{(int)DataType.TRAP};{(int)TrapType.BOUNCE};{bouncePlatform.Sprite.Texture.Name};{bouncePlatform.Transform.Position.X};{bouncePlatform.Transform.Position.Y};{bouncePlatform.Transform.Dimensions.X};{bouncePlatform.Transform.Dimensions.Y}");
+            }
+
+            foreach (TeleportPlatform teleportPlatform in data.TeleportPlatforms)
+            {
+                temp.Add($"{(int)DataType.TRAP};{(int)TrapType.TELEPORT};{teleportPlatform.Sprite.Texture.Name};{teleportPlatform.Transform.Position.X};{teleportPlatform.Transform.Position.Y};{teleportPlatform.Transform.Dimensions.X};{teleportPlatform.Transform.Dimensions.Y}");
             }
 
             foreach (CosmeticDrop drop in data.CosmeticDrops)
@@ -110,33 +106,29 @@ namespace ModTools.Services
                 writer.WriteLine($"{(int)DataType.TEST_POSITION};{position.X};{position.Y}");
             }
 
-            foreach (Entity trap in data.Traps)
+            foreach (GluePlatform gluePlatform in data.GluePlatforms)
             {
-                if (trap.GetType() == typeof(Glue))
-                {
-                    Glue convertedTrap = (Glue)trap;
-                    writer.WriteLine($"{(int)DataType.TRAP};{(int)TrapType.GLUE};{convertedTrap.Sprite.Texture.Name};{convertedTrap.Transform.Position.X};{convertedTrap.Transform.Position.Y};{convertedTrap.Transform.Dimensions.X};{convertedTrap.Transform.Dimensions.Y}");
-                }
-                else if (trap.GetType() == typeof(Platform))
-                {
-                    Platform convertedTrap = (Platform)trap;
-                    writer.WriteLine($"{(int)DataType.TRAP};{(int)TrapType.ILLUSION};{convertedTrap.Sprite.Texture.Name};{convertedTrap.Transform.Position.X};{convertedTrap.Transform.Position.Y};{convertedTrap.Transform.Dimensions.X};{convertedTrap.Transform.Dimensions.Y}");
-                }
-                else if (trap.GetType() == typeof(ScrollingPlatform))
-                {
-                    ScrollingPlatform convertedTrap = (ScrollingPlatform)trap;
-                    writer.WriteLine($"{(int)DataType.TRAP};{(int)TrapType.SCROLLING};{convertedTrap.Sprite.Texture.Name};{convertedTrap.Transform.Position.X};{convertedTrap.Transform.Position.Y};{convertedTrap.Transform.Dimensions.X};{convertedTrap.Transform.Dimensions.Y};{convertedTrap.IsLeft};{convertedTrap.ScrollSpeed}");
-                }
-                else if (trap.GetType() == typeof(FeetBouncePlatform))
-                {
-                    FeetBouncePlatform convertedTrap = (FeetBouncePlatform)trap;
-                    writer.WriteLine($"{(int)DataType.TRAP};{(int)TrapType.BOUNCE};{convertedTrap.Sprite.Texture.Name};{convertedTrap.Transform.Position.X};{convertedTrap.Transform.Position.Y};{convertedTrap.Transform.Dimensions.X};{convertedTrap.Transform.Dimensions.Y}");
-                }
-                else if (trap.GetType() == typeof(TeleportPlatform))
-                {
-                    TeleportPlatform convertedTrap = (TeleportPlatform)trap;
-                    writer.WriteLine($"{(int)DataType.TRAP};{(int)TrapType.TELEPORT};{convertedTrap.Sprite.Texture.Name};{convertedTrap.Transform.Position.X};{convertedTrap.Transform.Position.Y};{convertedTrap.Transform.Dimensions.X};{convertedTrap.Transform.Dimensions.Y}");
-                }
+                writer.WriteLine($"{(int)DataType.TRAP};{(int)TrapType.GLUE};{gluePlatform.Sprite.Texture.Name};{gluePlatform.Transform.Position.X};{gluePlatform.Transform.Position.Y};{gluePlatform.Transform.Dimensions.X};{gluePlatform.Transform.Dimensions.Y}");
+            }
+
+            foreach (Platform illusionPlatform in data.IllusionPlatforms)
+            {
+                writer.WriteLine($"{(int)DataType.TRAP};{(int)TrapType.ILLUSION};{illusionPlatform.Sprite.Texture.Name};{illusionPlatform.Transform.Position.X};{illusionPlatform.Transform.Position.Y};{illusionPlatform.Transform.Dimensions.X};{illusionPlatform.Transform.Dimensions.Y}");
+            }
+
+            foreach (ScrollingPlatform scrollingPlatform in data.ScrollingPlatforms)
+            {
+                writer.WriteLine($"{(int)DataType.TRAP};{(int)TrapType.SCROLLING};{scrollingPlatform.Sprite.Texture.Name};{scrollingPlatform.Transform.Position.X};{scrollingPlatform.Transform.Position.Y};{scrollingPlatform.Transform.Dimensions.X};{scrollingPlatform.Transform.Dimensions.Y};{scrollingPlatform.IsLeft};{scrollingPlatform.ScrollSpeed}");
+            }
+
+            foreach (BouncePlatform bouncePlatform in data.BouncePlatforms)
+            {
+                writer.WriteLine($"{(int)DataType.TRAP};{(int)TrapType.BOUNCE};{bouncePlatform.Sprite.Texture.Name};{bouncePlatform.Transform.Position.X};{bouncePlatform.Transform.Position.Y};{bouncePlatform.Transform.Dimensions.X};{bouncePlatform.Transform.Dimensions.Y}");
+            }
+
+            foreach (TeleportPlatform teleportPlatform in data.TeleportPlatforms)
+            {
+                writer.WriteLine($"{(int)DataType.TRAP};{(int)TrapType.TELEPORT};{teleportPlatform.Sprite.Texture.Name};{teleportPlatform.Transform.Position.X};{teleportPlatform.Transform.Position.Y};{teleportPlatform.Transform.Dimensions.X};{teleportPlatform.Transform.Dimensions.Y}");
             }
 
             foreach (CosmeticDrop drop in data.CosmeticDrops)
