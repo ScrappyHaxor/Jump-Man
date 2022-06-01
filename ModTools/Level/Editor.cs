@@ -126,9 +126,28 @@ namespace ModTools.Level
                 movingPlatform.Awake();
             }
 
-            foreach (Entity t in data.Traps)
+            foreach (BouncePlatform bouncePlatform in data.BouncePlatforms)
             {
-                t.Awake();
+                bouncePlatform.Players.Add(data.Player);
+                bouncePlatform.Awake();
+            }
+
+            foreach (GluePlatform gluePlatform in data.GluePlatforms)
+            {
+                gluePlatform.Players.Add(data.Player);
+                gluePlatform.Awake();
+            }
+
+            foreach (ScrollingPlatform scrollingPlatform in data.ScrollingPlatforms)
+            {
+                scrollingPlatform.Players.Add(data.Player);
+                scrollingPlatform.Awake();
+            }
+
+            foreach (TeleportPlatform teleportPlatform in data.TeleportPlatforms)
+            {
+                teleportPlatform.Players.Add(data.Player);
+                teleportPlatform.Awake();
             }
 
             data.EndOfLevel.PurgeComponent(data.EndOfLevel.Collider);
