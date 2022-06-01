@@ -22,6 +22,7 @@ namespace JumpMan.Level
             "level2",
             "firstlevel",
             "secondlevel",
+            "thirdlevel",
         };
 
 
