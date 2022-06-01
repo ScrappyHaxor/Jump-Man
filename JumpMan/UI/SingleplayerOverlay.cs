@@ -26,6 +26,9 @@ namespace JumpMan.UI
         public GenericLabel DLCLabel;
         public GenericButton DLCButton;
 
+        public GenericButton PreviousLevel;
+        public GenericButton NextLevel;
+
         private readonly string[] levelPool;
         private int selectionIndex;
 
@@ -92,6 +95,34 @@ namespace JumpMan.UI
                 DLCButton.Label.Text = levelPool[selectionIndex];
             };
             Register.Add(DLCButton);
+
+            NextLevel = new GenericButton(new ScrapVector(600, OffsetY + ButtonYOffset * 5), new ScrapVector(300, ButtonYSize), "Next");
+            NextLevel.Layer = layer;
+            NextLevel.Label.Font = AssetManager.FetchFont("temporaryBigger");
+            NextLevel.Button.Pressed += delegate (object o, EventArgs e)
+            {
+                selectionIndex++;
+                if (selectionIndex >= levelPool.Length)
+                {
+                    selectionIndex = 0;
+                }
+                DLCButton.Label.Text = levelPool[selectionIndex];
+            };
+            Register.Add(NextLevel);
+
+            PreviousLevel = new GenericButton(new ScrapVector(-600, OffsetY + ButtonYOffset * 5), new ScrapVector(300, ButtonYSize), "Previous");
+            PreviousLevel.Layer = layer;
+            PreviousLevel.Label.Font = AssetManager.FetchFont("temporaryBigger");
+            PreviousLevel.Button.Pressed += delegate (object o, EventArgs e)
+            {
+                selectionIndex--;
+                if (selectionIndex < 0)
+                {
+                    selectionIndex = levelPool.Length - 1;
+                }
+                DLCButton.Label.Text = levelPool[selectionIndex];
+            };
+            Register.Add(PreviousLevel);
         }
     }
 }
