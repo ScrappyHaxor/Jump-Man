@@ -160,41 +160,41 @@ namespace ModTools.Objects
             }
             else if (placingState == Placing.GLUE)
             {
-                Glue trap = new Glue(Sprite.Texture.Name, Transform.Position, Transform.Dimensions);
-                trap.Awake();
+                GluePlatform glueTrap = new GluePlatform(Sprite.Texture.Name, Transform.Position, Transform.Dimensions);
+                glueTrap.Awake();
 
-                Data.Traps.Add(trap);
+                Data.GluePlatforms.Add(glueTrap);
             }
             else if (placingState == Placing.ILLUSION)
             {
-                Platform trap = new Platform(Sprite.Texture.Name, Transform.Position, Transform.Dimensions);
-                trap.Collider.Layer = SceneManager.CurrentScene.Stack.Fetch(DefaultLayers.BACKGROUND);
-                trap.Awake();
+                Platform illusionPlatform = new Platform(Sprite.Texture.Name, Transform.Position, Transform.Dimensions);
+                illusionPlatform.Collider.Layer = SceneManager.CurrentScene.Stack.Fetch(DefaultLayers.BACKGROUND);
+                illusionPlatform.Awake();
 
-                Data.Traps.Add(trap);
+                Data.IllusionPlatforms.Add(illusionPlatform);
             }
             else if (placingState == Placing.SCROLLING)
             {
-                ScrollingPlatform trap = new ScrollingPlatform(Sprite.Texture.Name, Transform.Position, Transform.Dimensions);
-                trap.ScrollSpeed = ScrollSpeed;
-                trap.IsLeft = IsLeft;
-                trap.Awake();
+                ScrollingPlatform scrollingPlatform = new ScrollingPlatform(Sprite.Texture.Name, Transform.Position, Transform.Dimensions);
+                scrollingPlatform.ScrollSpeed = ScrollSpeed;
+                scrollingPlatform.IsLeft = IsLeft;
+                scrollingPlatform.Awake();
 
-                Data.Traps.Add(trap);
+                Data.ScrollingPlatforms.Add(scrollingPlatform);
             }
             else if (placingState == Placing.BOUNCE)
             {
-                FeetBouncePlatform trap = new FeetBouncePlatform(Sprite.Texture.Name, Transform.Position, Transform.Dimensions);
-                trap.Awake();
+                BouncePlatform bouncePlatform = new BouncePlatform(Sprite.Texture.Name, Transform.Position, Transform.Dimensions);
+                bouncePlatform.Awake();
 
-                Data.Traps.Add(trap);
+                Data.BouncePlatforms.Add(bouncePlatform);
             }
             else if (placingState == Placing.TELEPORT)
             {
-                TeleportPlatform trap = new TeleportPlatform(Sprite.Texture.Name, Transform.Position, Transform.Dimensions);
-                trap.Awake();
+                TeleportPlatform teleportPlatform = new TeleportPlatform(Sprite.Texture.Name, Transform.Position, Transform.Dimensions);
+                teleportPlatform.Awake();
 
-                Data.Traps.Add(trap);
+                Data.TeleportPlatforms.Add(teleportPlatform);
             }
             else if (placingState == Placing.LEVEL_END)
             {
@@ -428,9 +428,9 @@ namespace ModTools.Objects
             else if (lastPlacing == Placing.GLUE)
             {
                 RayResult result = foregroundCollision.Raycast(new PointRay(Transform.Position));
-                if (result.hit && result.other.GetType() == typeof(Glue))
+                if (result.hit && result.other.GetType() == typeof(GluePlatform))
                 {
-                    Glue glueTrap = (Glue)result.other;
+                    GluePlatform glueTrap = (GluePlatform)result.other;
                     glueTrap.Sprite.Texture = Sprite.Texture;
                 }
             }
@@ -455,9 +455,9 @@ namespace ModTools.Objects
             else if (lastPlacing == Placing.BOUNCE)
             {
                 RayResult result = foregroundCollision.Raycast(new PointRay(Transform.Position));
-                if (result.hit && result.other.GetType() == typeof(FeetBouncePlatform))
+                if (result.hit && result.other.GetType() == typeof(BouncePlatform))
                 {
-                    FeetBouncePlatform bounceTrap = (FeetBouncePlatform)result.other;
+                    BouncePlatform bounceTrap = (BouncePlatform)result.other;
                     bounceTrap.Sprite.Texture = Sprite.Texture;
                 }
             }

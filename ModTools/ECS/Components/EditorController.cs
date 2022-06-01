@@ -212,12 +212,12 @@ namespace ModTools.ECS.Components
                 else if (PlacingState == Placing.GLUE)
                 {
                     RayResult result = foregroundCollision.Raycast(new PointRay(EditorGhost.Transform.Position));
-                    if (result.hit && result.other.GetType() == typeof(Glue))
+                    if (result.hit && result.other.GetType() == typeof(GluePlatform))
                     {
-                        Glue glueTrap = (Glue)result.other;
+                        GluePlatform glueTrap = (GluePlatform)result.other;
                         glueTrap.Sleep();
 
-                        Data.Traps.Remove(glueTrap);
+                        Data.GluePlatforms.Remove(glueTrap);
                     }
                 }
                 else if (PlacingState == Placing.ILLUSION)
@@ -228,7 +228,7 @@ namespace ModTools.ECS.Components
                         Platform illusionTrap = (Platform)result.other;
                         illusionTrap.Sleep();
 
-                        Data.Traps.Remove(illusionTrap);
+                        Data.IllusionPlatforms.Remove(illusionTrap);
                     }
                 }
                 else if (PlacingState == Placing.SCROLLING)
@@ -239,18 +239,18 @@ namespace ModTools.ECS.Components
                         ScrollingPlatform scrollingPlatform = (ScrollingPlatform)result.other;
                         scrollingPlatform.Sleep();
 
-                        Data.Traps.Remove(scrollingPlatform);
+                        Data.ScrollingPlatforms.Remove(scrollingPlatform);
                     }
                 }
                 else if (PlacingState == Placing.BOUNCE)
                 {
                     RayResult result = foregroundCollision.Raycast(new PointRay(EditorGhost.Transform.Position));
-                    if (result.hit && result.other.GetType() == typeof(FeetBouncePlatform))
+                    if (result.hit && result.other.GetType() == typeof(BouncePlatform))
                     {
-                        FeetBouncePlatform bounceTrap = (FeetBouncePlatform)result.other;
+                        BouncePlatform bounceTrap = (BouncePlatform)result.other;
                         bounceTrap.Sleep();
 
-                        Data.Traps.Remove(bounceTrap);
+                        Data.BouncePlatforms.Remove(bounceTrap);
                     }
                 }
                 else if (PlacingState == Placing.TELEPORT)
@@ -261,7 +261,7 @@ namespace ModTools.ECS.Components
                         TeleportPlatform teleTrap = (TeleportPlatform)result.other;
                         teleTrap.Sleep();
 
-                        Data.Traps.Remove(teleTrap);
+                        Data.TeleportPlatforms.Remove(teleTrap);
                     }
                 }
                 else if (PlacingState == Placing.LEVEL_END)

@@ -96,7 +96,7 @@ namespace JumpMan.ECS.Components
                     {
                         //sound.Play(settingsData.EffectVolume / 100f, 0, 0);
                     }
-                    catch (Exception _) { }
+                    catch (Exception) { }
                 }
                     
             }
@@ -139,7 +139,7 @@ namespace JumpMan.ECS.Components
                     {
                         //sound.Play(settingsData.EffectVolume / 100f, 0, 0);
                     }
-                    catch (Exception _) { }
+                    catch (Exception) { }
                 }
 
                 jumpForce = new ScrapVector(0, -JumpForce * jumpMultiplier);

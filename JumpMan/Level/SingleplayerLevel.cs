@@ -18,7 +18,7 @@ using JumpMan.UI;
 
 namespace JumpMan.Level
 {
-    public partial class Level : Scene
+    public partial class SingleplayerLevel : Scene
     {
         public const double CameraOffset = -800;
 
@@ -38,7 +38,7 @@ namespace JumpMan.Level
         private SoundOverlay soundSection;
         private ControlsOverlay controlsSection;
 
-        public Level(ScrapApp app)
+        public SingleplayerLevel(ScrapApp app)
             : base(app)
         {
 
@@ -117,31 +117,51 @@ namespace JumpMan.Level
                 }
             }
 
+            levelData.Player.Awake();
+
             foreach (Platform p in levelData.Platforms)
             {
                 p.Awake();
+            }
+
+            foreach (MovingPlatform movingPlatform in levelData.MovingPlatforms)
+            {
+                movingPlatform.Players.Add(levelData.Player);
+                movingPlatform.Awake();
             }
 
             foreach (Background b in levelData.Backgrounds)
             {
                 b.Awake();
             }
-            
+
+            foreach (BouncePlatform bouncePlatform in levelData.BouncePlatforms)
+            {
+                bouncePlatform.Players.Add(levelData.Player);
+                bouncePlatform.Awake();
+            }
+
+            foreach (GluePlatform gluePlatform in levelData.GluePlatforms)
+            {
+                gluePlatform.Players.Add(levelData.Player);
+                gluePlatform.Awake();
+            }
+
+            foreach (ScrollingPlatform scrollingPlatform in levelData.ScrollingPlatforms)
+            {
+                scrollingPlatform.Players.Add(levelData.Player);
+                scrollingPlatform.Awake();
+            }
+
+            foreach (TeleportPlatform teleportPlatform in levelData.TeleportPlatforms)
+            {
+                teleportPlatform.Players.Add(levelData.Player);
+                teleportPlatform.Awake();
+            }
+
             foreach (CosmeticDrop drop in levelData.CosmeticDrops)
             {
                 drop.Awake();
-            }
-
-            levelData.Player.Awake();
-
-            foreach (MovingPlatform movingPlatform in levelData.MovingPlatforms)
-            {
-                movingPlatform.Awake();
-            }
-
-            foreach (Entity t in levelData.Traps)
-            {
-                t.Awake();
             }
 
             if (!editorFlag && !testFlag)

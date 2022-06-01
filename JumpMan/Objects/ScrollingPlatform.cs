@@ -23,8 +23,8 @@ namespace JumpMan.Objects
         public Sprite2D Sprite;
         public RigidBody2D Rigidbody;
         public BoxCollider2D Collider;
-        public Player player;
-        bool success;
+
+        public List<Player> Players;
 
         public bool IsLeft;
 
@@ -61,11 +61,12 @@ namespace JumpMan.Objects
             };
 
             RegisterComponent(Sprite);
+
+            Players = new List<Player>();
         }
 
         public override void Awake()
         {
-            success = Dependency<Player>(out player);
             base.Awake();
         }
 
@@ -77,20 +78,30 @@ namespace JumpMan.Objects
         public override void PreLayerTick(double dt)
         {
             base.PreLayerTick(dt);
-            if (Collision.IntersectPolygons(Collider.GetVerticies(), player.Collider.GetVerticies(), out CollisionManifold manifold) && success)
+
+            for (int i = 0; i < Players.Count; i++)
             {
-                if (IsLeft)
+                Player player = Players[i];
+                try
                 {
-                    player.RigidBody.AddForce(new ScrapVector(-ScrollSpeed, 0));
+                    if (Collision.IntersectPolygons(Collider.GetVerticies(), player.Collider.GetVerticies(), out CollisionManifold manifold))
+                    {
+                        if (IsLeft)
+                        {
+                            player.RigidBody.AddForce(new ScrapVector(-ScrollSpeed, 0));
+                        }
+                        else
+                        {
+                            player.RigidBody.AddForce(new ScrapVector(ScrollSpeed, 0));
+                        }
+
+                    }
                 }
-                else
+                catch (NullReferenceException)
                 {
-                    player.RigidBody.AddForce(new ScrapVector(ScrollSpeed, 0));
+                    continue;
                 }
-                
             }
-
-
         }
 
         public override void PostLayerTick(double dt)

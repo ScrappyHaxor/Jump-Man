@@ -15,14 +15,14 @@ namespace ModTools.Core
         private readonly Menu toolMenu;
         private readonly Editor editor;
         private readonly Test testPlay;
-        private readonly JumpMan.Level.Level devLevel;
+        private readonly JumpMan.Level.SingleplayerLevel devLevel;
 
         public App()
         {
             toolMenu = new Menu(this);
             editor = new Editor(this);
             testPlay = new Test(this);
-            devLevel = new JumpMan.Level.Level(this);
+            devLevel = new JumpMan.Level.SingleplayerLevel(this);
 
             SceneManager.RegisterScene("tool menu", toolMenu);
             SceneManager.RegisterScene("editor", editor);

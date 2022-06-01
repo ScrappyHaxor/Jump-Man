@@ -162,16 +162,17 @@ namespace JumpMan.Services
                         continue;
                     }
 
-                    Entity loadedTrap = null;
                     TrapType convertedIndex = (TrapType)trapIndex;
                     if (convertedIndex == TrapType.GLUE)
                     {
-                        loadedTrap = new Glue(chunks[2].ToString(), new ScrapVector(x, y), new ScrapVector(width, height));
+                        GluePlatform glueTrap = new GluePlatform(chunks[2].ToString(), new ScrapVector(x, y), new ScrapVector(width, height));
+                        data.GluePlatforms.Add(glueTrap);
                     }
                     else if (convertedIndex == TrapType.ILLUSION)
                     {
-                        loadedTrap = new Platform(chunks[2].ToString(), new ScrapVector(x, y), new ScrapVector(width, height));
-                        ((Platform)loadedTrap).Collider.Layer = SceneManager.CurrentScene.Stack.Fetch(DefaultLayers.BACKGROUND);
+                        Platform illusionTrap = new Platform(chunks[2].ToString(), new ScrapVector(x, y), new ScrapVector(width, height));
+                        illusionTrap.Collider.Layer = SceneManager.CurrentScene.Stack.Fetch(DefaultLayers.BACKGROUND);
+                        data.IllusionPlatforms.Add(illusionTrap);
                     }
                     else if (convertedIndex == TrapType.SCROLLING)
                     {
@@ -181,20 +182,21 @@ namespace JumpMan.Services
                             continue;
                         }
 
-                        loadedTrap = new ScrollingPlatform(chunks[2].ToString(), new ScrapVector(x, y), new ScrapVector(width, height));
-                        ((ScrollingPlatform)loadedTrap).IsLeft = isLeft;
-                        ((ScrollingPlatform)loadedTrap).ScrollSpeed = scrollSpeed;
+                        ScrollingPlatform scrollingPlatform = new ScrollingPlatform(chunks[2].ToString(), new ScrapVector(x, y), new ScrapVector(width, height));
+                        scrollingPlatform.IsLeft = isLeft;
+                        scrollingPlatform.ScrollSpeed = scrollSpeed;
+                        data.ScrollingPlatforms.Add(scrollingPlatform);
                     }
                     else if (convertedIndex == TrapType.BOUNCE)
                     {
-                        loadedTrap = new FeetBouncePlatform(chunks[2].ToString(), new ScrapVector(x, y), new ScrapVector(width, height));
+                        BouncePlatform bounceTrap = new BouncePlatform(chunks[2].ToString(), new ScrapVector(x, y), new ScrapVector(width, height));
+                        data.BouncePlatforms.Add(bounceTrap);
                     }
                     else if (convertedIndex == TrapType.TELEPORT)
                     {
-                        loadedTrap = new TeleportPlatform(chunks[2].ToString(), new ScrapVector(x, y), new ScrapVector(width, height));
+                        TeleportPlatform teleportTrap = new TeleportPlatform(chunks[2].ToString(), new ScrapVector(x, y), new ScrapVector(width, height));
+                        data.TeleportPlatforms.Add(teleportTrap);
                     }
-
-                    data.Traps.Add(loadedTrap);
                 }
                 else if (objectID == DataType.LEVEL_END)
                 {
