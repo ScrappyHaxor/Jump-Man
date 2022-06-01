@@ -76,7 +76,7 @@ namespace JumpMan.Level
             controlsSection = new ControlsOverlay(new ScrapVector(0, 120), new ScrapVector(800, 400));
 
             singleplayerOverlay = new SingleplayerOverlay(LevelPool);
-            multiplayerOverlay = new MultiplayerOverlay();
+            multiplayerOverlay = new MultiplayerOverlay(LevelPool);
             settingsOverlay = new SettingsOverlay(ScrapVector.Zero, new ScrapVector(800, 600), soundSection, controlsSection);
             cosmeticsOverlay = new CosmeticsOverlay();
 
