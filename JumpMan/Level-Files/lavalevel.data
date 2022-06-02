@@ -1,8 +1,4 @@
-0;-1280;-8192
-1;placeholder;-64;-1024;64;64;1;False
-1;placeholder;-64;-1088;64;64;1;False
-1;placeholder;-64;-1152;64;64;1;False
-1;placeholder;-64;-1216;3008;64;1;False
+0;-1312;-8192
 1;placeholder;-1536;-2048;64;1600;1;False
 1;placeholder;1408;-2048;64;1600;1;False
 1;placeholder;1216;-1664;320;64;1;False
@@ -34,6 +30,19 @@
 1;placeholder;320;-9280;1216;64;1;False
 1;placeholder;1152;-9280;448;64;1;False
 1;placeholder;1184;-8960;512;64;1;False
+1;placeholder;-1536;-1088;64;192;1;False
+1;placeholder;-1280;-1024;448;64;1;False
+1;placeholder;-832;-1024;448;64;1;False
+1;placeholder;-384;-1024;448;64;1;False
+1;placeholder;64;-1024;448;64;1;False
+1;placeholder;512;-1024;448;64;1;False
+1;placeholder;960;-1024;448;64;1;False
+1;placeholder;1312;-1024;256;64;1;False
+1;placeholder;1408;-1120;64;128;1;False
+1;placeholder;1408;-1216;64;64;1;False
+1;placeholder;-1536;-1216;64;64;1;False
+1;placeholder;1280;-8128;192;64;1;False
+1;placeholder;-1376;-6208;256;64;1;False
 2;placeholder;-576;-1888;192;64;1;140;3;False
 2;placeholder;896;-2560;320;64;1;180;1;False
 2;placeholder;1152;-3200;192;64;1;100;1;False
@@ -45,5 +54,6 @@
 5;0;placeholderTeleport;1056;-5568;128;64
 5;1;placeholder;960;-9120;64;256
 5;2;placeholder;-1088;-8128;512;64;False;50
-5;3;placeholder;704;-8832;256;64
+5;3;placeholder;640;-8832;448;64
+7;1280;-8192;player1
 6;1344;-9024;64;64
