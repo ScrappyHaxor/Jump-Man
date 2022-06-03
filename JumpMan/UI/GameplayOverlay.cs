@@ -18,7 +18,8 @@ namespace JumpMan.UI
         {
             genericProgressBar = new GenericProgressBar(
                 new ScrapVector(0, 0),
-                new ScrapVector(50, 1000)
+                new ScrapVector(1000, 50),
+                300
                 );
             Register.Add(genericProgressBar);
         }

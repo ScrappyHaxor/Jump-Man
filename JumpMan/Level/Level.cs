@@ -81,6 +81,7 @@ namespace JumpMan.Level
             pauseOverlay = new InGameOverlay(inGameSettingsOverlay, ScrapVector.Zero, new ScrapVector(500, 450));
 
             gameplayOverlay = new GameplayOverlay();
+            gameplayOverlay.Awake();
 
             if (args.Length == 1)
             {
@@ -154,6 +155,9 @@ namespace JumpMan.Level
                 levelData.EndOfLevel.Container = new object[] { editorMeta };
             }
             levelData.EndOfLevel.Awake();
+
+            FeetBouncePlatform fplatform = new FeetBouncePlatform("placeholder", new ScrapVector(0, 900), new ScrapVector(1000, 64));
+            fplatform.Awake();
 
             topOfScreen =  MainCamera.Position.Y + -(MainCamera.Bounds.Height / (MainCamera.Bounds.Height / Camera.VirtualHeight));
             bottomOfScreen = MainCamera.Position.Y + (MainCamera.Bounds.Height / (MainCamera.Bounds.Height / Camera.VirtualHeight));

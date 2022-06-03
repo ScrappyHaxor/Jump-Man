@@ -77,8 +77,8 @@ namespace JumpMan.ECS.Components
                 rigidbody.AddForce(new ScrapVector(-jumpForce.X * 0.3d, jumpForce.Y * 0.1d));
                 hasBounced = true;
 
-                SoundEffect sound = AssetManager.FetchAudio("collision");
-                sound.Play(settingsData.EffectVolume / 100f, 0, 0);
+                //SoundEffect sound = AssetManager.FetchAudio("collision");
+                //sound.Play(settingsData.EffectVolume / 100f, 0, 0);
             }
 
 
@@ -95,8 +95,8 @@ namespace JumpMan.ECS.Components
                 double jumpMultiplier = (DateTimeOffset.Now.ToUnixTimeMilliseconds() / 1000d) - jumpStarted;
                 jumpMultiplier = ScrapMath.Clamp(jumpMultiplier, MinJumpMultiplier, MaxJumpMultiplier);
 
-                SoundEffect sound = AssetManager.FetchAudio("jumping");
-                sound.Play(settingsData.EffectVolume / 100f, 0, 0);
+                //SoundEffect sound = AssetManager.FetchAudio("jumping");
+                //sound.Play(settingsData.EffectVolume / 100f, 0, 0);
 
                 jumpForce = new ScrapVector(0, -JumpForce * jumpMultiplier);
                 if (input != ScrapVector.Zero)

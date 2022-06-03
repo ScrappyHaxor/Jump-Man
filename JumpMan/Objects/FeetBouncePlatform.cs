@@ -1,4 +1,5 @@
-﻿using ScrapBox.Framework.ECS;
+﻿using Microsoft.Xna.Framework.Input;
+using ScrapBox.Framework.ECS;
 using ScrapBox.Framework.ECS.Components;
 using ScrapBox.Framework.Level;
 using ScrapBox.Framework.Managers;
@@ -74,9 +75,15 @@ namespace JumpMan.Objects
         bool curr = false;
         bool prev;
 
+        KeyboardState keyState = Keyboard.GetState();
+        KeyboardState prevState;
+
         public override void PreLayerTick(double dt)
         {
             bool success = Dependency<Player>(out Player);
+
+            prevState = keyState;
+            keyState = Keyboard.GetState();
 
             prev = curr;
             curr = Player.RigidBody.Grounded();
@@ -85,18 +92,47 @@ namespace JumpMan.Objects
             {
                 bool collided = Collision.IntersectPolygons(Collider.GetVerticies(), Player.Collider.GetVerticies(), out CollisionManifold manifold);
 
-                if (collided && hasBounced == false && prev == false && curr == true)
+                if (collided)
                 {
-                    Player.RigidBody.AddForce(new ScrapVector(Player.Controller.jumpForce.X * 0.2f, Player.Controller.jumpForce.Y * 0.5f));
+                    Player.Transform.Position = new ScrapVector(Player.Transform.Position.X, Transform.Position.Y - 32 - 32);
 
-                    hasBounced = true;
+                    if (hasBounced == false)
+                    {
+                        Player.RigidBody.AddForce(new ScrapVector(Player.Controller.jumpForce.X * 0.2f, Player.Controller.jumpForce.Y * 0.5f));
+
+                        hasBounced = true;
+                    }
+
+                    if (hasBounced && Player.Controller.jumpForce == ScrapVector.Zero)
+                    {
+                        hasBounced = false;
+                    }
                 }
+
+                //if (collided && hasBounced == false)
+                //{
+                //    Player.RigidBody.AddForce(new ScrapVector(Player.Controller.jumpForce.X * 0.2f, Player.Controller.jumpForce.Y * 0.5f));
+
+                //    hasBounced = true;
+                //}
+
+                //if (collided && hasBounced == true && manifold.Depth <= 1f)
+                //{
+                //    hasBounced = false;
+                //}
+
+                //if (collided && hasBounced == false && prev == false && curr == true)
+                //{
+                //    Player.RigidBody.AddForce(new ScrapVector(Player.Controller.jumpForce.X * 0.2f, Player.Controller.jumpForce.Y * 0.5f));
+
+                //    hasBounced = true;
+                //}
             }
 
-            if (Player.RigidBody.Grounded() && hasBounced == true)
-            {
-                hasBounced = false;
-            }
+            //if (Player.RigidBody.Grounded() && hasBounced == true)
+            //{
+            //    hasBounced = false;
+            //}
 
             base.PreLayerTick(dt);
         }
