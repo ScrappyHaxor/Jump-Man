@@ -42,13 +42,15 @@ namespace ModTools.Objects
             "placeholder",
             "placeholder4",
             "placeholderTeleport",
-            "grass"
+            "grass",
+            "Cobble"
         };
 
         public List<string> MovingPlatformTextures = new List<string>()
         {
             "placeholder",
-            "placeholder4"
+            "placeholder4",
+            "Cobble"
         };
 
         public List<string> BackgroundTextures = new List<string>()
@@ -61,7 +63,9 @@ namespace ModTools.Objects
             "placeholder",
             "placeholder4",
             "placeholderTeleport",
-            "grass"
+            "grass",
+            "cobble"
+
         };
 
         public int PlatformTextureIndex;
