@@ -80,7 +80,7 @@ namespace JumpMan.Objects
                     {
 
                         player.Controller.MoveForce = 50;
-                        player.Controller.JumpForce = 1500;
+                        player.Controller.JumpForce = 2500;
                         player.Controller.JumpDirectionalDegree = 60;
 
                     }

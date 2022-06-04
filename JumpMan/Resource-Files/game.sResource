@@ -13,3 +13,4 @@ jumping:Audio
 player1:Texture2D
 player2:Texture2D
 player3:Texture2D
+Cobble:Texture2D
