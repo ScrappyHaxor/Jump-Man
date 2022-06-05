@@ -10,3 +10,8 @@
   
 ### HOW TO PLAY
   Simply clone the repo, open the solution and compile. Repository: https://github.com/ScrappyHaxor/Jump-Man
+  Once compiled you can either open the game or the mod tools.
+  
+  For the game head into JumpMan->Bin->Debug->netcoreapp3.1->JumpMan.exe
+  
+  For the mod tools head into ModTools->Bin->Debug->netcoreapp3.1->ModTools.exe
