@@ -13,8 +13,9 @@
   Once compiled you can either open the game or the mod tools.
   
   For the game head into JumpMan->Bin->Debug->netcoreapp3.1->JumpMan.exe
-  
   For the mod tools head into ModTools->Bin->Debug->netcoreapp3.1->ModTools.exe
   
   Alternatively if there are issues with compiling, download the latest release (Release.rar) from here https://github.com/ScrappyHaxor/Jump-Man/releases/tag/Final-Build-2
   The Game and Mod Tools are inside of Release.rar in their respective folder.
+
+  For the Level Editor, when you save a level with Control + S, the level will be saved to the same folder as ModTools.exe and if something were to happen, the levels are autosaved regularly inside of the autosaves folder that is in the same folder as ModTools.exe. If you want to open and edit an existing level then simply drag and drop the level file on ModTools.exe and it will open.
