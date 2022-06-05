@@ -6,16 +6,12 @@ using ModTools.Objects;
 using ModTools.Services;
 using ModTools.UI;
 using ScrapBox.Framework;
-using ScrapBox.Framework.ECS;
 using ScrapBox.Framework.Level;
 using ScrapBox.Framework.Managers;
 using ScrapBox.Framework.Math;
 using ScrapBox.Framework.Services;
-using ScrapBox.Framework.Shapes;
 using System;
 using System.IO;
-using System.Threading;
-using Rectangle = ScrapBox.Framework.Shapes.Rectangle;
 
 namespace ModTools.Level
 {

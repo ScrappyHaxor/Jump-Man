@@ -1,11 +1,9 @@
 ﻿using JumpMan.Container;
 using JumpMan.Objects;
 using JumpMan.Services;
-using ScrapBox.Framework.ECS;
 using ScrapBox.Framework.Math;
 using System.Collections.Generic;
 using System.IO;
-using System.Text;
 
 namespace ModTools.Services
 {

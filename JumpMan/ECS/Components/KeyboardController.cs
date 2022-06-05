@@ -1,17 +1,10 @@
 ﻿using JumpMan.Container;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
-using ScrapBox.Framework.ECS;
-using ScrapBox.Framework.ECS.Components;
-using ScrapBox.Framework.ECS.Systems;
 using ScrapBox.Framework.Input;
 using ScrapBox.Framework.Managers;
 using ScrapBox.Framework.Math;
-using ScrapBox.Framework.Services;
 using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Text;
 
 namespace JumpMan.ECS.Components
 {
@@ -25,8 +18,8 @@ namespace JumpMan.ECS.Components
     {
         public override string Name => "Player Controller";
 
-        bool jumpInitiated;
-        double jumpStarted;
+        private bool jumpInitiated;
+        private double jumpStarted;
         public ScrapVector jumpForce;
         private bool hasBounced;
         private ScrapVector lastPosition;
@@ -47,8 +40,6 @@ namespace JumpMan.ECS.Components
                 settingsData.SaveSettings();
             }
 
-
-            //Do input mapping here using InputManager
             ScrapVector input = ScrapVector.Zero;
             if (InputManager.IsKeyHeld(settingsData.RightKey))
             {
@@ -137,7 +128,7 @@ namespace JumpMan.ECS.Components
                 {
                     try
                     {
-                        //sound.Play(settingsData.EffectVolume / 100f, 0, 0);
+                        sound.Play(settingsData.EffectVolume / 100f, 0, 0);
                     }
                     catch (Exception) { }
                 }
@@ -150,8 +141,6 @@ namespace JumpMan.ECS.Components
                     else if (input.X > 0)
                         sprite.SourceRectangle = new Rectangle(sprite.SourceRectangle.Width, 0, sprite.SourceRectangle.Width, sprite.SourceRectangle.Height);
                         
-
-                    //Cant get this to work
                     jumpForce = ScrapMath.RotatePoint(jumpForce, ScrapMath.ToRadians(input.X * JumpDirectionalDegree));
                     rigidbody.AddForce(jumpForce);
                 }

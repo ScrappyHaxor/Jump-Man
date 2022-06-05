@@ -7,9 +7,6 @@ using ScrapBox.Framework.Level;
 using ScrapBox.Framework.Managers;
 using ScrapBox.Framework.Math;
 using ScrapBox.Framework.Services;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace ModTools.Objects
 {

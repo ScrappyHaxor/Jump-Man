@@ -2,8 +2,6 @@
 
 using ScrapBox.Framework;
 using ScrapBox.Framework.Managers;
-
-using JumpMan.Level;
 using ModTools.Level;
 
 namespace ModTools.Core

@@ -1,6 +1,4 @@
-﻿using JumpMan.ECS.Components;
-using Microsoft.Xna.Framework;
-using ScrapBox.Framework.ECS;
+﻿using ScrapBox.Framework.ECS;
 using ScrapBox.Framework.ECS.Components;
 using ScrapBox.Framework.Level;
 using ScrapBox.Framework.Managers;
@@ -8,7 +6,6 @@ using ScrapBox.Framework.Math;
 using ScrapBox.Framework.Services;
 using System;
 using System.Collections.Generic;
-using System.Text;
 using static ScrapBox.Framework.ECS.Collider;
 
 namespace JumpMan.Objects
@@ -19,7 +16,7 @@ namespace JumpMan.Objects
 
         public double ScrollSpeed = 100;
 
-        public Transform Transform;
+        public Transform2D Transform;
         public Sprite2D Sprite;
         public RigidBody2D Rigidbody;
         public BoxCollider2D Collider;
@@ -30,7 +27,7 @@ namespace JumpMan.Objects
 
         public ScrollingPlatform(string texture, ScrapVector position, ScrapVector dimensions) : base(SceneManager.CurrentScene.Stack.Fetch(DefaultLayers.FOREGROUND))
         {
-            Transform = new Transform
+            Transform = new Transform2D
             {
                 Position = position,
                 Dimensions = dimensions

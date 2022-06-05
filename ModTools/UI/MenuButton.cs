@@ -4,10 +4,6 @@ using ScrapBox.Framework.ECS.Components;
 using ScrapBox.Framework.Level;
 using ScrapBox.Framework.Managers;
 using ScrapBox.Framework.Math;
-using ScrapBox.Framework.Shapes;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using Rectangle = ScrapBox.Framework.Shapes.Rectangle;
 
 namespace ModTools.UI
@@ -16,13 +12,13 @@ namespace ModTools.UI
     {
         public override string Name => "UI Button";
 
-        public Transform Transform;
-        public Label Label;
-        public Button Button;
+        public Transform2D Transform;
+        public Label2D Label;
+        public Button2D Button;
 
         public MenuButton(ScrapVector position, ScrapVector dimensions, string text) : base(SceneManager.CurrentScene.Stack.Fetch(DefaultLayers.UI))
         {
-            Transform = new Transform
+            Transform = new Transform2D
             {
                 Position = position,
                 Dimensions = dimensions
@@ -30,7 +26,7 @@ namespace ModTools.UI
 
             RegisterComponent(Transform);
 
-            Button = new Button
+            Button = new Button2D
             {
                 BorderColor = Color.White,
                 HoverColor = Color.Gray,
@@ -41,7 +37,7 @@ namespace ModTools.UI
 
             RegisterComponent(Button);
 
-            Label = new Label
+            Label = new Label2D
             {
                 Font = AssetManager.FetchFont("menuButton"),
                 Text = text,

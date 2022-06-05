@@ -1,11 +1,8 @@
 ﻿using ScrapBox.Framework.ECS;
 using ScrapBox.Framework.ECS.Components;
-using ScrapBox.Framework.Level;
 using ScrapBox.Framework.Managers;
 using ScrapBox.Framework.Math;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using static ScrapBox.Framework.ECS.Collider;
 
 namespace JumpMan.Objects
@@ -14,7 +11,7 @@ namespace JumpMan.Objects
     {
         public override string Name => "End of Level";
 
-        public Transform Transform;
+        public Transform2D Transform;
         public RigidBody2D Rigidbody;
         public BoxCollider2D Collider;
         public Sprite2D Sprite;
@@ -28,7 +25,7 @@ namespace JumpMan.Objects
 
         public EndOfLevel(ScrapVector position, ScrapVector dimensions) : base(SceneManager.CurrentScene.Stack.Fetch(DefaultLayers.FOREGROUND))
         {
-            Transform = new Transform
+            Transform = new Transform2D
             {
                 Position = position,
                 Dimensions = dimensions

@@ -3,9 +3,6 @@ using ScrapBox.Framework.ECS;
 using ScrapBox.Framework.ECS.Components;
 using ScrapBox.Framework.Managers;
 using ScrapBox.Framework.Math;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace JumpMan.UI
 {
@@ -13,12 +10,12 @@ namespace JumpMan.UI
     {
         public override string Name => "Generic Text Box";
 
-        public Transform Transform;
-        public Textbox Textbox;
+        public Transform2D Transform;
+        public Textbox2D Textbox;
 
         public GenericTextbox(ScrapVector position, ScrapVector dimensions) : base(SceneManager.CurrentScene.Stack.Fetch(DefaultLayers.UI))
         {
-            Transform = new Transform
+            Transform = new Transform2D
             {
                 Position = position,
                 Dimensions = dimensions
@@ -26,7 +23,7 @@ namespace JumpMan.UI
 
             RegisterComponent(Transform);
 
-            Textbox = new Textbox
+            Textbox = new Textbox2D
             {
                 Font = AssetManager.FetchFont("temporary"),
                 BorderColor = new Color(93, 139, 244),

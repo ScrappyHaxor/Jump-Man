@@ -3,7 +3,6 @@ using ScrapBox.Framework.ECS.Components;
 using ScrapBox.Framework.Level;
 using ScrapBox.Framework.Managers;
 using ScrapBox.Framework.Math;
-using static ScrapBox.Framework.ECS.Collider;
 
 namespace JumpMan.Objects
 {
@@ -11,14 +10,14 @@ namespace JumpMan.Objects
     {
         public override string Name => "Tileable Background";
 
-        public Transform Transform;
+        public Transform2D Transform;
         public Sprite2D Sprite;
         public RigidBody2D RigidBody;
         public BoxCollider2D Collider;
 
         public Background(string texture, ScrapVector position, ScrapVector dimensions) : base(SceneManager.CurrentScene.Stack.Fetch(DefaultLayers.BACKGROUND))
         {
-            Transform = new Transform
+            Transform = new Transform2D
             {
                 Position = position,
                 Dimensions = dimensions

@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using ScrapBox.Framework.ECS;
-using System.Text;
+﻿using ScrapBox.Framework.ECS;
 using ScrapBox.Framework.ECS.Components;
-using ScrapBox.Framework.Managers;
 using JumpMan.ECS.Systems;
 
 namespace JumpMan.ECS.Components
@@ -42,7 +38,7 @@ namespace JumpMan.ECS.Components
             if (Layer == null)
                 Layer = Owner.Layer;
 
-            //The component registers itself to the ControllerSystem
+            //The component registers itself to the ControllerSystem on the appropriate layer
             Layer.GetSystem<ControllerSystem>().RegisterController(this);
 
             IsAwake = true;

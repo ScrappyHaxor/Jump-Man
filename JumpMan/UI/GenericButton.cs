@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using ScrapBox.Framework.ECS;
 using ScrapBox.Framework.ECS.Components;
 using ScrapBox.Framework.Level;
@@ -15,13 +12,13 @@ namespace JumpMan.UI
     {
         public override string Name => "Main Menu Button";
 
-        public Transform Transform;
-        public Label Label;
-        public Button Button;
+        public Transform2D Transform;
+        public Label2D Label;
+        public Button2D Button;
 
         public GenericButton(ScrapVector position, ScrapVector dimensions, string text) : base(SceneManager.CurrentScene.Stack.Fetch(DefaultLayers.UI))
         {
-            Transform = new Transform
+            Transform = new Transform2D
             {
                 Position = position,
                 Dimensions = dimensions
@@ -29,7 +26,7 @@ namespace JumpMan.UI
 
             RegisterComponent(Transform);
 
-            Button = new Button
+            Button = new Button2D
             {
                 BorderColor = new Color(93, 139, 244),
                 HoverColor = new Color(45, 49, 250),
@@ -40,7 +37,7 @@ namespace JumpMan.UI
 
             RegisterComponent(Button);
 
-            Label = new Label
+            Label = new Label2D
             {
                 Font = AssetManager.FetchFont("temporary"),
                 Text = text,
