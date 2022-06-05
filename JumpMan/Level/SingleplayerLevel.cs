@@ -13,7 +13,6 @@ using Microsoft.Xna.Framework.Graphics;
 using ScrapBox.Framework.Math;
 using ScrapBox.Framework.Services;
 using ScrapBox.Framework.ECS.Systems;
-using ScrapBox.Framework.ECS;
 using JumpMan.UI;
 
 namespace JumpMan.Level

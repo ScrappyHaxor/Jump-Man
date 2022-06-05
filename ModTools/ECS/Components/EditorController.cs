@@ -9,8 +9,6 @@ using ScrapBox.Framework.Managers;
 using ScrapBox.Framework.Math;
 using ScrapBox.Framework.Services;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using ModTools.UI;
 using ScrapBox.Framework.ECS.Systems;
 using JumpMan.Objects;
@@ -51,8 +49,8 @@ namespace ModTools.ECS.Components
         public SavePopup SavePopup;
         public Placing PlacingState;
 
-        private CollisionSystem foregroundCollision;
-        private CollisionSystem backgroundCollision;
+        private readonly CollisionSystem foregroundCollision;
+        private readonly CollisionSystem backgroundCollision;
 
         public bool SaveFlag;
         public bool InstructionFlag;

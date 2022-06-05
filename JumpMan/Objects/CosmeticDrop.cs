@@ -3,12 +3,9 @@ using JumpMan.UI;
 using Microsoft.Xna.Framework;
 using ScrapBox.Framework.ECS;
 using ScrapBox.Framework.ECS.Components;
-using ScrapBox.Framework.Level;
 using ScrapBox.Framework.Managers;
 using ScrapBox.Framework.Math;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace JumpMan.Objects
 {
@@ -22,7 +19,7 @@ namespace JumpMan.Objects
         public const int SIZE_X = 64;
         public const int SIZE_Y = 64;
 
-        public Transform Transform;
+        public Transform2D Transform;
         public RigidBody2D Rigidbody;
         public Collider Collider;
         public Sprite2D Sprite;
@@ -31,7 +28,7 @@ namespace JumpMan.Objects
 
         public CosmeticDrop(ScrapVector position, string cosmetic) : base(SceneManager.CurrentScene.Stack.Fetch(DefaultLayers.FOREGROUND))
         {
-            Transform = new Transform
+            Transform = new Transform2D
             {
                 Position = position,
                 Dimensions = new ScrapVector(SIZE_X, SIZE_Y)

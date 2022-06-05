@@ -4,9 +4,6 @@ using ScrapBox.Framework.ECS.Components;
 using ScrapBox.Framework.Level;
 using ScrapBox.Framework.Managers;
 using ScrapBox.Framework.Math;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace ModTools.UI
 {
@@ -14,19 +11,19 @@ namespace ModTools.UI
     {
         public override string Name => "Menu Label";
 
-        public Transform Transform;
-        public Label Label;
+        public Transform2D Transform;
+        public Label2D Label;
 
         public MenuLabel(ScrapVector position, string text) : base(SceneManager.CurrentScene.Stack.Fetch(DefaultLayers.UI))
         {
-            Transform = new Transform()
+            Transform = new Transform2D()
             {
                 Position = position
             };
 
             RegisterComponent(Transform);
 
-            Label = new Label()
+            Label = new Label2D()
             {
                 TextColor = Color.White,
                 Font = AssetManager.FetchFont("menu"),

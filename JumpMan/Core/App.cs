@@ -26,7 +26,6 @@ namespace JumpMan.Core
             singleLevel = new SingleplayerLevel(this);
             multiLevel = new MultiplayerLevel(this);
 
-            //The world manager is the master of everything. It handles entities, components, levels, systems. Everything you could think of.
             SceneManager.RegisterScene("Main Menu", mainMenu);
             SceneManager.RegisterScene("Level Select", levelSelect);
             SceneManager.RegisterScene("Developer Level", singleLevel);

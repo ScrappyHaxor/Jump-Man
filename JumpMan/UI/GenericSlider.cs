@@ -1,12 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using ScrapBox.Framework.ECS;
 using ScrapBox.Framework.ECS.Components;
-using ScrapBox.Framework.Level;
 using ScrapBox.Framework.Managers;
 using ScrapBox.Framework.Math;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace JumpMan.UI
 {
@@ -14,12 +10,12 @@ namespace JumpMan.UI
     {
         public override string Name => "Menu Slider";
 
-        public Transform Transform;
-        public Slider Slider;
+        public Transform2D Transform;
+        public Slider2D Slider;
 
         public GenericSlider(ScrapVector position, ScrapVector dimensions) : base(SceneManager.CurrentScene.Stack.Fetch(DefaultLayers.UI))
         {
-            Transform = new Transform()
+            Transform = new Transform2D()
             {
                 Position = position,
                 Dimensions = dimensions
@@ -27,7 +23,7 @@ namespace JumpMan.UI
 
             RegisterComponent(Transform);
 
-            Slider = new Slider()
+            Slider = new Slider2D()
             {
                 BarColor = new Color(5, 19, 103),
                 BarBorderColor = new Color(93, 139, 244),

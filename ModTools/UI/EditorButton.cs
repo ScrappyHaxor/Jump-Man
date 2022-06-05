@@ -12,13 +12,13 @@ namespace ModTools.UI
     {
         public override string Name => "UI Button";
 
-        public Transform Transform;
-        public Label Label;
-        public Button Button;
+        public Transform2D Transform;
+        public Label2D Label;
+        public Button2D Button;
 
         public EditorButton(ScrapVector position, ScrapVector dimensions, string text) : base(SceneManager.CurrentScene.Stack.Fetch(DefaultLayers.UI))
         {
-            Transform = new Transform
+            Transform = new Transform2D
             {
                 Position = position,
                 Dimensions = dimensions
@@ -26,7 +26,7 @@ namespace ModTools.UI
 
             RegisterComponent(Transform);
 
-            Button = new Button
+            Button = new Button2D
             {
                 BorderColor = Color.White,
                 HoverColor = Color.Gray,
@@ -37,7 +37,7 @@ namespace ModTools.UI
 
             RegisterComponent(Button);
 
-            Label = new Label
+            Label = new Label2D
             {
                 Font = AssetManager.FetchFont("editorButtonText"),
                 Text = text,

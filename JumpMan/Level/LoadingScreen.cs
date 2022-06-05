@@ -3,9 +3,6 @@ using ScrapBox.Framework;
 using ScrapBox.Framework.Level;
 using ScrapBox.Framework.Managers;
 using ScrapBox.Framework.Math;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace JumpMan.Level
 {

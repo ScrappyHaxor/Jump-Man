@@ -1,9 +1,6 @@
 ﻿using JumpMan.Objects;
-using ScrapBox.Framework.ECS;
 using ScrapBox.Framework.Math;
-using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace JumpMan.Container
 {

@@ -1,10 +1,9 @@
 ﻿using JumpMan.UI;
-using ModTools.UI;
+using Microsoft.Xna.Framework.Graphics;
 using ScrapBox.Framework;
 using ScrapBox.Framework.Level;
 using ScrapBox.Framework.Managers;
 using ScrapBox.Framework.Math;
-using ScrapBox.Framework.Shapes;
 using System;
 
 namespace ModTools.Level
@@ -24,6 +23,18 @@ namespace ModTools.Level
         public Menu(ScrapApp app) : base(app)
         {
 
+        }
+
+        public override void Initialize()
+        {
+            Parent.EnqueueChange(() =>
+            {
+                Graphics.PreferredBackBufferWidth = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width - 400;
+                Graphics.PreferredBackBufferHeight = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height - 200;
+                Graphics.ApplyChanges();
+            });
+
+            base.Initialize();
         }
 
         public override void LoadAssets()

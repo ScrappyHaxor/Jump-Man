@@ -3,14 +3,9 @@ using JumpMan.ECS.Components;
 using Microsoft.Xna.Framework;
 using ScrapBox.Framework.ECS;
 using ScrapBox.Framework.ECS.Components;
-using ScrapBox.Framework.ECS.Systems;
 using ScrapBox.Framework.Level;
 using ScrapBox.Framework.Managers;
 using ScrapBox.Framework.Math;
-using ScrapBox.Framework.Services;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using static ScrapBox.Framework.ECS.Collider;
 
 namespace JumpMan.Objects
@@ -27,7 +22,7 @@ namespace JumpMan.Objects
 
         public override string Name => "Player";
 
-        public Transform Transform;
+        public Transform2D Transform;
         public RigidBody2D RigidBody;
         public BoxCollider2D Collider; // Maybe use a CircleCollider2D instead in the future.
         public Sprite2D Sprite;
@@ -37,7 +32,7 @@ namespace JumpMan.Objects
 
         public Player(ScrapVector position) : base(SceneManager.CurrentScene.Stack.Fetch(DefaultLayers.FOREGROUND))
         {
-            Transform = new Transform
+            Transform = new Transform2D
             {
                 Position = position,
                 Dimensions = new ScrapVector(SIZE_X, SIZE_Y)

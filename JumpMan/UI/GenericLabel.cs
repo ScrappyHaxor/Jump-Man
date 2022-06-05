@@ -1,12 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using ScrapBox.Framework.ECS;
 using ScrapBox.Framework.ECS.Components;
-using ScrapBox.Framework.Level;
 using ScrapBox.Framework.Managers;
 using ScrapBox.Framework.Math;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace JumpMan.UI
 {
@@ -14,12 +10,12 @@ namespace JumpMan.UI
     {
         public override string Name => "Menu Label";
 
-        public Transform Transform;
-        public Label Label;
+        public Transform2D Transform;
+        public Label2D Label;
 
         public GenericLabel(ScrapVector position, ScrapVector dimensions, string text) : base(SceneManager.CurrentScene.Stack.Fetch(DefaultLayers.UI))
         {
-            Transform = new Transform
+            Transform = new Transform2D
             {
                 Position = position,
                 Dimensions = dimensions
@@ -27,7 +23,7 @@ namespace JumpMan.UI
 
             RegisterComponent(Transform);
 
-            Label = new Label
+            Label = new Label2D
             {
                 Font = AssetManager.FetchFont("temporary"),
                 Text = text,

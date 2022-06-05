@@ -1,9 +1,7 @@
 ﻿using JumpMan.ECS.Components;
 using ScrapBox.Framework.ECS;
 using ScrapBox.Framework.Level;
-using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace JumpMan.ECS.Systems
 {

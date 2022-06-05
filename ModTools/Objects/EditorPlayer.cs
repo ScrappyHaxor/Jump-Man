@@ -2,9 +2,6 @@
 using ScrapBox.Framework.ECS;
 using ScrapBox.Framework.Level;
 using ScrapBox.Framework.Managers;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace ModTools.Objects
 {

@@ -1,7 +1,6 @@
 ﻿using JumpMan.Container;
 using JumpMan.Services;
 using Microsoft.Xna.Framework;
-using ModTools.UI;
 using ScrapBox.Framework;
 using ScrapBox.Framework.Level;
 using ScrapBox.Framework.Managers;
@@ -9,10 +8,7 @@ using ScrapBox.Framework.Math;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using ScrapBox.Framework.ECS.Components;
-using System.Text;
 using JumpMan.ECS.Systems;
-using System.Linq;
 using JumpMan.UI;
 
 namespace ModTools.Level

@@ -12,12 +12,12 @@ namespace ModTools.UI
     {
         public override string Name => "Editor Textbox";
 
-        public Transform Transform;
-        public Textbox TextBox;
+        public Transform2D Transform;
+        public Textbox2D TextBox;
 
         public EditorTextbox(ScrapVector position, ScrapVector dimensions, string placeholder) : base(SceneManager.CurrentScene.Stack.Fetch(DefaultLayers.UI))
         {
-            Transform = new Transform()
+            Transform = new Transform2D()
             {
                 Position = position,
                 Dimensions = dimensions
@@ -25,7 +25,7 @@ namespace ModTools.UI
 
             RegisterComponent(Transform);
 
-            TextBox = new Textbox
+            TextBox = new Textbox2D
             {
                 Placeholder = placeholder,
                 Font = AssetManager.FetchFont("editorButtonText"),

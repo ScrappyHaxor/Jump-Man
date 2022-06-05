@@ -1,11 +1,9 @@
 ﻿using JumpMan.Container;
-using Microsoft.Xna.Framework;
 using ScrapBox.Framework.ECS;
 using ScrapBox.Framework.Managers;
 using ScrapBox.Framework.Math;
 using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace JumpMan.UI
 {

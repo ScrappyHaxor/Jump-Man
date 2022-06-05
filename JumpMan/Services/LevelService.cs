@@ -1,16 +1,12 @@
 ﻿using JumpMan.Container;
 using JumpMan.Core;
 using JumpMan.Objects;
-using ScrapBox.Framework.ECS;
 using ScrapBox.Framework.ECS.Components;
 using ScrapBox.Framework.Managers;
 using ScrapBox.Framework.Math;
 using ScrapBox.Framework.Services;
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
-using System.Text;
 
 namespace JumpMan.Services
 {

@@ -12,9 +12,7 @@ using ScrapBox.Framework.Level;
 using ScrapBox.Framework.Managers;
 using ScrapBox.Framework.Math;
 using ScrapBox.Framework.Services;
-using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace ModTools.Objects
 {
@@ -85,7 +83,7 @@ namespace ModTools.Objects
 
         public override string Name => "Editor Ghost";
 
-        public Transform Transform;
+        public Transform2D Transform;
         public Sprite2D Sprite;
 
         public LevelData Data;
@@ -100,7 +98,7 @@ namespace ModTools.Objects
             foregroundCollision = SceneManager.CurrentScene.Stack.Fetch(DefaultLayers.FOREGROUND).GetSystem<CollisionSystem>();
             backgroundCollision = SceneManager.CurrentScene.Stack.Fetch(DefaultLayers.BACKGROUND).GetSystem<CollisionSystem>();
 
-            Transform = new Transform();
+            Transform = new Transform2D();
             RegisterComponent(Transform);
 
             Sprite = new Sprite2D()
