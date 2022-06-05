@@ -5,7 +5,7 @@
   You cannot move in the air and you charge your jump by holding down spacebar. This hold down mechanic is sensitive which adds to game difficulty.
   
 ### ISSUES
-  If you encounter any issues contact Scrappy (Hampus) ScrappyHaxor#7477 on Discord
+  If you encounter any issues contact Scrappy (Hampus) ScrappyHaxor#5705 on Discord
   
   
 ### HOW TO PLAY
