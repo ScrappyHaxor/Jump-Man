@@ -15,3 +15,5 @@
   For the game head into JumpMan->Bin->Debug->netcoreapp3.1->JumpMan.exe
   
   For the mod tools head into ModTools->Bin->Debug->netcoreapp3.1->ModTools.exe
+  
+  Alternatively if there are issues with compiling, download the latest release from here https://github.com/ScrappyHaxor/Jump-Man/releases/tag/Final-Build-1
