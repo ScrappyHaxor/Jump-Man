@@ -64,6 +64,18 @@
 /processorParam:TextureFormat=Color
 /build:grass.png
 
+#begin happy.mp3
+/importer:Mp3Importer
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:happy.mp3
+
+#begin hell.mp3
+/importer:Mp3Importer
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:hell.mp3
+
 #begin jumping.mp3
 /importer:Mp3Importer
 /processor:SoundEffectProcessor
