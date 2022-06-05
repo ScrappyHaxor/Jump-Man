@@ -14,6 +14,8 @@ using ScrapBox.Framework.Math;
 using ScrapBox.Framework.Services;
 using ScrapBox.Framework.ECS.Systems;
 using JumpMan.UI;
+using Microsoft.Xna.Framework.Audio;
+using System;
 
 namespace JumpMan.Level
 {
@@ -37,6 +39,7 @@ namespace JumpMan.Level
         private SoundOverlay soundSection;
         private ControlsOverlay controlsSection;
 
+        private SoundEffectInstance music;
         public SingleplayerLevel(ScrapApp app)
             : base(app)
         {
@@ -72,8 +75,8 @@ namespace JumpMan.Level
           
             MainCamera.Zoom = 0.5;
 
-            soundSection = new SoundOverlay(new ScrapVector(0, 50), new ScrapVector(800, 400));
-            controlsSection = new ControlsOverlay(new ScrapVector(0, 50), new ScrapVector(800, 400));
+            soundSection = new SoundOverlay(new ScrapVector(0, 120), new ScrapVector(800, 400));
+            controlsSection = new ControlsOverlay(new ScrapVector(0, 120), new ScrapVector(800, 400));
 
             inGameSettingsOverlay = new SettingsOverlay(ScrapVector.Zero, new ScrapVector(800, 600), soundSection, controlsSection);
             pauseOverlay = new InGameOverlay(inGameSettingsOverlay, ScrapVector.Zero, new ScrapVector(500, 450));
@@ -114,6 +117,23 @@ namespace JumpMan.Level
                     levelData.Player.Controller.SelectedLevel = file.LevelName;
 
                 }
+            }
+
+            Random random = new Random();
+            bool musicChoice = random.NextDouble() >= 0.5d;
+            if (musicChoice)
+            {
+                music = AssetManager.FetchAudio("hell").CreateInstance();
+            }
+            else
+            {
+                music = AssetManager.FetchAudio("happy").CreateInstance();
+            }
+
+            if (!testFlag && !editorFlag)
+            {
+                music.IsLooped = true;
+                music.Play();
             }
 
             levelData.Player.Awake();
@@ -184,6 +204,7 @@ namespace JumpMan.Level
 
         public override void Unload()
         {
+            music.Stop();
             base.Unload();
         }
 
@@ -194,6 +215,15 @@ namespace JumpMan.Level
 
         public override void PreStackTick(double dt)
         {
+            SettingsData settingsData = SettingsData.LoadSettings();
+            if (settingsData == null)
+            {
+                settingsData = new SettingsData();
+                settingsData.SaveSettings();
+            }
+
+            music.Volume = settingsData.MusicVolume / 100f;
+
             if (InputManager.IsKeyDown(Keys.Escape) && !testFlag && !editorFlag)
             {
                 if (pauseOverlay.IsAwake)

@@ -120,6 +120,7 @@ namespace JumpMan.UI
 
         public override void Awake()
         {
+            soundSection.Awake();
             base.Awake();
         }
 
