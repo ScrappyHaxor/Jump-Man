@@ -79,7 +79,7 @@ namespace ModTools.Objects
             if (SaveFlag)
                 return;
 
-            Renderer.RenderLine(ScrapVector.Zero, EditorGhost.Transform.Position, Color.White, Camera, null, 2);
+            Renderer.RenderLine(ScrapVector.Zero, EditorGhost.Transform.Position, Color.White, Camera, null, 3);
 
             Renderer.RenderText(editorFontBig, "Level Editor States", new ScrapVector(10, 10), Color.White);
             Renderer.RenderText(editorFontSmall, $"Placing: {EditorPlayer.Controller.PlacingState}", new ScrapVector(10, 35), Color.White);
